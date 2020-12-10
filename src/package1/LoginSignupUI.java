@@ -38,7 +38,13 @@ public class LoginSignupUI extends JFrame {
 	private JPasswordField passwordTextField;
 	private JPasswordField conPasswordTextField;
 	private JLabel bkImageLabel;
-		int posX=0,posY=0;
+	private	int posX=0,posY=0;
+	private JTextField logInUserNameTextField;
+	private JPasswordField loginPasswordField;
+	private JLayeredPane signUpLogInLayeredPane;
+	private Button logInButton;
+	private JPanel logInPanel;
+	private JPanel signUpPanel;
 
 	/**
 	 * Launch the application.
@@ -61,6 +67,12 @@ public class LoginSignupUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	public void switchLogInSignUpPanel(JPanel panel) {
+		signUpLogInLayeredPane.removeAll();
+		signUpLogInLayeredPane.add(panel);
+		signUpLogInLayeredPane.repaint();
+		signUpLogInLayeredPane.revalidate();
+	}
 	public LoginSignupUI() { //first login UI frame constructor.
 		setIconImage(Toolkit.getDefaultToolkit().getImage(LoginSignupUI.class.getResource("/images/doctor.png")));
 		setTitle("Medical Assistant");
@@ -71,6 +83,8 @@ public class LoginSignupUI extends JFrame {
 		loginPageContents();  //all other contents method.
 		
 	}
+	
+
 	
 	public void loginPageContents() {
 		contentPane = new JPanel();
@@ -105,17 +119,52 @@ public class LoginSignupUI extends JFrame {
 		contentPane.add(signUpLogInLayeredPane);
 		signUpLogInLayeredPane.setLayout(new CardLayout(0, 0));
 		
-		JPanel signUpPanel = new JPanel();
+		signUpPanel = new JPanel();
 		signUpPanel.setForeground(Color.WHITE);
 		signUpPanel.setBackground(Color.WHITE);
 		signUpLogInLayeredPane.add(signUpPanel, "name_84000460423700");
 		signUpPanel.setLayout(null);
 		
-		JPanel logInPanel = new JPanel();
+		logInPanel = new JPanel();
 		logInPanel.setForeground(Color.WHITE);
 		logInPanel.setBackground(Color.WHITE);
 		signUpLogInLayeredPane.add(logInPanel, "name_84044062427600");
 		logInPanel.setLayout(null);
+		
+		JLabel logInUserNameLabel = new JLabel("USERNAME");
+		logInUserNameLabel.setBounds(43, 140, 157, 26);
+		logInPanel.add(logInUserNameLabel);
+		
+		logInUserNameTextField = new JTextField();
+		logInUserNameTextField.setFont(new Font("Calibri", Font.PLAIN, 13));
+		//logInUserNameTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+		logInUserNameTextField.setBounds(43, 163, 283, 36);
+		logInPanel.add(logInUserNameTextField);
+		logInUserNameTextField.setColumns(10);
+		
+		JSeparator logInUserNameSeparator = new JSeparator();
+		logInUserNameSeparator.setForeground(Color.BLACK);
+		logInUserNameSeparator.setBackground(Color.BLACK);
+		logInUserNameSeparator.setBounds(43, 197, 283, 1);
+		logInPanel.add(logInUserNameSeparator);
+		
+		JLabel logInPasswordLabel = new JLabel("PASSWORD");
+		logInPasswordLabel.setBounds(43, 212, 157, 26);
+		logInPanel.add(logInPasswordLabel);
+		
+		loginPasswordField = new JPasswordField();
+		loginPasswordField.setBounds(43, 235, 283, 36);
+		logInPanel.add(loginPasswordField);
+		
+		Button logInPanelLogInButton = new Button("Log In");
+		logInPanelLogInButton.setForeground(Color.WHITE);
+		logInPanelLogInButton.setBounds(43, 306, 283, 36);
+		logInPanelLogInButton.setBackground(new Color(30, 144, 255));
+		logInPanel.add(logInPanelLogInButton);
+		
+		JSeparator LogInPasswordSeparator = new JSeparator();
+		LogInPasswordSeparator.setBounds(43, 269, 283, 1);
+		logInPanel.add(LogInPasswordSeparator);
 		
 		JLabel userNameLabel = new JLabel("USERNAME");
 		userNameLabel.setBounds(43, 79, 157, 26);
@@ -208,7 +257,16 @@ public class LoginSignupUI extends JFrame {
 		signUpPanel.add(lblNewLabel_1);
 		//bkImageLabel.add(minimizeLabel);
 		
-		Button logInButton = new Button("Log In");
+		logInButton = new Button("Log In");
+		logInButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//switchLogInSignUpPanel(logInPanel);
+				signUpLogInLayeredPane.removeAll();
+				signUpLogInLayeredPane.add(logInPanel);
+				signUpLogInLayeredPane.repaint();
+				signUpLogInLayeredPane.revalidate();
+			}
+		});
 		logInButton.setForeground(Color.WHITE);
 		logInButton.setBackground(new Color(30, 144, 255));
 		logInButton.setBounds(43, 485, 283, 36);
@@ -268,4 +326,5 @@ public class LoginSignupUI extends JFrame {
 			}
 		});
 	}
+	
 }

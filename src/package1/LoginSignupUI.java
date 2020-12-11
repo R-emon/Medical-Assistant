@@ -112,7 +112,7 @@ public class LoginSignupUI extends JFrame {
 		//add(bkImageLabel);
 		contentPane.add(bkImageLabel);
 		
-		JLayeredPane signUpLogInLayeredPane = new JLayeredPane();
+		signUpLogInLayeredPane = new JLayeredPane();
 		signUpLogInLayeredPane.setForeground(Color.WHITE);
 		signUpLogInLayeredPane.setBackground(Color.WHITE);
 		signUpLogInLayeredPane.setBounds(500, 33, 400, 600);
@@ -137,7 +137,7 @@ public class LoginSignupUI extends JFrame {
 		
 		logInUserNameTextField = new JTextField();
 		logInUserNameTextField.setFont(new Font("Calibri", Font.PLAIN, 13));
-		//logInUserNameTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+		logInUserNameTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		logInUserNameTextField.setBounds(43, 163, 283, 36);
 		logInPanel.add(logInUserNameTextField);
 		logInUserNameTextField.setColumns(10);
@@ -145,7 +145,7 @@ public class LoginSignupUI extends JFrame {
 		JSeparator logInUserNameSeparator = new JSeparator();
 		logInUserNameSeparator.setForeground(Color.BLACK);
 		logInUserNameSeparator.setBackground(Color.BLACK);
-		logInUserNameSeparator.setBounds(43, 197, 283, 1);
+		logInUserNameSeparator.setBounds(43, 199, 283, 1);
 		logInPanel.add(logInUserNameSeparator);
 		
 		JLabel logInPasswordLabel = new JLabel("PASSWORD");
@@ -154,6 +154,7 @@ public class LoginSignupUI extends JFrame {
 		
 		loginPasswordField = new JPasswordField();
 		loginPasswordField.setBounds(43, 235, 283, 36);
+		loginPasswordField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		logInPanel.add(loginPasswordField);
 		
 		Button logInPanelLogInButton = new Button("Log In");
@@ -163,7 +164,9 @@ public class LoginSignupUI extends JFrame {
 		logInPanel.add(logInPanelLogInButton);
 		
 		JSeparator LogInPasswordSeparator = new JSeparator();
-		LogInPasswordSeparator.setBounds(43, 269, 283, 1);
+		LogInPasswordSeparator.setForeground(Color.BLACK);
+		LogInPasswordSeparator.setBackground(Color.BLACK);
+		LogInPasswordSeparator.setBounds(43, 271, 283, 1);
 		logInPanel.add(LogInPasswordSeparator);
 		
 		JLabel userNameLabel = new JLabel("USERNAME");
@@ -260,11 +263,7 @@ public class LoginSignupUI extends JFrame {
 		logInButton = new Button("Log In");
 		logInButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//switchLogInSignUpPanel(logInPanel);
-				signUpLogInLayeredPane.removeAll();
-				signUpLogInLayeredPane.add(logInPanel);
-				signUpLogInLayeredPane.repaint();
-				signUpLogInLayeredPane.revalidate();
+				switchLogInSignUpPanel(logInPanel);
 			}
 		});
 		logInButton.setForeground(Color.WHITE);
@@ -326,5 +325,4 @@ public class LoginSignupUI extends JFrame {
 			}
 		});
 	}
-	
 }

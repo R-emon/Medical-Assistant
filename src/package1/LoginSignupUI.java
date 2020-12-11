@@ -229,10 +229,10 @@ public class LoginSignupUI extends JFrame {
 		signUpPanel.add(passwordSeparator);
 		//bkImageLabel.add(separator_1_1);
 		
-		JLabel conPasswordTextField_1 = new JLabel("CONFIRM PASSWORD");
-		conPasswordTextField_1.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-		conPasswordTextField_1.setBounds(43, 308, 157, 26);
-		signUpPanel.add(conPasswordTextField_1);
+		JLabel conPasswordLabel = new JLabel("CONFIRM PASSWORD");
+		conPasswordLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+		conPasswordLabel.setBounds(43, 308, 157, 26);
+		signUpPanel.add(conPasswordLabel);
 		//bkImageLabel.add(conPasswordTextField_1);
 		
 		conPasswordTextField = new JPasswordField();
@@ -249,6 +249,18 @@ public class LoginSignupUI extends JFrame {
 		//bkImageLabel.add(separator_1_1_1);
 		
 		Button signUpButton = new Button("Sign UP");
+		signUpButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UserAuthentication userAuth=new UserAuthentication();
+				String tempUserName= userNameTextField.getText().trim();
+				//String tempEmail= emailTextField.getName().trim();
+				String tempPassword= String.valueOf(passwordTextField.getPassword()).trim();
+				String tempConPassWord= String.valueOf(conPasswordTextField.getPassword()).trim();
+				
+				userAuth.addUser(tempUserName, "emon@gmail.com", tempPassword, tempConPassWord);
+				
+			}
+		});
 		signUpButton.setBounds(43, 420, 283, 36);
 		signUpButton.setForeground(Color.BLACK);
 		signUpButton.setBackground(new Color(241,57,83));

@@ -45,6 +45,7 @@ public class LoginSignupUI extends JFrame {
 	private Button logInButton;
 	private JPanel logInPanel;
 	private JPanel signUpPanel;
+	private Image crossLogo= new ImageIcon(LoginSignupUI.class.getResource("/images/cross.png")).getImage().getScaledInstance(22, 22, Image.SCALE_SMOOTH);
 
 	/**
 	 * Launch the application.
@@ -274,8 +275,8 @@ public class LoginSignupUI extends JFrame {
 
 		
 		JLabel exitLabelLogin = new JLabel("");
-		
-		exitLabelLogin.setIcon(new ImageIcon(LoginSignupUI.class.getResource("/images/cross.png")));
+		exitLabelLogin.setIcon(new ImageIcon(crossLogo));
+		//exitLabelLogin.setIcon(new ImageIcon(LoginSignupUI.class.getResource("/images/cross.png")));
 		exitLabelLogin.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -284,7 +285,7 @@ public class LoginSignupUI extends JFrame {
 		});
 		exitLabelLogin.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		exitLabelLogin.setForeground(Color.WHITE);
-		exitLabelLogin.setBounds(856, 4, 30, 26);
+		exitLabelLogin.setBounds(856, 4, 22, 22);
 		exitLabelLogin.setBackground(Color.WHITE);
 		contentPane.add(exitLabelLogin);
 		//bkImageLabel.add(exitLabelLogin);

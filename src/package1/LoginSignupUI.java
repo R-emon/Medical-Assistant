@@ -34,6 +34,7 @@ import java.awt.CardLayout;
 public class LoginSignupUI extends JFrame {
 	
 	private static LoginSignupUI frame; //first login UI frame variable
+	private static JFrame dashboardJFrame;
 	private JPanel contentPane; //JPanel variable
 	private JTextField userNameTextField;
 	private JTextField emailTextField;
@@ -86,8 +87,6 @@ public class LoginSignupUI extends JFrame {
 		loginPageContents();  //all other contents method.
 		
 	}
-	
-
 	
 	public void loginPageContents() {
 		contentPane = new JPanel();
@@ -167,8 +166,14 @@ public class LoginSignupUI extends JFrame {
 				String userName=logInUserNameTextField.getText().trim();
 				String password=String.valueOf(loginPasswordField.getPassword()).trim();
 				boolean authCheck=auth.verifyUser(userName, password);
-				if(authCheck==true) System.out.println("correct");
-				else System.out.println("false");
+				if(authCheck==true) {
+					System.out.println("correct");
+					Dashboard dashboard=new Dashboard();
+					dashboard.setVisible(true);
+				}
+				else {
+					JOptionPane.showMessageDialog(frame, "Wrong User Name or Password","Alert", JOptionPane.WARNING_MESSAGE);
+				}
 			}
 		});
 		logInPanelLogInButton.setForeground(Color.WHITE);

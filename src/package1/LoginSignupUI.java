@@ -159,6 +159,16 @@ public class LoginSignupUI extends JFrame {
 		logInPanel.add(loginPasswordField);
 		
 		Button logInPanelLogInButton = new Button("Log In");
+		logInPanelLogInButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UserAuthentication auth=new UserAuthentication();
+				String userName=logInUserNameTextField.getText().trim();
+				String password=String.valueOf(loginPasswordField.getPassword()).trim();
+				boolean authCheck=auth.verifyUser(userName, password);
+				if(authCheck==true) System.out.println("correct");
+				else System.out.println("false");
+			}
+		});
 		logInPanelLogInButton.setForeground(Color.WHITE);
 		logInPanelLogInButton.setBounds(43, 306, 283, 36);
 		logInPanelLogInButton.setBackground(new Color(30, 144, 255));
@@ -253,11 +263,11 @@ public class LoginSignupUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				UserAuthentication userAuth=new UserAuthentication();
 				String tempUserName= userNameTextField.getText().trim();
-				//String tempEmail= emailTextField.getName().trim();
+				String tempEmail= emailTextField.getText().trim();
 				String tempPassword= String.valueOf(passwordTextField.getPassword()).trim();
 				String tempConPassWord= String.valueOf(conPasswordTextField.getPassword()).trim();
 				
-				userAuth.addUser(tempUserName, "emon@gmail.com", tempPassword, tempConPassWord);
+				userAuth.addUser(tempUserName, tempEmail, tempPassword, tempConPassWord);
 				
 			}
 		});

@@ -10,21 +10,22 @@ public class UserAuthentication {
 	private String email;
 	private String password;
 	private String conPassword;
-	public static File signUpFile;
-	public static File logInFile;
+	public static File signUpFile=new File("src/data/signUp.txt");;
+	public static File logInFile=new File("src/data/login.txt");;
 	public Scanner sc;
 	
 	void addUser(String userName, String email, String password, String conPassword) {
-		signUpFile=new File("signUp.txt");
-		logInFile=new File("login.txt");
-		FileWriter fileWriter=null;
+		FileWriter signUpFileWriter=null;
+		FileWriter logInFileWriter=null;
 		try {
-			fileWriter=new FileWriter("signUp.txt");
+			signUpFileWriter=new FileWriter("src/data/signUp.txt");
+			logInFileWriter=new FileWriter("src/data/login.txt");
 			
-			fileWriter.write(userName+","+email+","+password+","+conPassword+"\n");
-			fileWriter.write(userName+","+password+"\n");
+			signUpFileWriter.write(userName+","+email+","+password+","+conPassword+"\n");
+			logInFileWriter.write(userName+","+password+"\n");
 			
-			fileWriter.close();
+			signUpFileWriter.close();
+			logInFileWriter.close();
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -35,7 +36,7 @@ public class UserAuthentication {
 		String tempUserName="";
 		String tempPassword="";
 		try {
-			sc=new Scanner(new File("login.txt"));
+			sc=new Scanner(new File("src/data/login.txt"));
 			sc.useDelimiter("[,\n]");
 			while(sc.hasNext() && !found) {
 				tempUserName=sc.next();
@@ -76,5 +77,4 @@ public class UserAuthentication {
 		this.conPassword = conPassword;
 	}
 	
-
 }

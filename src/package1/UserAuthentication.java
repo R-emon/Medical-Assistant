@@ -18,8 +18,8 @@ public class UserAuthentication {
 		FileWriter signUpFileWriter=null;
 		FileWriter logInFileWriter=null;
 		try {
-			signUpFileWriter=new FileWriter("src/data/signUp.txt");
-			logInFileWriter=new FileWriter("src/data/login.txt");
+			signUpFileWriter=new FileWriter("src/data/signUp.txt",true);
+			logInFileWriter=new FileWriter("src/data/login.txt",true);
 			
 			signUpFileWriter.write(userName+","+email+","+password+","+conPassword+"\n");
 			logInFileWriter.write(userName+","+password+"\n");
@@ -43,6 +43,26 @@ public class UserAuthentication {
 				tempPassword=sc.next();
 				
 				if(userName.trim().equals(tempUserName.trim()) && password.trim().equals(tempPassword.trim())) {
+					found=true;
+					return true;
+				}
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	public boolean checkMultipleUser(String userName) {
+		boolean found=false;
+		String tempUserName="";
+		try {
+			sc=new Scanner(new File("src/data/login.txt"));
+			sc.useDelimiter("[,\n]");
+			while(sc.hasNext() && !found) {
+				tempUserName=sc.next();
+				sc.next();
+				
+				if(userName.trim().equals(tempUserName.trim())) {
 					found=true;
 					return true;
 				}

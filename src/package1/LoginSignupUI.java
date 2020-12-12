@@ -27,6 +27,8 @@ import java.awt.event.MouseEvent;
 import javax.swing.Icon;
 import java.awt.Panel;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
+
 import java.awt.CardLayout;
 
 public class LoginSignupUI extends JFrame {
@@ -266,9 +268,14 @@ public class LoginSignupUI extends JFrame {
 				String tempEmail= emailTextField.getText().trim();
 				String tempPassword= String.valueOf(passwordTextField.getPassword()).trim();
 				String tempConPassWord= String.valueOf(conPasswordTextField.getPassword()).trim();
-				
+				boolean multiCheck=userAuth.checkMultipleUser(tempUserName);
+				if(multiCheck==true) {
+					JOptionPane.showMessageDialog(frame, "This user name Already exist!","Alert",JOptionPane.WARNING_MESSAGE);
+				}
+				else {
 				userAuth.addUser(tempUserName, tempEmail, tempPassword, tempConPassWord);
-				
+				JOptionPane.showMessageDialog(frame, "Sign Up Successful","Success",JOptionPane.WARNING_MESSAGE);
+				}
 			}
 		});
 		signUpButton.setBounds(43, 420, 283, 36);

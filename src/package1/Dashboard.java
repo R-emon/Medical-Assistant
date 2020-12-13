@@ -23,6 +23,8 @@ public class Dashboard extends JFrame{
 	private JPanel doctorSideBarPanel;
 	private JPanel nurseSideBarPanel;
 	private Image topBar= new ImageIcon(Dashboard.class.getResource("/images/dashboardTopBar.png")).getImage().getScaledInstance(1428, 127, Image.SCALE_SMOOTH);
+	private Image topBarPatientLogo= new ImageIcon(Dashboard.class.getResource("/images/hospitalisation1.png")).getImage().getScaledInstance(80, 70, Image.SCALE_SMOOTH);
+	private JLabel topBarPatientLogoLabel;
 	/**
 	 * Launch the application.
 	 */
@@ -52,6 +54,8 @@ public class Dashboard extends JFrame{
 		topBarLayeredPane.setLayout(new CardLayout(0, 0));
 		
 		patientTopBarPanel = new JPanel();
+		patientTopBarPanel.setForeground(new Color(229,234,230));
+		patientTopBarPanel.setBackground(new Color(229,234,230));
 		topBarLayeredPane.add(patientTopBarPanel, "name_38695801413200");
 		patientTopBarPanel.setLayout(null);
 		
@@ -62,6 +66,13 @@ public class Dashboard extends JFrame{
 		topBarImageLabel.setForeground(new Color(229,234,230));
 		topBarImageLabel.setBounds(0, 0, 1428, 130);
 		patientTopBarPanel.add(topBarImageLabel);
+		
+		topBarPatientLogoLabel = new JLabel("");
+		topBarPatientLogoLabel.setBounds(21, 33, 80, 70);
+		topBarPatientLogoLabel.setBackground(new Color(159,219,231));
+		topBarPatientLogoLabel.setForeground(new Color(159,219,231));
+		topBarPatientLogoLabel.setIcon(new ImageIcon(topBarPatientLogo));
+		topBarImageLabel.add(topBarPatientLogoLabel);
 		
 		doctorTopBarPanel = new JPanel();
 		topBarLayeredPane.add(doctorTopBarPanel, "name_38730535960000");

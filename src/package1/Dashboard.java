@@ -12,6 +12,7 @@ import javax.swing.JLayeredPane;
 import java.awt.CardLayout;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
+import java.awt.Font;
 
 public class Dashboard extends JFrame{
 
@@ -24,7 +25,16 @@ public class Dashboard extends JFrame{
 	private JPanel nurseSideBarPanel;
 	private Image topBar= new ImageIcon(Dashboard.class.getResource("/images/dashboardTopBar.png")).getImage().getScaledInstance(1428, 127, Image.SCALE_SMOOTH);
 	private Image topBarPatientLogo= new ImageIcon(Dashboard.class.getResource("/images/hospitalisation1.png")).getImage().getScaledInstance(80, 70, Image.SCALE_SMOOTH);
+	private Image sideBar= new ImageIcon(Dashboard.class.getResource("/images/sideBar.png")).getImage().getScaledInstance(338, 536, Image.SCALE_SMOOTH);
+	private Image addMedLogo= new ImageIcon(Dashboard.class.getResource("/images/addMedLogo.png")).getImage().getScaledInstance(66, 56, Image.SCALE_SMOOTH);
+	private Image addPresLogo= new ImageIcon(Dashboard.class.getResource("/images/addPresLogo.png")).getImage().getScaledInstance(66, 56, Image.SCALE_SMOOTH);
 	private JLabel topBarPatientLogoLabel;
+	private JLabel patientNameLabel;
+	private JLabel addMedLogoLabel;
+	private JLabel lblNewLabel;
+	private JLabel addPresLogoLabel;
+	private JLabel lblNewLabel_1;
+	private JLabel dueLogoLabel;
 	/**
 	 * Launch the application.
 	 */
@@ -74,6 +84,11 @@ public class Dashboard extends JFrame{
 		topBarPatientLogoLabel.setIcon(new ImageIcon(topBarPatientLogo));
 		topBarImageLabel.add(topBarPatientLogoLabel);
 		
+		patientNameLabel = new JLabel("Welcome,");
+		patientNameLabel.setBounds(133, 40, 260, 54);
+		topBarImageLabel.add(patientNameLabel);
+		patientNameLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
+		
 		doctorTopBarPanel = new JPanel();
 		topBarLayeredPane.add(doctorTopBarPanel, "name_38730535960000");
 		doctorTopBarPanel.setLayout(null);
@@ -90,6 +105,37 @@ public class Dashboard extends JFrame{
 		patientSideBarPanel = new JPanel();
 		sideBarLayeredPane.add(patientSideBarPanel, "name_38915446570600");
 		patientSideBarPanel.setLayout(null);
+		
+		JLabel patientSideBarBKLabel = new JLabel("");
+		patientSideBarBKLabel.setForeground(new Color(159,219,231));
+		patientSideBarBKLabel.setBackground(new Color(159,219,231));
+		patientSideBarBKLabel.setBounds(0, 0, 338, 536);
+		patientSideBarBKLabel.setIcon(new ImageIcon(sideBar));
+		patientSideBarPanel.add(patientSideBarBKLabel);
+		
+		addMedLogoLabel = new JLabel("");
+		addMedLogoLabel.setBounds(44, 74, 66, 56);
+		addMedLogoLabel.setIcon(new ImageIcon(addMedLogo));
+		patientSideBarBKLabel.add(addMedLogoLabel);
+		
+		lblNewLabel = new JLabel("Add Medicine");
+		lblNewLabel.setBounds(125, 89, 128, 32);
+		patientSideBarBKLabel.add(lblNewLabel);
+		lblNewLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
+		
+		addPresLogoLabel = new JLabel("");
+		addPresLogoLabel.setIcon(new ImageIcon(addPresLogo));
+		addPresLogoLabel.setBounds(50, 191, 66, 56);
+		patientSideBarBKLabel.add(addPresLogoLabel);
+		
+		lblNewLabel_1 = new JLabel("Add Prescription");
+		lblNewLabel_1.setBounds(124, 206, 149, 32);
+		patientSideBarBKLabel.add(lblNewLabel_1);
+		lblNewLabel_1.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
+		
+		dueLogoLabel = new JLabel("");
+		dueLogoLabel.setBounds(48, 334, 66, 56);
+		patientSideBarPanel.add(dueLogoLabel);
 		
 		doctorSideBarPanel = new JPanel();
 		sideBarLayeredPane.add(doctorSideBarPanel, "name_38948241781600");

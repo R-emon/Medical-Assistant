@@ -28,13 +28,23 @@ public class Dashboard extends JFrame{
 	private Image sideBar= new ImageIcon(Dashboard.class.getResource("/images/sideBar.png")).getImage().getScaledInstance(338, 536, Image.SCALE_SMOOTH);
 	private Image addMedLogo= new ImageIcon(Dashboard.class.getResource("/images/addMedLogo.png")).getImage().getScaledInstance(66, 56, Image.SCALE_SMOOTH);
 	private Image addPresLogo= new ImageIcon(Dashboard.class.getResource("/images/addPresLogo.png")).getImage().getScaledInstance(66, 56, Image.SCALE_SMOOTH);
+	private Image dueLogo= new ImageIcon(Dashboard.class.getResource("/images/dueLogo.png")).getImage().getScaledInstance(66, 56, Image.SCALE_SMOOTH);
+	private Image setAlertLogo= new ImageIcon(Dashboard.class.getResource("/images/setAlertLogo.png")).getImage().getScaledInstance(66, 56, Image.SCALE_SMOOTH);
+	private Image logOutLogo= new ImageIcon(Dashboard.class.getResource("/images/logOutLogo2.png")).getImage().getScaledInstance(35, 30, Image.SCALE_SMOOTH);
 	private JLabel topBarPatientLogoLabel;
 	private JLabel patientNameLabel;
 	private JLabel addMedLogoLabel;
 	private JLabel lblNewLabel;
 	private JLabel addPresLogoLabel;
-	private JLabel lblNewLabel_1;
+	private JLabel addPresLabel;
 	private JLabel dueLogoLabel;
+	private JLabel dueLabel;
+	private JLabel setAlertLogoLabel;
+	private JLabel setAlertLabel;
+	private JLabel logOutLogoLabel;
+	private JLabel logOutLabel;
+	private JPanel doctorContentPanel;
+	private JPanel nurseContentPanel;
 	/**
 	 * Launch the application.
 	 */
@@ -59,7 +69,7 @@ public class Dashboard extends JFrame{
 		getContentPane().setLayout(null);
 		
 		JLayeredPane topBarLayeredPane = new JLayeredPane();
-		topBarLayeredPane.setBounds(31, 25, 1428, 130);
+		topBarLayeredPane.setBounds(31, 40, 1428, 130);
 		getContentPane().add(topBarLayeredPane);
 		topBarLayeredPane.setLayout(new CardLayout(0, 0));
 		
@@ -89,6 +99,17 @@ public class Dashboard extends JFrame{
 		topBarImageLabel.add(patientNameLabel);
 		patientNameLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
 		
+		logOutLogoLabel = new JLabel("");
+		logOutLogoLabel.setBounds(1259, 52, 35, 30);
+		topBarImageLabel.add(logOutLogoLabel);
+		logOutLogoLabel.setIcon(new ImageIcon(logOutLogo));
+		
+		logOutLabel = new JLabel("Log Out");
+		logOutLabel.setBounds(1296, 50, 78, 32);
+		topBarImageLabel.add(logOutLabel);
+		logOutLabel.setForeground(Color.RED);
+		logOutLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
+		
 		doctorTopBarPanel = new JPanel();
 		topBarLayeredPane.add(doctorTopBarPanel, "name_38730535960000");
 		doctorTopBarPanel.setLayout(null);
@@ -114,7 +135,7 @@ public class Dashboard extends JFrame{
 		patientSideBarPanel.add(patientSideBarBKLabel);
 		
 		addMedLogoLabel = new JLabel("");
-		addMedLogoLabel.setBounds(44, 74, 66, 56);
+		addMedLogoLabel.setBounds(46, 74, 66, 56);
 		addMedLogoLabel.setIcon(new ImageIcon(addMedLogo));
 		patientSideBarBKLabel.add(addMedLogoLabel);
 		
@@ -125,17 +146,33 @@ public class Dashboard extends JFrame{
 		
 		addPresLogoLabel = new JLabel("");
 		addPresLogoLabel.setIcon(new ImageIcon(addPresLogo));
-		addPresLogoLabel.setBounds(50, 191, 66, 56);
+		addPresLogoLabel.setBounds(50, 200, 66, 56);
 		patientSideBarBKLabel.add(addPresLogoLabel);
 		
-		lblNewLabel_1 = new JLabel("Add Prescription");
-		lblNewLabel_1.setBounds(124, 206, 149, 32);
-		patientSideBarBKLabel.add(lblNewLabel_1);
-		lblNewLabel_1.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
+		addPresLabel = new JLabel("Add Prescription");
+		addPresLabel.setBounds(124, 201, 149, 32);
+		patientSideBarBKLabel.add(addPresLabel);
+		addPresLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
 		
 		dueLogoLabel = new JLabel("");
-		dueLogoLabel.setBounds(48, 334, 66, 56);
-		patientSideBarPanel.add(dueLogoLabel);
+		dueLogoLabel.setIcon(new ImageIcon(dueLogo));
+		dueLogoLabel.setBounds(56, 320, 66, 56);
+		patientSideBarBKLabel.add(dueLogoLabel);
+		
+		dueLabel = new JLabel("Due");
+		dueLabel.setBounds(124, 332, 52, 32);
+		patientSideBarBKLabel.add(dueLabel);
+		dueLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
+		
+		setAlertLogoLabel = new JLabel("");
+		setAlertLogoLabel.setIcon(new ImageIcon(setAlertLogo));
+		setAlertLogoLabel.setBounds(48, 429, 66, 56);
+		patientSideBarBKLabel.add(setAlertLogoLabel);
+		
+		setAlertLabel = new JLabel("setAlert");
+		setAlertLabel.setBounds(124, 436, 84, 32);
+		patientSideBarBKLabel.add(setAlertLabel);
+		setAlertLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
 		
 		doctorSideBarPanel = new JPanel();
 		sideBarLayeredPane.add(doctorSideBarPanel, "name_38948241781600");
@@ -144,6 +181,32 @@ public class Dashboard extends JFrame{
 		nurseSideBarPanel = new JPanel();
 		sideBarLayeredPane.add(nurseSideBarPanel, "name_38965842404800");
 		nurseSideBarPanel.setLayout(null);
+		
+		JLayeredPane inputContentlayeredPane = new JLayeredPane();
+		inputContentlayeredPane.setBounds(413, 198, 1046, 536);
+		getContentPane().add(inputContentlayeredPane);
+		inputContentlayeredPane.setLayout(new CardLayout(0, 0));
+		
+		JPanel patientContentPanel = new JPanel();
+		patientContentPanel.setBounds(413, 198, 1046, 536);
+		patientContentPanel.setForeground(new Color(229,234,230));
+		patientContentPanel.setBackground(new Color(229,234,230));
+		inputContentlayeredPane.add(patientContentPanel, "name_5285986441700");
+		patientContentPanel.setLayout(null);
+		
+		doctorContentPanel = new JPanel();
+		doctorContentPanel.setBackground(new Color(229,234,230));
+		doctorContentPanel.setForeground(new Color(229,234,230));
+		doctorContentPanel.setBounds(413, 198, 1046, 536);
+		inputContentlayeredPane.add(doctorContentPanel, "name_5669470193100");
+		doctorContentPanel.setLayout(null);
+		
+		nurseContentPanel = new JPanel();
+		nurseContentPanel.setBackground(new Color(229,234,230));
+		nurseContentPanel.setForeground(new Color(229,234,230));
+		nurseContentPanel.setBounds(413, 198, 1046, 536);
+		inputContentlayeredPane.add(nurseContentPanel, "name_5773124559600");
+		nurseContentPanel.setLayout(null);
 		
 		setBounds(10, 10, 1500, 800);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

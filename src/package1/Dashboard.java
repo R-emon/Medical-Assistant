@@ -7,12 +7,20 @@ import java.awt.Image;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+
 import java.awt.Color;
 import javax.swing.JLayeredPane;
 import java.awt.CardLayout;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import java.awt.Font;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Dashboard extends JFrame{
 
@@ -43,8 +51,15 @@ public class Dashboard extends JFrame{
 	private JLabel setAlertLabel;
 	private JLabel logOutLogoLabel;
 	private JLabel logOutLabel;
-	private JPanel doctorContentPanel;
-	private JPanel nurseContentPanel;
+	private JPanel addPresContentPanel;
+	private JPanel dueContentPanel;
+	private JPanel addMedicineContentPanel;
+	private JPanel setAlertPanel;
+	private JTextField medicineNameTextField;
+	private JTable medicineTable;
+	private DefaultTableModel model;
+	private String[] colums= {"Medicine Name"};
+	private String[] row=new String[1];
 	/**
 	 * Launch the application.
 	 */
@@ -182,31 +197,84 @@ public class Dashboard extends JFrame{
 		sideBarLayeredPane.add(nurseSideBarPanel, "name_38965842404800");
 		nurseSideBarPanel.setLayout(null);
 		
-		JLayeredPane inputContentlayeredPane = new JLayeredPane();
-		inputContentlayeredPane.setBounds(413, 198, 1046, 536);
-		getContentPane().add(inputContentlayeredPane);
-		inputContentlayeredPane.setLayout(new CardLayout(0, 0));
+		JLayeredPane patientContentlayeredPane = new JLayeredPane();
+		patientContentlayeredPane.setBounds(413, 198, 1046, 536);
+		getContentPane().add(patientContentlayeredPane);
+		patientContentlayeredPane.setLayout(new CardLayout(0, 0));
 		
-		JPanel patientContentPanel = new JPanel();
-		patientContentPanel.setBounds(413, 198, 1046, 536);
-		patientContentPanel.setForeground(new Color(229,234,230));
-		patientContentPanel.setBackground(new Color(229,234,230));
-		inputContentlayeredPane.add(patientContentPanel, "name_5285986441700");
-		patientContentPanel.setLayout(null);
+		addMedicineContentPanel = new JPanel();
+		addMedicineContentPanel.setBounds(413, 198, 1046, 536);
+		addMedicineContentPanel.setForeground(new Color(229,234,230));
+		addMedicineContentPanel.setBackground(new Color(229,234,230));
+		patientContentlayeredPane.add(addMedicineContentPanel, "name_5285986441700");
+		addMedicineContentPanel.setLayout(null);
 		
-		doctorContentPanel = new JPanel();
-		doctorContentPanel.setBackground(new Color(229,234,230));
-		doctorContentPanel.setForeground(new Color(229,234,230));
-		doctorContentPanel.setBounds(413, 198, 1046, 536);
-		inputContentlayeredPane.add(doctorContentPanel, "name_5669470193100");
-		doctorContentPanel.setLayout(null);
+		JLabel medicineNameLabel = new JLabel("Medicine name");
+		medicineNameLabel.setBackground(new Color(229,234,230));
+		medicineNameLabel.setForeground(Color.DARK_GRAY);
+		medicineNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		medicineNameLabel.setBounds(103, 248, 144, 35);
+		addMedicineContentPanel.add(medicineNameLabel);
 		
-		nurseContentPanel = new JPanel();
-		nurseContentPanel.setBackground(new Color(229,234,230));
-		nurseContentPanel.setForeground(new Color(229,234,230));
-		nurseContentPanel.setBounds(413, 198, 1046, 536);
-		inputContentlayeredPane.add(nurseContentPanel, "name_5773124559600");
-		nurseContentPanel.setLayout(null);
+		medicineNameTextField = new JTextField();
+		medicineNameTextField.setBounds(258, 248, 226, 35);
+		addMedicineContentPanel.add(medicineNameTextField);
+		medicineNameTextField.setColumns(10);
+		
+		JButton addMedicineButton = new JButton("Add");
+		addMedicineButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				row[0]=medicineNameTextField.getText().trim();
+				model.addRow(row);
+			}
+		});
+		addMedicineButton.setBounds(184, 343, 118, 41);
+		addMedicineButton.setForeground(Color.WHITE);
+		addMedicineButton.setBackground(new Color(94,94,194));
+		addMedicineContentPanel.add(addMedicineButton);
+		
+		JButton deleteMedicineButton = new JButton("Delete");
+		deleteMedicineButton.setBounds(339, 343, 118, 41);
+		deleteMedicineButton.setBackground(new Color(220,59,59));
+		deleteMedicineButton.setForeground(Color.WHITE);;
+		addMedicineContentPanel.add(deleteMedicineButton);
+		
+		JScrollPane medicineScrollPane = new JScrollPane();
+		medicineScrollPane.setBounds(554, 47, 369, 444);
+//		medicineScrollPane.setBackground(new Color(173,255,241));
+		medicineScrollPane.getViewport().setBackground(Color.WHITE);
+		addMedicineContentPanel.add(medicineScrollPane);
+		
+		medicineTable = new JTable();
+		medicineTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		medicineScrollPane.setViewportView(medicineTable);
+		
+		model=new DefaultTableModel();
+		model.setColumnIdentifiers(colums);
+		medicineTable.setModel(model);
+		medicineTable.setRowHeight(47);
+		medicineTable.setBackground(new Color(238,255,252));
+		
+		addPresContentPanel = new JPanel();
+		addPresContentPanel.setBackground(new Color(229,234,230));
+		addPresContentPanel.setForeground(new Color(229,234,230));
+		addPresContentPanel.setBounds(413, 198, 1046, 536);
+		patientContentlayeredPane.add(addPresContentPanel, "name_5669470193100");
+		addPresContentPanel.setLayout(null);
+		
+		dueContentPanel = new JPanel();
+		dueContentPanel.setBackground(new Color(229,234,230));
+		dueContentPanel.setForeground(new Color(229,234,230));
+		dueContentPanel.setBounds(413, 198, 1046, 536);
+		patientContentlayeredPane.add(dueContentPanel, "name_5773124559600");
+		dueContentPanel.setLayout(null);
+		
+		setAlertPanel = new JPanel();
+		setAlertPanel.setBackground(new Color(229,234,230));
+		setAlertPanel.setForeground(new Color(229,234,230));
+		setAlertPanel.setBounds(413, 198, 1046, 536);
+		patientContentlayeredPane.add(setAlertPanel, "name_6284499503700");
+		setAlertPanel.setLayout(null);
 		
 		setBounds(10, 10, 1500, 800);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

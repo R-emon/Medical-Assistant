@@ -56,6 +56,9 @@ public class LoginSignupUI extends JFrame {
 	private JCheckBox patientCheckBox;
 	private JCheckBox doctorCheckBox;
 	private JCheckBox nurseCheckBox;
+	private boolean patientSelected=false;
+	private boolean doctorSelected=false;
+	
 	
 	
 	/**
@@ -174,13 +177,19 @@ public class LoginSignupUI extends JFrame {
 				String userName=logInUserNameTextField.getText().trim();
 				String password=String.valueOf(loginPasswordField.getPassword()).trim();
 				boolean authCheck=auth.verifyUser(userName, password);
-				if(authCheck==true && doctorCheckBox.isSelected()) {
+				if(authCheck==true && doctorSelected==true ) {
 					System.out.println("correct");
 					Dashboard dashboard=new Dashboard();
 					dashboard.setVisible(true);
 					dashboard.switchDoctorPanel();
 				}
-				else {
+				else if(authCheck==true && patientSelected==true) {
+					System.out.println("correct");
+					Dashboard dashboard=new Dashboard();
+					dashboard.setVisible(true);
+					dashboard.switchPatientPanel();
+				}
+				else if(authCheck==false){
 					JOptionPane.showMessageDialog(frame, "Wrong User Name or Password","Alert", JOptionPane.WARNING_MESSAGE);
 				}
 			}
@@ -204,7 +213,7 @@ public class LoginSignupUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(patientCheckBox.isSelected()) {
-					//switchLogInSignUpPanel(patientTopBarPanel);
+					patientSelected=true;
 				}
 			}
 		});
@@ -214,6 +223,13 @@ public class LoginSignupUI extends JFrame {
 		doctorCheckBox.setBackground(Color.WHITE);
 		doctorCheckBox.setBounds(43, 327, 130, 26);
 		logInPanel.add(doctorCheckBox);
+		doctorCheckBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				doctorSelected=true;
+				
+			}
+		});
 		
 		nurseCheckBox = new JCheckBox("Log In as Nurse");
 		nurseCheckBox.setBackground(Color.WHITE);

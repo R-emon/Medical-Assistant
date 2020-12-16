@@ -25,8 +25,8 @@ import java.awt.event.ActionEvent;
 public class Dashboard extends JFrame{
 
 	private JPanel dashboardContentPane;
-	private JPanel patientTopBarPanel;
-	private JPanel doctorTopBarPanel;
+	public JPanel patientTopBarPanel;
+	public JPanel doctorTopBarPanel;
 	private JPanel nurseTopBarPanel;
 	private JPanel patientSideBarPanel;
 	private JPanel doctorSideBarPanel;
@@ -39,10 +39,11 @@ public class Dashboard extends JFrame{
 	private Image dueLogo= new ImageIcon(Dashboard.class.getResource("/images/dueLogo.png")).getImage().getScaledInstance(66, 56, Image.SCALE_SMOOTH);
 	private Image setAlertLogo= new ImageIcon(Dashboard.class.getResource("/images/setAlertLogo.png")).getImage().getScaledInstance(66, 56, Image.SCALE_SMOOTH);
 	private Image logOutLogo= new ImageIcon(Dashboard.class.getResource("/images/logOutLogo2.png")).getImage().getScaledInstance(35, 30, Image.SCALE_SMOOTH);
+	private Image topBarDoctorLogo= new ImageIcon(Dashboard.class.getResource("/images/doctorTopbar.png")).getImage().getScaledInstance(80, 70, Image.SCALE_SMOOTH);
 	private JLabel topBarPatientLogoLabel;
 	private JLabel patientNameLabel;
 	private JLabel addMedLogoLabel;
-	private JLabel lblNewLabel;
+	private JLabel addMedicineLabel;
 	private JLabel addPresLogoLabel;
 	private JLabel addPresLabel;
 	private JLabel dueLogoLabel;
@@ -58,8 +59,16 @@ public class Dashboard extends JFrame{
 	private JTextField medicineNameTextField;
 	private JTable medicineTable;
 	private DefaultTableModel model;
-	private String[] colums= {"Medicine Name"};
-	private String[] row=new String[1];
+	private String[] colums= {"Medicine Name", "mg"};
+	private String[] row=new String[2];
+	private JTextField medicineMgTextField;
+	private JLabel topBarDoctorLogoLabel;
+	private JLabel doctorNameLabel;
+	private JLabel doctorLogOutLabel;
+	private JLabel doctorLogOutLogoLabel;
+	private JLayeredPane topBarLayeredPane;
+	private JLayeredPane sideBarLayeredPane;
+	private JLayeredPane patientContentlayeredPane;
 	/**
 	 * Launch the application.
 	 */
@@ -79,11 +88,43 @@ public class Dashboard extends JFrame{
 	/**
 	 * Create the application.
 	 */
+	public void switchPatientPanel() {
+		topBarLayeredPane.removeAll();
+		topBarLayeredPane.add(patientTopBarPanel);
+		topBarLayeredPane.repaint();
+		topBarLayeredPane.revalidate();
+		
+		sideBarLayeredPane.removeAll();
+		sideBarLayeredPane.add(patientSideBarPanel);
+		sideBarLayeredPane.repaint();
+		sideBarLayeredPane.revalidate();
+		
+		patientContentlayeredPane.removeAll();
+		patientContentlayeredPane.add(addMedicineContentPanel);
+		patientContentlayeredPane.add(addPresContentPanel);
+		patientContentlayeredPane.add(dueContentPanel);
+		patientContentlayeredPane.add(setAlertPanel);
+		patientContentlayeredPane.repaint();
+		patientContentlayeredPane.revalidate();
+	}
+	
+	public void switchDoctorPanel() {
+		topBarLayeredPane.removeAll();
+		topBarLayeredPane.add(doctorTopBarPanel);
+		topBarLayeredPane.repaint();
+		topBarLayeredPane.revalidate();
+		
+		sideBarLayeredPane.removeAll();
+		patientContentlayeredPane.removeAll();
+		
+		
+	}
+	
 	public Dashboard() {
 		getContentPane().setBackground(new Color(229,234,230));
 		getContentPane().setLayout(null);
 		
-		JLayeredPane topBarLayeredPane = new JLayeredPane();
+		topBarLayeredPane = new JLayeredPane();
 		topBarLayeredPane.setBounds(31, 40, 1428, 130);
 		getContentPane().add(topBarLayeredPane);
 		topBarLayeredPane.setLayout(new CardLayout(0, 0));
@@ -126,14 +167,48 @@ public class Dashboard extends JFrame{
 		logOutLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
 		
 		doctorTopBarPanel = new JPanel();
+		doctorTopBarPanel.setForeground(new Color(229,234,230));
+		doctorTopBarPanel.setBackground(new Color(229,234,230));
 		topBarLayeredPane.add(doctorTopBarPanel, "name_38730535960000");
 		doctorTopBarPanel.setLayout(null);
+		
+		JLabel doctorTopBarImageLabel = new JLabel("");
+		doctorTopBarImageLabel.setIcon(new ImageIcon(topBar));
+		//topBarImageLabel.setIcon(new ImageIcon(Dashboard.class.getResource("/images/dashboardTopBar.png")));
+		doctorTopBarImageLabel.setBackground(new Color(229,234,230));
+		doctorTopBarImageLabel.setForeground(new Color(229,234,230));
+		doctorTopBarImageLabel.setBounds(0, 0, 1428, 130);
+		doctorTopBarPanel.add(doctorTopBarImageLabel);
+		
+		topBarDoctorLogoLabel = new JLabel("");
+		topBarDoctorLogoLabel.setBounds(21, 33, 80, 70);
+		topBarDoctorLogoLabel.setBackground(new Color(159,219,231));
+		topBarDoctorLogoLabel.setForeground(new Color(159,219,231));
+		topBarDoctorLogoLabel.setIcon(new ImageIcon(topBarDoctorLogo));
+		doctorTopBarImageLabel.add(topBarDoctorLogoLabel);
+		
+		doctorNameLabel = new JLabel("Welcome,");
+		doctorNameLabel.setBounds(133, 40, 260, 54);
+		doctorTopBarImageLabel.add(doctorNameLabel);
+		doctorNameLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
+		
+		
+		doctorLogOutLogoLabel = new JLabel("");
+		doctorLogOutLogoLabel.setBounds(1259, 52, 35, 30);
+		doctorTopBarImageLabel.add(doctorLogOutLogoLabel);
+		doctorLogOutLogoLabel.setIcon(new ImageIcon(logOutLogo));
+		
+		doctorLogOutLabel = new JLabel("Log Out");
+		doctorLogOutLabel.setBounds(1296, 50, 78, 32);
+		doctorTopBarImageLabel.add(doctorLogOutLabel);
+		doctorLogOutLabel.setForeground(Color.RED);
+		doctorLogOutLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
 		
 		nurseTopBarPanel = new JPanel();
 		topBarLayeredPane.add(nurseTopBarPanel, "name_38755163090900");
 		nurseTopBarPanel.setLayout(null);
 		
-		JLayeredPane sideBarLayeredPane = new JLayeredPane();
+		sideBarLayeredPane = new JLayeredPane();
 		sideBarLayeredPane.setBounds(31, 198, 338, 536);
 		getContentPane().add(sideBarLayeredPane);
 		sideBarLayeredPane.setLayout(new CardLayout(0, 0));
@@ -154,10 +229,10 @@ public class Dashboard extends JFrame{
 		addMedLogoLabel.setIcon(new ImageIcon(addMedLogo));
 		patientSideBarBKLabel.add(addMedLogoLabel);
 		
-		lblNewLabel = new JLabel("Add Medicine");
-		lblNewLabel.setBounds(125, 89, 128, 32);
-		patientSideBarBKLabel.add(lblNewLabel);
-		lblNewLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
+		addMedicineLabel = new JLabel("Add Medicine");
+		addMedicineLabel.setBounds(125, 89, 128, 32);
+		patientSideBarBKLabel.add(addMedicineLabel);
+		addMedicineLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
 		
 		addPresLogoLabel = new JLabel("");
 		addPresLogoLabel.setIcon(new ImageIcon(addPresLogo));
@@ -197,7 +272,7 @@ public class Dashboard extends JFrame{
 		sideBarLayeredPane.add(nurseSideBarPanel, "name_38965842404800");
 		nurseSideBarPanel.setLayout(null);
 		
-		JLayeredPane patientContentlayeredPane = new JLayeredPane();
+		patientContentlayeredPane = new JLayeredPane();
 		patientContentlayeredPane.setBounds(413, 198, 1046, 536);
 		getContentPane().add(patientContentlayeredPane);
 		patientContentlayeredPane.setLayout(new CardLayout(0, 0));
@@ -213,11 +288,11 @@ public class Dashboard extends JFrame{
 		medicineNameLabel.setBackground(new Color(229,234,230));
 		medicineNameLabel.setForeground(Color.DARK_GRAY);
 		medicineNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		medicineNameLabel.setBounds(103, 248, 144, 35);
+		medicineNameLabel.setBounds(104, 181, 144, 35);
 		addMedicineContentPanel.add(medicineNameLabel);
 		
 		medicineNameTextField = new JTextField();
-		medicineNameTextField.setBounds(258, 248, 226, 35);
+		medicineNameTextField.setBounds(259, 181, 226, 35);
 		addMedicineContentPanel.add(medicineNameTextField);
 		medicineNameTextField.setColumns(10);
 		
@@ -225,7 +300,11 @@ public class Dashboard extends JFrame{
 		addMedicineButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				row[0]=medicineNameTextField.getText().trim();
+				row[1]=medicineMgTextField.getText().trim();
 				model.addRow(row);
+				
+				medicineNameTextField.setText("");
+				medicineMgTextField.setText("");
 			}
 		});
 		addMedicineButton.setBounds(184, 343, 118, 41);
@@ -234,6 +313,14 @@ public class Dashboard extends JFrame{
 		addMedicineContentPanel.add(addMedicineButton);
 		
 		JButton deleteMedicineButton = new JButton("Delete");
+		deleteMedicineButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int selectedRow=medicineTable.getSelectedRow();
+				if(selectedRow>=0) {
+					model.removeRow(selectedRow);
+				}
+			}
+		});
 		deleteMedicineButton.setBounds(339, 343, 118, 41);
 		deleteMedicineButton.setBackground(new Color(220,59,59));
 		deleteMedicineButton.setForeground(Color.WHITE);;
@@ -252,8 +339,20 @@ public class Dashboard extends JFrame{
 		model=new DefaultTableModel();
 		model.setColumnIdentifiers(colums);
 		medicineTable.setModel(model);
-		medicineTable.setRowHeight(47);
+		medicineTable.setRowHeight(40);
 		medicineTable.setBackground(new Color(238,255,252));
+		
+		JLabel mgLabel = new JLabel("mg/Unit");
+		mgLabel.setForeground(Color.DARK_GRAY);
+		mgLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		mgLabel.setBackground(new Color(229, 234, 230));
+		mgLabel.setBounds(104, 266, 104, 35);
+		addMedicineContentPanel.add(mgLabel);
+		
+		medicineMgTextField = new JTextField();
+		medicineMgTextField.setColumns(10);
+		medicineMgTextField.setBounds(259, 266, 226, 35);
+		addMedicineContentPanel.add(medicineMgTextField);
 		
 		addPresContentPanel = new JPanel();
 		addPresContentPanel.setBackground(new Color(229,234,230));
@@ -275,6 +374,7 @@ public class Dashboard extends JFrame{
 		setAlertPanel.setBounds(413, 198, 1046, 536);
 		patientContentlayeredPane.add(setAlertPanel, "name_6284499503700");
 		setAlertPanel.setLayout(null);
+		
 		
 		setBounds(10, 10, 1500, 800);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

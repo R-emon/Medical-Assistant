@@ -24,12 +24,15 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import java.awt.Panel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 
 import java.awt.CardLayout;
+import javax.swing.JCheckBox;
 
 public class LoginSignupUI extends JFrame {
 	
@@ -49,7 +52,12 @@ public class LoginSignupUI extends JFrame {
 	private JPanel logInPanel;
 	private JPanel signUpPanel;
 	private Image crossLogo= new ImageIcon(LoginSignupUI.class.getResource("/images/cross.png")).getImage().getScaledInstance(22, 22, Image.SCALE_SMOOTH);
-
+	private ButtonGroup userCheckBoxGroup;
+	private JCheckBox patientCheckBox;
+	private JCheckBox doctorCheckBox;
+	private JCheckBox nurseCheckBox;
+	
+	
 	/**
 	 * Launch the application.
 	 */
@@ -166,10 +174,11 @@ public class LoginSignupUI extends JFrame {
 				String userName=logInUserNameTextField.getText().trim();
 				String password=String.valueOf(loginPasswordField.getPassword()).trim();
 				boolean authCheck=auth.verifyUser(userName, password);
-				if(authCheck==true) {
+				if(authCheck==true && doctorCheckBox.isSelected()) {
 					System.out.println("correct");
 					Dashboard dashboard=new Dashboard();
 					dashboard.setVisible(true);
+					dashboard.switchDoctorPanel();
 				}
 				else {
 					JOptionPane.showMessageDialog(frame, "Wrong User Name or Password","Alert", JOptionPane.WARNING_MESSAGE);
@@ -177,7 +186,7 @@ public class LoginSignupUI extends JFrame {
 			}
 		});
 		logInPanelLogInButton.setForeground(Color.WHITE);
-		logInPanelLogInButton.setBounds(43, 306, 283, 36);
+		logInPanelLogInButton.setBounds(43, 406, 283, 36);
 		logInPanelLogInButton.setBackground(new Color(30, 144, 255));
 		logInPanel.add(logInPanelLogInButton);
 		
@@ -186,6 +195,35 @@ public class LoginSignupUI extends JFrame {
 		LogInPasswordSeparator.setBackground(Color.BLACK);
 		LogInPasswordSeparator.setBounds(43, 271, 283, 1);
 		logInPanel.add(LogInPasswordSeparator);
+		
+		patientCheckBox = new JCheckBox("Log In as Patient");
+		patientCheckBox.setBackground(Color.WHITE);
+		patientCheckBox.setBounds(43, 296, 130, 26);
+		logInPanel.add(patientCheckBox);
+		patientCheckBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(patientCheckBox.isSelected()) {
+					//switchLogInSignUpPanel(patientTopBarPanel);
+				}
+			}
+		});
+		
+		
+		doctorCheckBox = new JCheckBox("Log In as Doctor");
+		doctorCheckBox.setBackground(Color.WHITE);
+		doctorCheckBox.setBounds(43, 327, 130, 26);
+		logInPanel.add(doctorCheckBox);
+		
+		nurseCheckBox = new JCheckBox("Log In as Nurse");
+		nurseCheckBox.setBackground(Color.WHITE);
+		nurseCheckBox.setBounds(43, 356, 130, 26);
+		logInPanel.add(nurseCheckBox);
+		
+		userCheckBoxGroup=new ButtonGroup();
+		userCheckBoxGroup.add(patientCheckBox);
+		userCheckBoxGroup.add(doctorCheckBox);
+		userCheckBoxGroup.add(nurseCheckBox);
 		
 		JLabel userNameLabel = new JLabel("USERNAME");
 		userNameLabel.setBounds(43, 79, 157, 26);

@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 
 import java.awt.Color;
 import javax.swing.JLayeredPane;
@@ -21,6 +22,11 @@ import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JList;
+import javax.swing.ListSelectionModel;
+import javax.swing.JComboBox;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Dashboard extends JFrame{
 
@@ -59,8 +65,12 @@ public class Dashboard extends JFrame{
 	private JTextField medicineNameTextField;
 	private JTable medicineTable;
 	private DefaultTableModel model;
+	private DefaultTableModel prescriptionModel;
 	private String[] colums= {"Medicine Name", "mg"};
 	private String[] row=new String[2];
+	private String[] items= {"1","2","3"};
+	private String[] pressColums= {"Medicine Name", "mg", "Morning", "Evening", "Night", "Days"};
+	private String[] presRow=new String[6];
 	private JTextField medicineMgTextField;
 	private JLabel topBarDoctorLogoLabel;
 	private JLabel doctorNameLabel;
@@ -69,6 +79,13 @@ public class Dashboard extends JFrame{
 	private JLayeredPane topBarLayeredPane;
 	private JLayeredPane sideBarLayeredPane;
 	private JLayeredPane patientContentlayeredPane;
+	private JTextField addPressMedNameTxtField;
+	private JTextField addPressMgTextField;
+	private JComboBox morningComboBox;
+	private JComboBox eveningComboBox;
+	private JComboBox nightComboBox;
+	private JTextField courseForTextField;
+	private JTable prescriptionTable;
 	/**
 	 * Launch the application.
 	 */
@@ -118,6 +135,12 @@ public class Dashboard extends JFrame{
 		patientContentlayeredPane.removeAll();
 		
 		
+	}
+	public void switchPanel(JPanel panel) {
+		patientContentlayeredPane.removeAll();
+		patientContentlayeredPane.add(panel);
+		patientContentlayeredPane.repaint();
+		patientContentlayeredPane.revalidate();
 	}
 	
 	public Dashboard() {
@@ -225,21 +248,45 @@ public class Dashboard extends JFrame{
 		patientSideBarPanel.add(patientSideBarBKLabel);
 		
 		addMedLogoLabel = new JLabel("");
+		addMedLogoLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				switchPanel(addMedicineContentPanel);
+			}
+		});
 		addMedLogoLabel.setBounds(46, 74, 66, 56);
 		addMedLogoLabel.setIcon(new ImageIcon(addMedLogo));
 		patientSideBarBKLabel.add(addMedLogoLabel);
 		
 		addMedicineLabel = new JLabel("Add Medicine");
+		addMedicineLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				switchPanel(addMedicineContentPanel);
+			}
+		});
 		addMedicineLabel.setBounds(125, 89, 128, 32);
 		patientSideBarBKLabel.add(addMedicineLabel);
 		addMedicineLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
 		
 		addPresLogoLabel = new JLabel("");
+		addPresLogoLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				switchPanel(addPresContentPanel);
+			}
+		});
 		addPresLogoLabel.setIcon(new ImageIcon(addPresLogo));
 		addPresLogoLabel.setBounds(50, 200, 66, 56);
 		patientSideBarBKLabel.add(addPresLogoLabel);
 		
 		addPresLabel = new JLabel("Add Prescription");
+		addPresLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				switchPanel(addPresContentPanel);
+			}
+		});
 		addPresLabel.setBounds(124, 201, 149, 32);
 		patientSideBarBKLabel.add(addPresLabel);
 		addPresLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
@@ -360,6 +407,105 @@ public class Dashboard extends JFrame{
 		addPresContentPanel.setBounds(413, 198, 1046, 536);
 		patientContentlayeredPane.add(addPresContentPanel, "name_5669470193100");
 		addPresContentPanel.setLayout(null);
+		
+		JLabel addPressMedNameLabel = new JLabel("Medicine name");
+		addPressMedNameLabel.setForeground(Color.DARK_GRAY);
+		addPressMedNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		addPressMedNameLabel.setBackground(new Color(229, 234, 230));
+		addPressMedNameLabel.setBounds(82, 124, 144, 35);
+		addPresContentPanel.add(addPressMedNameLabel);
+		
+		addPressMedNameTxtField = new JTextField();
+		addPressMedNameTxtField.setColumns(10);
+		addPressMedNameTxtField.setBounds(237, 124, 226, 35);
+		addPresContentPanel.add(addPressMedNameTxtField);
+		
+		JLabel addPressMgLabel = new JLabel("mg/Unit");
+		addPressMgLabel.setForeground(Color.DARK_GRAY);
+		addPressMgLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		addPressMgLabel.setBackground(new Color(229, 234, 230));
+		addPressMgLabel.setBounds(82, 179, 91, 35);
+		addPresContentPanel.add(addPressMgLabel);
+		
+		addPressMgTextField = new JTextField();
+		addPressMgTextField.setColumns(10);
+		addPressMgTextField.setBounds(237, 179, 226, 35);
+		addPresContentPanel.add(addPressMgTextField);
+		
+		JLabel morningLabel = new JLabel("Morning");
+		morningLabel.setForeground(Color.DARK_GRAY);
+		morningLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		morningLabel.setBackground(new Color(229, 234, 230));
+		morningLabel.setBounds(82, 235, 91, 35);
+		addPresContentPanel.add(morningLabel);
+		
+		morningComboBox = new JComboBox(items);
+		morningComboBox.setFont(new Font("Tahoma", Font.BOLD, 14));
+		morningComboBox.setBounds(82, 280, 91, 35);
+		//morningcomboBox.add(items);
+		addPresContentPanel.add(morningComboBox);
+		
+		JLabel eveningLabel = new JLabel("Evening");
+		eveningLabel.setForeground(Color.DARK_GRAY);
+		eveningLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		eveningLabel.setBackground(new Color(229, 234, 230));
+		eveningLabel.setBounds(226, 235, 91, 35);
+		addPresContentPanel.add(eveningLabel);
+		
+		JLabel nightLabel = new JLabel("Night");
+		nightLabel.setForeground(Color.DARK_GRAY);
+		nightLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		nightLabel.setBackground(new Color(229, 234, 230));
+		nightLabel.setBounds(372, 235, 91, 35);
+		addPresContentPanel.add(nightLabel);
+		
+		eveningComboBox = new JComboBox(items);
+		eveningComboBox.setFont(new Font("Tahoma", Font.BOLD, 14));
+		eveningComboBox.setBounds(226, 280, 91, 35);
+		addPresContentPanel.add(eveningComboBox);
+		
+		nightComboBox = new JComboBox(items);
+		nightComboBox.setFont(new Font("Tahoma", Font.BOLD, 14));
+		nightComboBox.setBounds(372, 280, 91, 35);
+		addPresContentPanel.add(nightComboBox);
+		
+		JLabel courseForDaysLabel = new JLabel("Course for (Days)");
+		courseForDaysLabel.setForeground(Color.DARK_GRAY);
+		courseForDaysLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		courseForDaysLabel.setBackground(new Color(229, 234, 230));
+		courseForDaysLabel.setBounds(198, 348, 178, 35);
+		addPresContentPanel.add(courseForDaysLabel);
+		
+		courseForTextField = new JTextField();
+		courseForTextField.setBounds(226, 393, 91, 35);
+		addPresContentPanel.add(courseForTextField);
+		courseForTextField.setColumns(10);
+		
+		JScrollPane prescriptionScrollPane = new JScrollPane();
+		prescriptionScrollPane.setBounds(554, 47, 464, 444);
+		prescriptionScrollPane.getViewport().setBackground(Color.WHITE);
+		addPresContentPanel.add(prescriptionScrollPane);
+		
+		prescriptionTable = new JTable();
+		prescriptionTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		prescriptionScrollPane.setViewportView(prescriptionTable);
+		
+		
+		
+		prescriptionModel=new DefaultTableModel();
+		prescriptionModel.setColumnIdentifiers(pressColums);
+		prescriptionTable.setModel(prescriptionModel);
+		prescriptionTable.setRowHeight(30);
+		prescriptionTable.setBackground(new Color(238,255,252));
+		
+		TableColumnModel pressColumnModel = prescriptionTable.getColumnModel();
+		pressColumnModel.getColumn(0).setPreferredWidth(80);
+		pressColumnModel.getColumn(1).setPreferredWidth(5);
+		pressColumnModel.getColumn(2).setPreferredWidth(5);
+		pressColumnModel.getColumn(3).setPreferredWidth(5);
+		pressColumnModel.getColumn(4).setPreferredWidth(5);
+		pressColumnModel.getColumn(5).setPreferredWidth(5);
+		
 		
 		dueContentPanel = new JPanel();
 		dueContentPanel.setBackground(new Color(229,234,230));

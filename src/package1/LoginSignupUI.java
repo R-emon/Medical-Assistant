@@ -395,7 +395,7 @@ public class LoginSignupUI extends JFrame {
 		toBarLabel.setBounds(0, 0, 900, 34);
 		contentPane.add(toBarLabel);
 		
-		contentPane.addMouseMotionListener(new MouseAdapter()
+		toBarLabel.addMouseMotionListener(new MouseAdapter()
 		{
 			 @Override
 		     public void mouseDragged(MouseEvent evt)
@@ -406,7 +406,7 @@ public class LoginSignupUI extends JFrame {
 							
 		     }
 		});
-		contentPane.addMouseMotionListener(new MouseAdapter() {
+		toBarLabel.addMouseMotionListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				posX=e.getX();

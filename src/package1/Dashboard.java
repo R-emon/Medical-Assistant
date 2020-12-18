@@ -27,6 +27,10 @@ import javax.swing.ListSelectionModel;
 import javax.swing.JComboBox;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.DateFormat;
+import java.util.Date;
+
+import com.toedter.calendar.JDateChooser;
 
 public class Dashboard extends JFrame{
 
@@ -68,9 +72,13 @@ public class Dashboard extends JFrame{
 	private DefaultTableModel prescriptionModel;
 	private String[] colums= {"Medicine Name", "mg"};
 	private String[] row=new String[2];
-	private String[] items= {"1","2","3"};
+	private String[] items= {"0", "1", "2", "3"};
 	private String[] pressColums= {"Medicine Name", "mg", "Morning", "Evening", "Night", "Days"};
 	private String[] presRow=new String[6];
+	private String[] dueColums= {"Medicine Name", "mg"};
+	private String[] dueRow=new String[2];
+	private String[] alertColums= {"Medicine Name", "Time", "Date", "Alert Status"};
+	private String[] alertRow=new String[4];
 	private JTextField medicineMgTextField;
 	private JLabel topBarDoctorLogoLabel;
 	private JLabel doctorNameLabel;
@@ -86,6 +94,14 @@ public class Dashboard extends JFrame{
 	private JComboBox nightComboBox;
 	private JTextField courseForTextField;
 	private JTable prescriptionTable;
+	private JButton addPrescriptionButton;
+	private JButton deletePrescriptionButton;
+	private JTable dueTable;
+	private JButton dueRefreshButton;
+	private JTable setAlertTable;
+	private JTextField timeTextField;
+	private JTable alertListTable;
+	private JDateChooser dueDateChooser;
 	/**
 	 * Launch the application.
 	 */
@@ -146,6 +162,18 @@ public class Dashboard extends JFrame{
 	public Dashboard() {
 		getContentPane().setBackground(new Color(229,234,230));
 		getContentPane().setLayout(null);
+		setBounds(10, 10, 1500, 800);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		dashboardContentPane = new JPanel();
+		dashboardContentPane.setBorder(new EmptyBorder(5,5,5,5));
+		dashboardContentPane.setLayout(new BorderLayout(0,0));
 		
 		topBarLayeredPane = new JLayeredPane();
 		topBarLayeredPane.setBounds(31, 40, 1428, 130);
@@ -292,21 +320,45 @@ public class Dashboard extends JFrame{
 		addPresLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
 		
 		dueLogoLabel = new JLabel("");
+		dueLogoLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				switchPanel(dueContentPanel);
+			}
+		});
 		dueLogoLabel.setIcon(new ImageIcon(dueLogo));
 		dueLogoLabel.setBounds(56, 320, 66, 56);
 		patientSideBarBKLabel.add(dueLogoLabel);
 		
 		dueLabel = new JLabel("Due");
+		dueLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				switchPanel(dueContentPanel);
+			}
+		});
 		dueLabel.setBounds(124, 332, 52, 32);
 		patientSideBarBKLabel.add(dueLabel);
 		dueLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
 		
 		setAlertLogoLabel = new JLabel("");
+		setAlertLogoLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				switchPanel(setAlertPanel);
+			}
+		});
 		setAlertLogoLabel.setIcon(new ImageIcon(setAlertLogo));
 		setAlertLogoLabel.setBounds(48, 429, 66, 56);
 		patientSideBarBKLabel.add(setAlertLogoLabel);
 		
 		setAlertLabel = new JLabel("setAlert");
+		setAlertLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				switchPanel(setAlertPanel);
+			}
+		});
 		setAlertLabel.setBounds(124, 436, 84, 32);
 		patientSideBarBKLabel.add(setAlertLabel);
 		setAlertLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
@@ -498,6 +550,43 @@ public class Dashboard extends JFrame{
 		prescriptionTable.setRowHeight(30);
 		prescriptionTable.setBackground(new Color(238,255,252));
 		
+		addPrescriptionButton = new JButton("Add");
+		addPrescriptionButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				presRow[0]=addPressMedNameTxtField.getText().trim();
+				presRow[1]=addPressMgTextField.getText().trim();
+				presRow[2]=morningComboBox.getSelectedItem().toString().trim();
+				presRow[3]=eveningComboBox.getSelectedItem().toString().trim();
+				presRow[4]=nightComboBox.getSelectedItem().toString().trim();
+				presRow[5]=courseForTextField.getText().trim();
+				
+				prescriptionModel.addRow(presRow);
+				
+				addPressMedNameTxtField.setText("");
+				addPressMgTextField.setText("");
+				morningComboBox.setSelectedIndex(0);
+				eveningComboBox.setSelectedIndex(0);
+				nightComboBox.setSelectedIndex(0);
+				courseForTextField.setText("");
+			}
+		});
+		addPrescriptionButton.setForeground(Color.WHITE);
+		addPrescriptionButton.setBackground(new Color(94, 94, 194));
+		addPrescriptionButton.setBounds(149, 456, 118, 41);
+		addPresContentPanel.add(addPrescriptionButton);
+		
+		deletePrescriptionButton = new JButton("Delete");
+		deletePrescriptionButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int selectedRow=prescriptionTable.getSelectedRow();
+				prescriptionModel.removeRow(selectedRow);;
+			}
+		});
+		deletePrescriptionButton.setForeground(Color.WHITE);
+		deletePrescriptionButton.setBackground(new Color(220, 59, 59));
+		deletePrescriptionButton.setBounds(292, 456, 118, 41);
+		addPresContentPanel.add(deletePrescriptionButton);
+		
 		TableColumnModel pressColumnModel = prescriptionTable.getColumnModel();
 		pressColumnModel.getColumn(0).setPreferredWidth(80);
 		pressColumnModel.getColumn(1).setPreferredWidth(5);
@@ -514,6 +603,33 @@ public class Dashboard extends JFrame{
 		patientContentlayeredPane.add(dueContentPanel, "name_5773124559600");
 		dueContentPanel.setLayout(null);
 		
+		JScrollPane dueScrollPane = new JScrollPane();
+		dueScrollPane.setBounds(554, 47, 369, 444);
+		dueScrollPane.getViewport().setBackground(Color.WHITE);
+		dueContentPanel.add(dueScrollPane);
+		
+		dueTable = new JTable();
+		dueTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		dueScrollPane.setViewportView(dueTable);
+		
+		DefaultTableModel dueModel=new DefaultTableModel();
+		dueModel.setColumnIdentifiers(dueColums);
+		dueTable.setModel(dueModel);
+		dueTable.setRowHeight(30);
+		dueTable.setBackground(new Color(238,255,252));
+		
+		
+		JLabel lblNewLabel = new JLabel("Due Today");
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 24));
+		lblNewLabel.setBounds(175, 242, 205, 65);
+		dueContentPanel.add(lblNewLabel);
+		
+		dueRefreshButton = new JButton("Refresh");
+		dueRefreshButton.setForeground(Color.WHITE);
+		dueRefreshButton.setBackground(new Color(146,94,194));
+		dueRefreshButton.setBounds(185, 317, 118, 41);
+		dueContentPanel.add(dueRefreshButton);
+		
 		setAlertPanel = new JPanel();
 		setAlertPanel.setBackground(new Color(229,234,230));
 		setAlertPanel.setForeground(new Color(229,234,230));
@@ -521,18 +637,104 @@ public class Dashboard extends JFrame{
 		patientContentlayeredPane.add(setAlertPanel, "name_6284499503700");
 		setAlertPanel.setLayout(null);
 		
+		JScrollPane setAlertScrollPane = new JScrollPane();
+		setAlertScrollPane.setBounds(554, 47, 369, 465);
+		setAlertScrollPane.getViewport().setBackground(Color.WHITE);
+		setAlertPanel.add(setAlertScrollPane);
 		
-		setBounds(10, 10, 1500, 800);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		initialize();
-	}
+		setAlertTable = new JTable();
+		setAlertTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		setAlertScrollPane.setViewportView(setAlertTable);
+		
+		model.setColumnIdentifiers(colums);
+		setAlertTable.setModel(model);
+		setAlertTable.setRowHeight(40);
+		setAlertTable.setBackground(new Color(238,255,252));
+		
+		JLabel timeLabel = new JLabel("Time");
+		timeLabel.setForeground(Color.DARK_GRAY);
+		timeLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		timeLabel.setBackground(new Color(229, 234, 230));
+		timeLabel.setBounds(60, 99, 59, 28);
+		setAlertPanel.add(timeLabel);
+		
+		JLabel timeFormatLabel = new JLabel("(hh:mm am/pm)");
+		timeFormatLabel.setForeground(Color.DARK_GRAY);
+		timeFormatLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		timeFormatLabel.setBackground(new Color(229, 234, 230));
+		timeFormatLabel.setBounds(60, 133, 114, 28);
+		setAlertPanel.add(timeFormatLabel);
+		
+		timeTextField = new JTextField();
+		timeTextField.setBackground(Color.WHITE);
+		timeTextField.setColumns(10);
+		timeTextField.setBounds(169, 92, 226, 35);
+		setAlertPanel.add(timeTextField);
+		
+		JLabel dateLabel = new JLabel("Date");
+		dateLabel.setForeground(Color.DARK_GRAY);
+		dateLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		dateLabel.setBackground(new Color(229, 234, 230));
+		dateLabel.setBounds(60, 171, 59, 28);
+		setAlertPanel.add(dateLabel);
+		
+		dueDateChooser = new JDateChooser();
+		dueDateChooser.setBounds(169, 171, 152, 35);
+		setAlertPanel.add(dueDateChooser);
+		//dueDateChooser.get
+		JScrollPane alertListScrollPane = new JScrollPane();
+		alertListScrollPane.setBounds(60, 402, 435, 113);
+		alertListScrollPane.getViewport().setBackground(Color.WHITE);
+		setAlertPanel.add(alertListScrollPane);
+		
+		alertListTable = new JTable();
+		alertListTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		alertListScrollPane.setViewportView(alertListTable);
+		
+		DefaultTableModel alertListModel=new DefaultTableModel();
+		alertListModel.setColumnIdentifiers(alertColums);
+		alertListTable.setModel(alertListModel);
+		alertListTable.setRowHeight(40);
+		alertListTable.setBackground(new Color(238,255,252));
+		
+		TableColumnModel alertColumnModel = alertListTable.getColumnModel();
+		alertColumnModel.getColumn(0).setPreferredWidth(80);
+		alertColumnModel.getColumn(1).setPreferredWidth(5);
+		alertColumnModel.getColumn(2).setPreferredWidth(5);
+		alertColumnModel.getColumn(3).setPreferredWidth(5);
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		dashboardContentPane = new JPanel();
-		dashboardContentPane.setBorder(new EmptyBorder(5,5,5,5));
-		dashboardContentPane.setLayout(new BorderLayout(0,0));
+		JLabel alertListLabel = new JLabel("Alert List");
+		alertListLabel.setForeground(Color.DARK_GRAY);
+		alertListLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		alertListLabel.setBackground(new Color(229, 234, 230));
+		alertListLabel.setBounds(60, 366, 70, 28);
+		setAlertPanel.add(alertListLabel);
+		
+		JLabel selectHereLabel = new JLabel("Select Here");
+		selectHereLabel.setForeground(Color.DARK_GRAY);
+		selectHereLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		selectHereLabel.setBackground(new Color(229, 234, 230));
+		selectHereLabel.setBounds(554, 10, 80, 28);
+		setAlertPanel.add(selectHereLabel);
+		
+		JButton setAlertButton = new JButton("Set Alert");
+		setAlertButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Date date=dueDateChooser.getDate();
+				String strDate=DateFormat.getInstance().format(date);
+				String[] arrDate=strDate.split(",");
+				int selectedRowIndex=setAlertTable.getSelectedRow();
+				alertRow[0]=(String) model.getValueAt(selectedRowIndex, 0).toString();
+				alertRow[1]=(String) timeTextField.getText().trim();
+				alertRow[2]=(String) arrDate[0];
+				alertRow[3]="Alert on";
+				alertListModel.addRow(alertRow);
+			}
+		});
+		setAlertButton.setForeground(Color.WHITE);
+		setAlertButton.setBackground(new Color(94, 94, 194));
+		setAlertButton.setBounds(169, 274, 118, 41);
+		setAlertPanel.add(setAlertButton);
+		
 	}
 }

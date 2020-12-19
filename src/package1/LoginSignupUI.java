@@ -36,7 +36,7 @@ import javax.swing.JCheckBox;
 
 public class LoginSignupUI extends JFrame {
 	
-	private static LoginSignupUI frame; //first login UI frame variable
+	public static LoginSignupUI frame; //first login UI frame variable
 	private static JFrame dashboardJFrame;
 	private JPanel contentPane; //JPanel variable
 	private JTextField userNameTextField;
@@ -58,7 +58,7 @@ public class LoginSignupUI extends JFrame {
 	private JCheckBox nurseCheckBox;
 	private boolean patientSelected=false;
 	private boolean doctorSelected=false;
-	
+	public static Dashboard dashboard;
 	
 	
 	/**
@@ -87,6 +87,9 @@ public class LoginSignupUI extends JFrame {
 		signUpLogInLayeredPane.add(panel);
 		signUpLogInLayeredPane.repaint();
 		signUpLogInLayeredPane.revalidate();
+	}
+	public Dashboard getDashboardFrame() {
+		return this.dashboard;
 	}
 	public LoginSignupUI() { //first login UI frame constructor.
 		setIconImage(Toolkit.getDefaultToolkit().getImage(LoginSignupUI.class.getResource("/images/doctor.png")));
@@ -179,15 +182,16 @@ public class LoginSignupUI extends JFrame {
 				boolean authCheck=auth.verifyUser(userName, password);
 				if(authCheck==true && doctorSelected==true ) {
 					System.out.println("correct");
-					Dashboard dashboard=new Dashboard();
+					dashboard=new Dashboard(userName, frame);
 					dashboard.setVisible(true);
 					dashboard.switchDoctorPanel();
 				}
 				else if(authCheck==true && patientSelected==true) {
-					System.out.println("correct");
-					Dashboard dashboard=new Dashboard();
+					System.out.println("correct" + userName);
+					dashboard=new Dashboard(userName, frame);
 					dashboard.setVisible(true);
 					dashboard.switchPatientPanel();
+					frame.dispose();
 				}
 				else if(authCheck==false){
 					JOptionPane.showMessageDialog(frame, "Wrong User Name or Password","Alert", JOptionPane.WARNING_MESSAGE);

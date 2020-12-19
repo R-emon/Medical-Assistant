@@ -3,6 +3,8 @@ package package1;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.Window;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -30,6 +32,7 @@ import java.awt.event.MouseEvent;
 import java.text.DateFormat;
 import java.util.Date;
 
+//import com.sun.java.swing.plaf.windows.WindowsBorders.DashedBorder;
 import com.toedter.calendar.JDateChooser;
 
 public class Dashboard extends JFrame{
@@ -102,6 +105,10 @@ public class Dashboard extends JFrame{
 	private JTextField timeTextField;
 	private JTable alertListTable;
 	private JDateChooser dueDateChooser;
+	private static String userName;
+	private LoginSignupUI frame;
+	public JFrame dashboardFrame;
+	//private Dashboard dashboard;
 	/**
 	 * Launch the application.
 	 */
@@ -158,8 +165,16 @@ public class Dashboard extends JFrame{
 		patientContentlayeredPane.repaint();
 		patientContentlayeredPane.revalidate();
 	}
+//	public Dashboard getDashboardFrame() {
+//		return this.dashboard;
+//	}
 	
-	public Dashboard() {
+	public Dashboard(String name, LoginSignupUI frame) {
+		this.userName=name;
+		this.frame=frame;
+		//this.dashboard=dashboard;
+		setIconImage(Toolkit.getDefaultToolkit().getImage(LoginSignupUI.class.getResource("/images/doctor.png")));
+		setTitle("Medical Assistant");
 		getContentPane().setBackground(new Color(229,234,230));
 		getContentPane().setLayout(null);
 		setBounds(10, 10, 1500, 800);
@@ -171,6 +186,7 @@ public class Dashboard extends JFrame{
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		//dashboardFrame=new JFrame();
 		dashboardContentPane = new JPanel();
 		dashboardContentPane.setBorder(new EmptyBorder(5,5,5,5));
 		dashboardContentPane.setLayout(new BorderLayout(0,0));
@@ -201,17 +217,33 @@ public class Dashboard extends JFrame{
 		topBarPatientLogoLabel.setIcon(new ImageIcon(topBarPatientLogo));
 		topBarImageLabel.add(topBarPatientLogoLabel);
 		
+		String name="Welcome,"+userName.toUpperCase();
 		patientNameLabel = new JLabel("Welcome,");
 		patientNameLabel.setBounds(133, 40, 260, 54);
 		topBarImageLabel.add(patientNameLabel);
 		patientNameLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
+		patientNameLabel.setText(name);
 		
 		logOutLogoLabel = new JLabel("");
+		logOutLogoLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				frame.setVisible(true);
+				setVisible(false);
+			}
+		});
 		logOutLogoLabel.setBounds(1259, 52, 35, 30);
 		topBarImageLabel.add(logOutLogoLabel);
 		logOutLogoLabel.setIcon(new ImageIcon(logOutLogo));
 		
 		logOutLabel = new JLabel("Log Out");
+		logOutLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				frame.setVisible(true);
+				setVisible(false);
+			}
+		});
 		logOutLabel.setBounds(1296, 50, 78, 32);
 		topBarImageLabel.add(logOutLabel);
 		logOutLabel.setForeground(Color.RED);
@@ -732,9 +764,10 @@ public class Dashboard extends JFrame{
 			}
 		});
 		setAlertButton.setForeground(Color.WHITE);
-		setAlertButton.setBackground(new Color(94, 94, 194));
+		setAlertButton.setBackground(new Color(94,194,162));
 		setAlertButton.setBounds(169, 274, 118, 41);
 		setAlertPanel.add(setAlertButton);
 		
 	}
+	
 }

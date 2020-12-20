@@ -54,6 +54,7 @@ public class Dashboard extends JFrame{
 	private Image logOutLogo= new ImageIcon(Dashboard.class.getResource("/images/logOutLogo2.png")).getImage().getScaledInstance(35, 30, Image.SCALE_SMOOTH);
 	private Image topBarDoctorLogo= new ImageIcon(Dashboard.class.getResource("/images/doctorTopbar.png")).getImage().getScaledInstance(80, 70, Image.SCALE_SMOOTH);
 	private Image crossDashboardLogo= new ImageIcon(Dashboard.class.getResource("/images/cross.png")).getImage().getScaledInstance(25, 20, Image.SCALE_SMOOTH);
+	private Image addAppointmentLogo= new ImageIcon(Dashboard.class.getResource("/images/report.png")).getImage().getScaledInstance(66, 56, Image.SCALE_SMOOTH);
 	private JLabel topBarPatientLogoLabel;
 	private JLabel patientNameLabel;
 	private JLabel addMedLogoLabel;
@@ -90,7 +91,7 @@ public class Dashboard extends JFrame{
 	private JLabel doctorLogOutLogoLabel;
 	private JLayeredPane topBarLayeredPane;
 	private JLayeredPane sideBarLayeredPane;
-	private JLayeredPane patientContentlayeredPane;
+	private JLayeredPane activityContentlayeredPane;
 	private JTextField addPressMedNameTxtField;
 	private JTextField addPressMgTextField;
 	private JComboBox morningComboBox;
@@ -112,6 +113,13 @@ public class Dashboard extends JFrame{
 	private JLabel crossDashboardLabel;
 	private JLabel minimizeDashboardLogo_1;
 	private	int posX=0,posY=0;
+	private JLabel addAppointmentLabel;
+	private JLabel addAppointmentLogoLabel;
+	private JPanel addAppointPanel;
+	private JLabel docDueLogoLabel;
+	private JLabel docaDueLabel;
+	private JLabel docSetAlertLogoLabel;
+	private JLabel docaSetAlertLabel;
 	//private Dashboard dashboard;
 	/**
 	 * Launch the application.
@@ -143,13 +151,13 @@ public class Dashboard extends JFrame{
 		sideBarLayeredPane.repaint();
 		sideBarLayeredPane.revalidate();
 		
-		patientContentlayeredPane.removeAll();
-		patientContentlayeredPane.add(addMedicineContentPanel);
-		patientContentlayeredPane.add(addPresContentPanel);
-		patientContentlayeredPane.add(dueContentPanel);
-		patientContentlayeredPane.add(setAlertPanel);
-		patientContentlayeredPane.repaint();
-		patientContentlayeredPane.revalidate();
+		activityContentlayeredPane.removeAll();
+		activityContentlayeredPane.add(addMedicineContentPanel);
+		activityContentlayeredPane.add(addPresContentPanel);
+		activityContentlayeredPane.add(dueContentPanel);
+		activityContentlayeredPane.add(setAlertPanel);
+		activityContentlayeredPane.repaint();
+		activityContentlayeredPane.revalidate();
 	}
 	
 	public void switchDoctorPanel() {
@@ -159,15 +167,22 @@ public class Dashboard extends JFrame{
 		topBarLayeredPane.revalidate();
 		
 		sideBarLayeredPane.removeAll();
-		patientContentlayeredPane.removeAll();
+		sideBarLayeredPane.add(doctorSideBarPanel);
+		sideBarLayeredPane.repaint();
+		sideBarLayeredPane.revalidate();
+		
+		activityContentlayeredPane.removeAll();
+		activityContentlayeredPane.add(addAppointPanel);
+		activityContentlayeredPane.repaint();
+		activityContentlayeredPane.revalidate();
 		
 		
 	}
 	public void switchPanel(JPanel panel) {
-		patientContentlayeredPane.removeAll();
-		patientContentlayeredPane.add(panel);
-		patientContentlayeredPane.repaint();
-		patientContentlayeredPane.revalidate();
+		activityContentlayeredPane.removeAll();
+		activityContentlayeredPane.add(panel);
+		activityContentlayeredPane.repaint();
+		activityContentlayeredPane.revalidate();
 	}
 //	public Dashboard getDashboardFrame() {
 //		return this.dashboard;
@@ -279,14 +294,29 @@ public class Dashboard extends JFrame{
 		doctorNameLabel.setBounds(133, 40, 260, 54);
 		doctorTopBarImageLabel.add(doctorNameLabel);
 		doctorNameLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
+		doctorNameLabel.setText(name);
 		
 		
 		doctorLogOutLogoLabel = new JLabel("");
+		doctorLogOutLogoLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				frame.setVisible(true);
+				setVisible(false);
+			}
+		});
 		doctorLogOutLogoLabel.setBounds(1259, 52, 35, 30);
 		doctorTopBarImageLabel.add(doctorLogOutLogoLabel);
 		doctorLogOutLogoLabel.setIcon(new ImageIcon(logOutLogo));
 		
 		doctorLogOutLabel = new JLabel("Log Out");
+		doctorLogOutLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				frame.setVisible(true);
+				setVisible(false);
+			}
+		});
 		doctorLogOutLabel.setBounds(1296, 50, 78, 32);
 		doctorTopBarImageLabel.add(doctorLogOutLabel);
 		doctorLogOutLabel.setForeground(Color.RED);
@@ -404,20 +434,57 @@ public class Dashboard extends JFrame{
 		sideBarLayeredPane.add(doctorSideBarPanel, "name_38948241781600");
 		doctorSideBarPanel.setLayout(null);
 		
+		JLabel doctorSideBarBKLabel = new JLabel("");
+		doctorSideBarBKLabel.setForeground(new Color(159,219,231));
+		doctorSideBarBKLabel.setBackground(new Color(159,219,231));
+		doctorSideBarBKLabel.setBounds(0, 0, 338, 536);
+		doctorSideBarBKLabel.setIcon(new ImageIcon(sideBar));
+		doctorSideBarPanel.add(doctorSideBarBKLabel);
+		
+		addAppointmentLogoLabel = new JLabel("");
+		addAppointmentLogoLabel.setBounds(55, 88, 66, 56);
+		addAppointmentLogoLabel.setIcon(new ImageIcon(addAppointmentLogo));
+		doctorSideBarBKLabel.add(addAppointmentLogoLabel);
+		
+		addAppointmentLabel = new JLabel("Add Appointment");
+		addAppointmentLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
+		addAppointmentLabel.setBounds(134, 103, 180, 32);
+		doctorSideBarBKLabel.add(addAppointmentLabel);
+		
+		docDueLogoLabel = new JLabel("");
+		docDueLogoLabel.setBounds(55, 249, 66, 56);
+		docDueLogoLabel.setIcon(new ImageIcon(dueLogo));
+		doctorSideBarBKLabel.add(docDueLogoLabel);
+		
+		docaDueLabel = new JLabel("Appointment Due");
+		docaDueLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
+		docaDueLabel.setBounds(134, 264, 180, 32);
+		doctorSideBarBKLabel.add(docaDueLabel);
+		
+		docSetAlertLogoLabel = new JLabel("");
+		docSetAlertLogoLabel.setBounds(55, 418, 66, 56);
+		docSetAlertLogoLabel.setIcon(new ImageIcon(setAlertLogo));
+		doctorSideBarBKLabel.add(docSetAlertLogoLabel);
+		
+		docaSetAlertLabel = new JLabel("Appointment Due");
+		docaSetAlertLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
+		docaSetAlertLabel.setBounds(134, 433, 180, 32);
+		doctorSideBarBKLabel.add(docaSetAlertLabel);
+		
 		nurseSideBarPanel = new JPanel();
 		sideBarLayeredPane.add(nurseSideBarPanel, "name_38965842404800");
 		nurseSideBarPanel.setLayout(null);
 		
-		patientContentlayeredPane = new JLayeredPane();
-		patientContentlayeredPane.setBounds(413, 198, 1046, 536);
-		getContentPane().add(patientContentlayeredPane);
-		patientContentlayeredPane.setLayout(new CardLayout(0, 0));
+		activityContentlayeredPane = new JLayeredPane();
+		activityContentlayeredPane.setBounds(413, 198, 1046, 536);
+		getContentPane().add(activityContentlayeredPane);
+		activityContentlayeredPane.setLayout(new CardLayout(0, 0));
 		
 		addMedicineContentPanel = new JPanel();
 		addMedicineContentPanel.setBounds(413, 198, 1046, 536);
 		addMedicineContentPanel.setForeground(new Color(229,234,230));
 		addMedicineContentPanel.setBackground(new Color(229,234,230));
-		patientContentlayeredPane.add(addMedicineContentPanel, "name_5285986441700");
+		activityContentlayeredPane.add(addMedicineContentPanel, "name_5285986441700");
 		addMedicineContentPanel.setLayout(null);
 		
 		JLabel medicineNameLabel = new JLabel("Medicine name");
@@ -496,7 +563,7 @@ public class Dashboard extends JFrame{
 		addPresContentPanel.setBackground(new Color(229,234,230));
 		addPresContentPanel.setForeground(new Color(229,234,230));
 		addPresContentPanel.setBounds(413, 198, 1046, 536);
-		patientContentlayeredPane.add(addPresContentPanel, "name_5669470193100");
+		activityContentlayeredPane.add(addPresContentPanel, "name_5669470193100");
 		addPresContentPanel.setLayout(null);
 		
 		JLabel addPressMedNameLabel = new JLabel("Medicine name");
@@ -639,7 +706,7 @@ public class Dashboard extends JFrame{
 		dueContentPanel.setBackground(new Color(229,234,230));
 		dueContentPanel.setForeground(new Color(229,234,230));
 		dueContentPanel.setBounds(413, 198, 1046, 536);
-		patientContentlayeredPane.add(dueContentPanel, "name_5773124559600");
+		activityContentlayeredPane.add(dueContentPanel, "name_5773124559600");
 		dueContentPanel.setLayout(null);
 		
 		JScrollPane dueScrollPane = new JScrollPane();
@@ -673,7 +740,7 @@ public class Dashboard extends JFrame{
 		setAlertPanel.setBackground(new Color(229,234,230));
 		setAlertPanel.setForeground(new Color(229,234,230));
 		setAlertPanel.setBounds(413, 198, 1046, 536);
-		patientContentlayeredPane.add(setAlertPanel, "name_6284499503700");
+		activityContentlayeredPane.add(setAlertPanel, "name_6284499503700");
 		setAlertPanel.setLayout(null);
 		
 		JScrollPane setAlertScrollPane = new JScrollPane();
@@ -774,6 +841,11 @@ public class Dashboard extends JFrame{
 		setAlertButton.setBackground(new Color(94,194,162));
 		setAlertButton.setBounds(169, 274, 118, 41);
 		setAlertPanel.add(setAlertButton);
+		
+		addAppointPanel = new JPanel();
+		addAppointPanel.setBackground(new Color(229,234,230));
+		addAppointPanel.setForeground(new Color(229,234,230));
+		activityContentlayeredPane.add(addAppointPanel, "name_129264126906200");
 		
 		JLabel dashboardTopBar = new JLabel("");
 		dashboardTopBar.setIcon(new ImageIcon(Dashboard.class.getResource("/images/dashboardTitleBar.png")));

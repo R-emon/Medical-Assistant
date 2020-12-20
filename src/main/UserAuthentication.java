@@ -1,4 +1,4 @@
-package package1;
+package main;
 
 import java.io.File;
 import java.io.FileWriter;

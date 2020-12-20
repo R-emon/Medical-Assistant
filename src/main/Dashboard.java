@@ -53,6 +53,7 @@ public class Dashboard extends JFrame{
 	private Image setAlertLogo= new ImageIcon(Dashboard.class.getResource("/images/setAlertLogo.png")).getImage().getScaledInstance(66, 56, Image.SCALE_SMOOTH);
 	private Image logOutLogo= new ImageIcon(Dashboard.class.getResource("/images/logOutLogo2.png")).getImage().getScaledInstance(35, 30, Image.SCALE_SMOOTH);
 	private Image topBarDoctorLogo= new ImageIcon(Dashboard.class.getResource("/images/doctorTopbar.png")).getImage().getScaledInstance(80, 70, Image.SCALE_SMOOTH);
+	private Image crossDashboardLogo= new ImageIcon(Dashboard.class.getResource("/images/cross.png")).getImage().getScaledInstance(25, 20, Image.SCALE_SMOOTH);
 	private JLabel topBarPatientLogoLabel;
 	private JLabel patientNameLabel;
 	private JLabel addMedLogoLabel;
@@ -108,6 +109,9 @@ public class Dashboard extends JFrame{
 	private static String userName;
 	private LoginSignupUI frame;
 	public JFrame dashboardFrame;
+	private JLabel crossDashboardLabel;
+	private JLabel minimizeDashboardLogo_1;
+	private	int posX=0,posY=0;
 	//private Dashboard dashboard;
 	/**
 	 * Launch the application.
@@ -179,6 +183,7 @@ public class Dashboard extends JFrame{
 		getContentPane().setLayout(null);
 		setBounds(10, 10, 1500, 800);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setUndecorated(true);
 		initialize();
 	}
 
@@ -192,7 +197,7 @@ public class Dashboard extends JFrame{
 		dashboardContentPane.setLayout(new BorderLayout(0,0));
 		
 		topBarLayeredPane = new JLayeredPane();
-		topBarLayeredPane.setBounds(31, 40, 1428, 130);
+		topBarLayeredPane.setBounds(31, 50, 1428, 130);
 		getContentPane().add(topBarLayeredPane);
 		topBarLayeredPane.setLayout(new CardLayout(0, 0));
 		
@@ -485,6 +490,8 @@ public class Dashboard extends JFrame{
 		medicineMgTextField.setBounds(259, 266, 226, 35);
 		addMedicineContentPanel.add(medicineMgTextField);
 		
+		
+		
 		addPresContentPanel = new JPanel();
 		addPresContentPanel.setBackground(new Color(229,234,230));
 		addPresContentPanel.setForeground(new Color(229,234,230));
@@ -670,7 +677,7 @@ public class Dashboard extends JFrame{
 		setAlertPanel.setLayout(null);
 		
 		JScrollPane setAlertScrollPane = new JScrollPane();
-		setAlertScrollPane.setBounds(554, 47, 369, 465);
+		setAlertScrollPane.setBounds(554, 47, 369, 489);
 		setAlertScrollPane.getViewport().setBackground(Color.WHITE);
 		setAlertPanel.add(setAlertScrollPane);
 		
@@ -715,7 +722,7 @@ public class Dashboard extends JFrame{
 		setAlertPanel.add(dueDateChooser);
 		//dueDateChooser.get
 		JScrollPane alertListScrollPane = new JScrollPane();
-		alertListScrollPane.setBounds(60, 402, 435, 113);
+		alertListScrollPane.setBounds(60, 402, 435, 134);
 		alertListScrollPane.getViewport().setBackground(Color.WHITE);
 		setAlertPanel.add(alertListScrollPane);
 		
@@ -768,6 +775,51 @@ public class Dashboard extends JFrame{
 		setAlertButton.setBounds(169, 274, 118, 41);
 		setAlertPanel.add(setAlertButton);
 		
+		JLabel dashboardTopBar = new JLabel("");
+		dashboardTopBar.setIcon(new ImageIcon(Dashboard.class.getResource("/images/dashboardTitleBar.png")));
+		dashboardTopBar.setForeground(Color.WHITE);
+		dashboardTopBar.setBounds(0, 0, 1500, 36);
+		getContentPane().add(dashboardTopBar);
+		dashboardTopBar.addMouseMotionListener(new MouseAdapter()
+		{
+			 @Override
+		     public void mouseDragged(MouseEvent evt)
+		     {
+				int x = evt.getXOnScreen();
+				int y = evt.getYOnScreen();
+				setLocation(x-posX,y-posY);
+							
+		     }
+		});
+		dashboardTopBar.addMouseMotionListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				posX=e.getX();
+				posY=e.getY();
+			}
+		});
+		
+		crossDashboardLabel = new JLabel("");
+		crossDashboardLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.exit(0);
+			}
+		});
+		crossDashboardLabel.setForeground(Color.WHITE);
+		crossDashboardLabel.setBounds(1450, 2, 30, 30);
+		crossDashboardLabel.setIcon(new ImageIcon(crossDashboardLogo));
+		dashboardTopBar.add(crossDashboardLabel);
+		
+		minimizeDashboardLogo_1 = new JLabel("");
+		minimizeDashboardLogo_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				setState(frame.ICONIFIED);
+			}
+		});
+		minimizeDashboardLogo_1.setIcon(new ImageIcon(Dashboard.class.getResource("/images/minus.png")));
+		minimizeDashboardLogo_1.setBounds(1400, 1, 30, 30);
+		dashboardTopBar.add(minimizeDashboardLogo_1);
 	}
-	
 }

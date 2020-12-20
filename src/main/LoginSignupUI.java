@@ -88,9 +88,9 @@ public class LoginSignupUI extends JFrame {
 		signUpLogInLayeredPane.repaint();
 		signUpLogInLayeredPane.revalidate();
 	}
-	public Dashboard getDashboardFrame() {
-		return this.dashboard;
-	}
+//	public Dashboard getDashboardFrame() {
+//		return this.dashboard;
+//	}
 	public LoginSignupUI() { //first login UI frame constructor.
 		setIconImage(Toolkit.getDefaultToolkit().getImage(LoginSignupUI.class.getResource("/images/doctor.png")));
 		setTitle("Medical Assistant");

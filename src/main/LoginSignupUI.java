@@ -185,6 +185,7 @@ public class LoginSignupUI extends JFrame {
 					dashboard=new Dashboard(userName, frame);
 					dashboard.setVisible(true);
 					dashboard.switchDoctorPanel();
+					frame.dispose();
 				}
 				else if(authCheck==true && patientSelected==true) {
 					System.out.println("correct" + userName);
@@ -393,13 +394,23 @@ public class LoginSignupUI extends JFrame {
 		minimizeLabel.setBounds(807,0,30,30);
 		contentPane.add(minimizeLabel);
 		
-		JLabel toBarLabel = new JLabel("");
-		toBarLabel.setIcon(new ImageIcon(LoginSignupUI.class.getResource("/images/topBar.png")));
-		toBarLabel.setForeground(Color.WHITE);
-		toBarLabel.setBounds(0, 0, 900, 34);
-		contentPane.add(toBarLabel);
+		JLabel topBarLabel = new JLabel("");
+		topBarLabel.setIcon(new ImageIcon(LoginSignupUI.class.getResource("/images/topBar.png")));
+		topBarLabel.setForeground(Color.WHITE);
+		topBarLabel.setBounds(0, 0, 900, 34);
+		contentPane.add(topBarLabel);
 		
-		toBarLabel.addMouseMotionListener(new MouseAdapter()
+		JLabel appLogoLabel = new JLabel("", SwingConstants.CENTER);
+		appLogoLabel.setIcon(new ImageIcon(LoginSignupUI.class.getResource("/images/doctor.png")));
+		appLogoLabel.setBounds(3, 4, 25, 29);
+		topBarLabel.add(appLogoLabel);
+		
+		JLabel appTitleLabel = new JLabel("Medical Assistant");
+		appTitleLabel.setFont(new Font("Tahoma", Font.ITALIC, 12));
+		appTitleLabel.setBounds(40, 13, 100, 13);
+		topBarLabel.add(appTitleLabel);
+		
+		topBarLabel.addMouseMotionListener(new MouseAdapter()
 		{
 			 @Override
 		     public void mouseDragged(MouseEvent evt)
@@ -410,7 +421,7 @@ public class LoginSignupUI extends JFrame {
 							
 		     }
 		});
-		toBarLabel.addMouseMotionListener(new MouseAdapter() {
+		topBarLabel.addMouseMotionListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				posX=e.getX();

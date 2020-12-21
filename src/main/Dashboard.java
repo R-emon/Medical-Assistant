@@ -111,7 +111,7 @@ public class Dashboard extends JFrame{
 	private LoginSignupUI frame;
 	public JFrame dashboardFrame;
 	private JLabel crossDashboardLabel;
-	private JLabel minimizeDashboardLogo_1;
+	private JLabel minimizeDashboardLogo_2;
 	private	int posX=0,posY=0;
 	private JLabel addAppointmentLabel;
 	private JLabel addAppointmentLogoLabel;
@@ -883,15 +883,25 @@ public class Dashboard extends JFrame{
 		crossDashboardLabel.setIcon(new ImageIcon(crossDashboardLogo));
 		dashboardTopBar.add(crossDashboardLabel);
 		
-		minimizeDashboardLogo_1 = new JLabel("");
-		minimizeDashboardLogo_1.addMouseListener(new MouseAdapter() {
+		minimizeDashboardLogo_2 = new JLabel("");
+		minimizeDashboardLogo_2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				setState(frame.ICONIFIED);
 			}
 		});
-		minimizeDashboardLogo_1.setIcon(new ImageIcon(Dashboard.class.getResource("/images/minus.png")));
-		minimizeDashboardLogo_1.setBounds(1400, 1, 30, 30);
-		dashboardTopBar.add(minimizeDashboardLogo_1);
+		minimizeDashboardLogo_2.setIcon(new ImageIcon(Dashboard.class.getResource("/images/minus.png")));
+		minimizeDashboardLogo_2.setBounds(1400, 1, 30, 30);
+		dashboardTopBar.add(minimizeDashboardLogo_2);
+		
+		JLabel appdashboardLogo = new JLabel("");
+		appdashboardLogo.setIcon(new ImageIcon(Dashboard.class.getResource("/images/doctor.png")));
+		appdashboardLogo.setBounds(3, 4, 30, 29);
+		dashboardTopBar.add(appdashboardLogo);
+		
+		JLabel appDashboardTitleLabel = new JLabel("Medical Assistant");
+		appDashboardTitleLabel.setFont(new Font("Tahoma", Font.ITALIC, 12));
+		appDashboardTitleLabel.setBounds(41, 10, 100, 13);
+		dashboardTopBar.add(appDashboardTitleLabel);
 	}
 }

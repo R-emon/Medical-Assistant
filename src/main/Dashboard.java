@@ -84,6 +84,9 @@ public class Dashboard extends JFrame{
 	private String[] dueRow=new String[2];
 	private String[] alertColums= {"Medicine Name", "Time", "Date", "Alert Status"};
 	private String[] alertRow=new String[4];
+	private DefaultTableModel addAppointmentModel;
+	private String[] addAppointColums= {"Patient Name","Number", "Time","Date"};
+	private String[] addAppointRow=new String[4];
 	private JTextField medicineMgTextField;
 	private JLabel topBarDoctorLogoLabel;
 	private JLabel doctorNameLabel;
@@ -120,6 +123,14 @@ public class Dashboard extends JFrame{
 	private JLabel docaDueLabel;
 	private JLabel docSetAlertLogoLabel;
 	private JLabel docaSetAlertLabel;
+	private JTable addAppointmentTable;
+	private JTextField docPatientNameTextField;
+	private JTextField patientNumTextField;
+	private JTextField appointmentTimeTextField;
+	private JLabel lblhhmmAmpm;
+	private JDateChooser appointmentDateChooser;
+	private JButton addAppointmentButton;
+	private JButton deleteAppointmentButton;
 	//private Dashboard dashboard;
 	/**
 	 * Launch the application.
@@ -397,14 +408,14 @@ public class Dashboard extends JFrame{
 		dueLogoLabel.setBounds(56, 320, 66, 56);
 		patientSideBarBKLabel.add(dueLogoLabel);
 		
-		dueLabel = new JLabel("Due");
+		dueLabel = new JLabel("Due Today");
 		dueLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				switchPanel(dueContentPanel);
 			}
 		});
-		dueLabel.setBounds(124, 332, 52, 32);
+		dueLabel.setBounds(124, 332, 100, 32);
 		patientSideBarBKLabel.add(dueLabel);
 		dueLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
 		
@@ -419,7 +430,7 @@ public class Dashboard extends JFrame{
 		setAlertLogoLabel.setBounds(48, 429, 66, 56);
 		patientSideBarBKLabel.add(setAlertLogoLabel);
 		
-		setAlertLabel = new JLabel("setAlert");
+		setAlertLabel = new JLabel("Set Alert");
 		setAlertLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -442,11 +453,23 @@ public class Dashboard extends JFrame{
 		doctorSideBarPanel.add(doctorSideBarBKLabel);
 		
 		addAppointmentLogoLabel = new JLabel("");
+		addAppointmentLogoLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				switchPanel(addAppointPanel);
+			}
+		});
 		addAppointmentLogoLabel.setBounds(55, 88, 66, 56);
 		addAppointmentLogoLabel.setIcon(new ImageIcon(addAppointmentLogo));
 		doctorSideBarBKLabel.add(addAppointmentLogoLabel);
 		
 		addAppointmentLabel = new JLabel("Add Appointment");
+		addAppointmentLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				switchPanel(addAppointPanel);
+			}
+		});
 		addAppointmentLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
 		addAppointmentLabel.setBounds(134, 103, 180, 32);
 		doctorSideBarBKLabel.add(addAppointmentLabel);
@@ -764,7 +787,7 @@ public class Dashboard extends JFrame{
 		timeLabel.setBounds(60, 99, 59, 28);
 		setAlertPanel.add(timeLabel);
 		
-		JLabel timeFormatLabel = new JLabel("(hh:mm am/pm)");
+		JLabel timeFormatLabel = new JLabel("(hh:mm AM/PM)");
 		timeFormatLabel.setForeground(Color.DARK_GRAY);
 		timeFormatLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		timeFormatLabel.setBackground(new Color(229, 234, 230));
@@ -846,6 +869,112 @@ public class Dashboard extends JFrame{
 		addAppointPanel.setBackground(new Color(229,234,230));
 		addAppointPanel.setForeground(new Color(229,234,230));
 		activityContentlayeredPane.add(addAppointPanel, "name_129264126906200");
+		addAppointPanel.setLayout(null);
+		
+		JScrollPane addAppointmentScrollPane = new JScrollPane();
+		addAppointmentScrollPane.setBounds(554, 47, 440, 444);
+		addAppointmentScrollPane.getViewport().setBackground(Color.WHITE);
+		addAppointPanel.add(addAppointmentScrollPane);
+		
+		addAppointmentTable = new JTable();
+		addAppointmentTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		addAppointmentScrollPane.setViewportView(addAppointmentTable);
+		
+		addAppointmentModel=new DefaultTableModel();
+		addAppointmentModel.setColumnIdentifiers(addAppointColums);
+		addAppointmentTable.setModel(addAppointmentModel);
+		addAppointmentTable.setRowHeight(30);
+		addAppointmentTable.setBackground(new Color(238,255,252));
+		
+		TableColumnModel appointColumnModel = addAppointmentTable.getColumnModel();
+		appointColumnModel.getColumn(0).setPreferredWidth(80);
+		appointColumnModel.getColumn(1).setPreferredWidth(40);
+		appointColumnModel.getColumn(2).setPreferredWidth(5);
+		appointColumnModel.getColumn(3).setPreferredWidth(5);
+		
+		JLabel docPatientNameLabel = new JLabel("Patient Name");
+		docPatientNameLabel.setForeground(Color.DARK_GRAY);
+		docPatientNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		docPatientNameLabel.setBackground(new Color(229, 234, 230));
+		docPatientNameLabel.setBounds(45, 47, 144, 35);
+		addAppointPanel.add(docPatientNameLabel);
+		
+		docPatientNameTextField = new JTextField();
+		docPatientNameTextField.setColumns(10);
+		docPatientNameTextField.setBounds(200, 47, 226, 35);
+		addAppointPanel.add(docPatientNameTextField);
+		
+		JLabel patientNumLabel = new JLabel("Patient Number");
+		patientNumLabel.setForeground(Color.DARK_GRAY);
+		patientNumLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		patientNumLabel.setBackground(new Color(229, 234, 230));
+		patientNumLabel.setBounds(45, 127, 144, 35);
+		addAppointPanel.add(patientNumLabel);
+		
+		patientNumTextField = new JTextField();
+		patientNumTextField.setColumns(10);
+		patientNumTextField.setBounds(200, 127, 226, 35);
+		addAppointPanel.add(patientNumTextField);
+		
+		appointmentTimeTextField = new JTextField();
+		appointmentTimeTextField.setColumns(10);
+		appointmentTimeTextField.setBounds(239, 206, 187, 35);
+		addAppointPanel.add(appointmentTimeTextField);
+		
+		JLabel appointTimeLabel = new JLabel("Appointment Time");
+		appointTimeLabel.setForeground(Color.DARK_GRAY);
+		appointTimeLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		appointTimeLabel.setBackground(new Color(229, 234, 230));
+		appointTimeLabel.setBounds(45, 206, 177, 35);
+		addAppointPanel.add(appointTimeLabel);
+		
+		appointmentDateChooser = new JDateChooser();
+		appointmentDateChooser.setBounds(239, 289, 152, 35);
+		addAppointPanel.add(appointmentDateChooser);
+		
+		JLabel appointmentDateLabel = new JLabel("Appointment Date");
+		appointmentDateLabel.setForeground(Color.DARK_GRAY);
+		appointmentDateLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		appointmentDateLabel.setBackground(new Color(229, 234, 230));
+		appointmentDateLabel.setBounds(45, 289, 177, 35);
+		addAppointPanel.add(appointmentDateLabel);
+		
+		lblhhmmAmpm = new JLabel("(hh:mm AM/PM)");
+		lblhhmmAmpm.setForeground(Color.DARK_GRAY);
+		lblhhmmAmpm.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblhhmmAmpm.setBackground(new Color(229, 234, 230));
+		lblhhmmAmpm.setBounds(436, 206, 114, 28);
+		addAppointPanel.add(lblhhmmAmpm);
+		
+		addAppointmentButton = new JButton("Add");
+		addAppointmentButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				addAppointRow[0]=docPatientNameTextField.getText().trim();
+				addAppointRow[1]=patientNumTextField.getText().trim();
+				addAppointRow[2]=appointmentTimeTextField.getText().trim();
+				
+				Date date=appointmentDateChooser.getDate();
+				String strDate=DateFormat.getInstance().format(date);
+				String[] arrDate=strDate.split(",");
+				addAppointRow[3]=arrDate[0].trim();
+				addAppointmentModel.addRow(addAppointRow);
+				
+				docPatientNameTextField.setText("");
+				patientNumTextField.setText("");
+				appointmentTimeTextField.setText("");
+			}
+		});
+		addAppointmentButton.setForeground(Color.WHITE);
+		addAppointmentButton.setBackground(new Color(94, 94, 194));
+		addAppointmentButton.setBounds(145, 375, 118, 41);
+		addAppointPanel.add(addAppointmentButton);
+		
+		deleteAppointmentButton = new JButton("Delete");
+		deleteAppointmentButton.setForeground(Color.WHITE);
+		deleteAppointmentButton.setBackground(new Color(220, 59, 59));
+		deleteAppointmentButton.setBounds(308, 375, 118, 41);
+		addAppointPanel.add(deleteAppointmentButton);
 		
 		JLabel dashboardTopBar = new JLabel("");
 		dashboardTopBar.setIcon(new ImageIcon(Dashboard.class.getResource("/images/dashboardTitleBar.png")));

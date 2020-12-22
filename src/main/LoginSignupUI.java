@@ -185,14 +185,16 @@ public class LoginSignupUI extends JFrame {
 					dashboard=new Dashboard(userName, frame);
 					dashboard.setVisible(true);
 					dashboard.switchDoctorPanel();
-					frame.dispose();
+					frame.setVisible(false);
+					doctorSelected=false;
 				}
 				else if(authCheck==true && patientSelected==true) {
 					System.out.println("correct" + userName);
 					dashboard=new Dashboard(userName, frame);
 					dashboard.setVisible(true);
 					dashboard.switchPatientPanel();
-					frame.dispose();
+					frame.setVisible(false);
+					patientSelected=false;
 				}
 				else if(authCheck==false){
 					JOptionPane.showMessageDialog(frame, "Wrong User Name or Password","Alert", JOptionPane.WARNING_MESSAGE);
@@ -219,6 +221,7 @@ public class LoginSignupUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(patientCheckBox.isSelected()) {
 					patientSelected=true;
+					doctorSelected=false;
 				}
 			}
 		});
@@ -232,7 +235,7 @@ public class LoginSignupUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				doctorSelected=true;
-				
+				patientSelected=false;
 			}
 		});
 		

@@ -58,6 +58,7 @@ public class LoginSignupUI extends JFrame {
 	private JCheckBox nurseCheckBox;
 	private boolean patientSelected=false;
 	private boolean doctorSelected=false;
+	private boolean nurseSelected=false;
 	public static Dashboard dashboard;
 	
 	
@@ -181,20 +182,28 @@ public class LoginSignupUI extends JFrame {
 				String password=String.valueOf(loginPasswordField.getPassword()).trim();
 				boolean authCheck=auth.verifyUser(userName, password);
 				if(authCheck==true && doctorSelected==true ) {
-					System.out.println("correct");
 					dashboard=new Dashboard(userName, frame);
 					dashboard.setVisible(true);
 					dashboard.switchDoctorPanel();
 					frame.setVisible(false);
-					doctorSelected=false;
+					//doctorSelected=false;
+					
 				}
 				else if(authCheck==true && patientSelected==true) {
-					System.out.println("correct" + userName);
 					dashboard=new Dashboard(userName, frame);
 					dashboard.setVisible(true);
 					dashboard.switchPatientPanel();
 					frame.setVisible(false);
-					patientSelected=false;
+					//patientSelected=false;
+					
+				}
+				else if(authCheck==true && nurseSelected==true) {
+					dashboard=new Dashboard(userName, frame);
+					dashboard.setVisible(true);
+					dashboard.switchNursePanel();
+					frame.setVisible(false);
+					//nurseSelected=false;
+					
 				}
 				else if(authCheck==false){
 					JOptionPane.showMessageDialog(frame, "Wrong User Name or Password","Alert", JOptionPane.WARNING_MESSAGE);
@@ -222,6 +231,7 @@ public class LoginSignupUI extends JFrame {
 				if(patientCheckBox.isSelected()) {
 					patientSelected=true;
 					doctorSelected=false;
+					nurseSelected=false;
 				}
 			}
 		});
@@ -236,6 +246,7 @@ public class LoginSignupUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				doctorSelected=true;
 				patientSelected=false;
+				nurseSelected=false;
 			}
 		});
 		
@@ -243,6 +254,14 @@ public class LoginSignupUI extends JFrame {
 		nurseCheckBox.setBackground(Color.WHITE);
 		nurseCheckBox.setBounds(43, 356, 130, 26);
 		logInPanel.add(nurseCheckBox);
+		nurseCheckBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				nurseSelected=true;
+				patientSelected=false;
+				doctorSelected=false;
+			}
+		});
 		
 		userCheckBoxGroup=new ButtonGroup();
 		userCheckBoxGroup.add(patientCheckBox);

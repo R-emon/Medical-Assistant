@@ -55,6 +55,7 @@ public class Dashboard extends JFrame{
 	private Image topBarDoctorLogo= new ImageIcon(Dashboard.class.getResource("/images/doctorTopbar.png")).getImage().getScaledInstance(80, 70, Image.SCALE_SMOOTH);
 	private Image crossDashboardLogo= new ImageIcon(Dashboard.class.getResource("/images/cross.png")).getImage().getScaledInstance(25, 20, Image.SCALE_SMOOTH);
 	private Image addAppointmentLogo= new ImageIcon(Dashboard.class.getResource("/images/report.png")).getImage().getScaledInstance(66, 56, Image.SCALE_SMOOTH);
+	private Image topBarNurseLogo= new ImageIcon(Dashboard.class.getResource("/images/nurse.png")).getImage().getScaledInstance(80, 70, Image.SCALE_SMOOTH);
 	private JLabel topBarPatientLogoLabel;
 	private JLabel patientNameLabel;
 	private JLabel addMedLogoLabel;
@@ -74,10 +75,10 @@ public class Dashboard extends JFrame{
 	private JTextField medicineNameTextField;
 	private JTable medicineTable;
 	private DefaultTableModel model;
-	private DefaultTableModel prescriptionModel;
 	private String[] colums= {"Medicine Name", "mg"};
 	private String[] row=new String[2];
 	private String[] items= {"0", "1", "2", "3"};
+	private DefaultTableModel prescriptionModel;
 	private String[] pressColums= {"Medicine Name", "mg", "Morning", "Evening", "Night", "Days"};
 	private String[] presRow=new String[6];
 	private String[] dueColums= {"Medicine Name", "mg"};
@@ -90,6 +91,9 @@ public class Dashboard extends JFrame{
 	private DefaultTableModel docAlertListModel;
 	private String[] docAlertListColums= {"Patient Name", "Time", "Date", "Alert Status"};
 	private String[] docAlertListRow=new String[4];
+	private DefaultTableModel patientVisitModel;
+	private String[] patientVisitColums= {"Patient Name", "Bed No.", "Medicine Name", "Medicine Qnty."};
+	private String[] patientVisitRow=new String[4];
 	private JTextField medicineMgTextField;
 	private JLabel topBarDoctorLogoLabel;
 	private JLabel doctorNameLabel;
@@ -142,6 +146,23 @@ public class Dashboard extends JFrame{
 	private JScrollPane docSetAlertScrollPane;
 	private JTable docAlertListTable;
 	private JScrollPane docAlertListScrollPane;
+	private JLabel nurseNameLabel;
+	private JLabel nurseLogOutLabel;
+	private JLabel nurseLogOutLogoLabel;
+	private JLabel nurseSideBarBKLabel;
+	private JLabel addPatientVisitLogoLabel;
+	private JLabel addPatientVisitLabel;
+	private JLabel nurseDueLogoLabel;
+	private JLabel nurseDueLabel;
+	private JLabel nurseSetAlertLogoLabel;
+	private JLabel nurseSetAlertLabel;
+	private JPanel addPatientVisitPanel;
+	private JTextField nursePatientNameTextField;
+	private JTextField bedNumberTextField;
+	private JTextField nurseMedicineTextField;
+	private JLabel nurseMdeicineQntyLabel;
+	private JTable patientVisitTable;
+	private JScrollPane patientVisitScrollPane;
 	//private Dashboard dashboard;
 	/**
 	 * Launch the application.
@@ -195,6 +216,24 @@ public class Dashboard extends JFrame{
 		
 		activityContentlayeredPane.removeAll();
 		activityContentlayeredPane.add(addAppointPanel);
+		activityContentlayeredPane.repaint();
+		activityContentlayeredPane.revalidate();
+		
+		
+	}
+	public void switchNursePanel() {
+		topBarLayeredPane.removeAll();
+		topBarLayeredPane.add(nurseTopBarPanel);
+		topBarLayeredPane.repaint();
+		topBarLayeredPane.revalidate();
+		
+		sideBarLayeredPane.removeAll();
+		sideBarLayeredPane.add(nurseSideBarPanel);
+		sideBarLayeredPane.repaint();
+		sideBarLayeredPane.revalidate();
+		
+		activityContentlayeredPane.removeAll();
+		activityContentlayeredPane.add(addPatientVisitPanel);
 		activityContentlayeredPane.repaint();
 		activityContentlayeredPane.revalidate();
 		
@@ -275,8 +314,8 @@ public class Dashboard extends JFrame{
 			}
 		});
 		logOutLogoLabel.setBounds(1259, 52, 35, 30);
-		topBarImageLabel.add(logOutLogoLabel);
 		logOutLogoLabel.setIcon(new ImageIcon(logOutLogo));
+		topBarImageLabel.add(logOutLogoLabel);
 		
 		logOutLabel = new JLabel("Log Out");
 		logOutLabel.addMouseListener(new MouseAdapter() {
@@ -287,9 +326,9 @@ public class Dashboard extends JFrame{
 			}
 		});
 		logOutLabel.setBounds(1296, 50, 78, 32);
-		topBarImageLabel.add(logOutLabel);
 		logOutLabel.setForeground(Color.RED);
 		logOutLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
+		topBarImageLabel.add(logOutLabel);
 		
 		doctorTopBarPanel = new JPanel();
 		doctorTopBarPanel.setForeground(new Color(229,234,230));
@@ -345,8 +384,56 @@ public class Dashboard extends JFrame{
 		doctorLogOutLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
 		
 		nurseTopBarPanel = new JPanel();
+		nurseTopBarPanel.setForeground(new Color(229,234,230));
+		nurseTopBarPanel.setBackground(new Color(229,234,230));
 		topBarLayeredPane.add(nurseTopBarPanel, "name_38755163090900");
 		nurseTopBarPanel.setLayout(null);
+		
+		JLabel nurseTopBarImageLabel = new JLabel("");
+		nurseTopBarImageLabel.setIcon(new ImageIcon(topBar));
+		nurseTopBarImageLabel.setBackground(new Color(229,234,230));
+		nurseTopBarImageLabel.setForeground(new Color(229,234,230));
+		nurseTopBarImageLabel.setBounds(0, 0, 1428, 130);
+		nurseTopBarPanel.add(nurseTopBarImageLabel);
+		
+		JLabel nurseLogoLabel = new JLabel("New label");
+		nurseLogoLabel.setBounds(21, 33, 80, 70);
+		nurseLogoLabel.setBackground(new Color(159,219,231));
+		nurseLogoLabel.setForeground(new Color(159,219,231));
+		nurseLogoLabel.setIcon(new ImageIcon(topBarNurseLogo));
+		nurseTopBarImageLabel.add(nurseLogoLabel);
+		
+		String nurseName="Welcome,"+userName.toUpperCase();
+		nurseNameLabel = new JLabel("Welcome,");
+		nurseNameLabel.setBounds(133, 40, 260, 54);
+		nurseNameLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
+		nurseNameLabel.setText(nurseName);
+		nurseTopBarImageLabel.add(nurseNameLabel);
+		
+		nurseLogOutLabel = new JLabel("Log Out");
+		nurseLogOutLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				frame.setVisible(true);
+				setVisible(false);
+			}
+		});
+		nurseLogOutLabel.setBounds(1296, 50, 78, 32);
+		nurseLogOutLabel.setForeground(Color.RED);
+		nurseLogOutLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
+		nurseTopBarImageLabel.add(nurseLogOutLabel);
+		
+		nurseLogOutLogoLabel = new JLabel("");
+		nurseLogOutLogoLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				frame.setVisible(true);
+				setVisible(false);
+			}
+		});
+		nurseLogOutLogoLabel.setBounds(1259, 52, 35, 30);
+		nurseLogOutLogoLabel.setIcon(new ImageIcon(logOutLogo));
+		nurseTopBarImageLabel.add(nurseLogOutLogoLabel);
 		
 		sideBarLayeredPane = new JLayeredPane();
 		sideBarLayeredPane.setBounds(31, 198, 338, 536);
@@ -533,6 +620,79 @@ public class Dashboard extends JFrame{
 		sideBarLayeredPane.add(nurseSideBarPanel, "name_38965842404800");
 		nurseSideBarPanel.setLayout(null);
 		
+		nurseSideBarBKLabel = new JLabel("");
+		nurseSideBarBKLabel.setForeground(new Color(159,219,231));
+		nurseSideBarBKLabel.setBackground(new Color(159,219,231));
+		nurseSideBarBKLabel.setBounds(0, 0, 338, 536);
+		nurseSideBarBKLabel.setIcon(new ImageIcon(sideBar));
+		nurseSideBarPanel.add(nurseSideBarBKLabel);
+		
+		addPatientVisitLogoLabel = new JLabel("");
+		addPatientVisitLogoLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				switchPanel(addPatientVisitPanel);
+			}
+		});
+		addPatientVisitLogoLabel.setBounds(55, 88, 66, 56);
+		addPatientVisitLogoLabel.setIcon(new ImageIcon(addAppointmentLogo));
+		nurseSideBarBKLabel.add(addPatientVisitLogoLabel);
+		
+		addPatientVisitLabel = new JLabel("Add Patient Visit");
+		addPatientVisitLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				switchPanel(addPatientVisitPanel);
+			}
+		});
+		addPatientVisitLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
+		addPatientVisitLabel.setBounds(134, 103, 180, 32);
+		nurseSideBarBKLabel.add(addPatientVisitLabel);
+		
+		nurseDueLogoLabel = new JLabel("");
+		nurseDueLogoLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				switchPanel(appointmentDuePanel);
+			}
+		});
+		nurseDueLogoLabel.setBounds(55, 259, 66, 56);
+		nurseDueLogoLabel.setIcon(new ImageIcon(dueLogo));
+		nurseSideBarBKLabel.add(nurseDueLogoLabel);
+		
+		nurseDueLabel = new JLabel("Patient Visit Due");
+		nurseDueLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				switchPanel(appointmentDuePanel);
+			}
+		});
+		nurseDueLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
+		nurseDueLabel.setBounds(134, 274, 180, 32);
+		nurseSideBarBKLabel.add(nurseDueLabel);
+		
+		nurseSetAlertLogoLabel = new JLabel("");
+		nurseSetAlertLogoLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				switchPanel(docSetAlertPanel);
+			}
+		});
+		nurseSetAlertLogoLabel.setBounds(55, 418, 66, 56);
+		nurseSetAlertLogoLabel.setIcon(new ImageIcon(setAlertLogo));
+		nurseSideBarBKLabel.add(nurseSetAlertLogoLabel);
+		
+		nurseSetAlertLabel = new JLabel("Set Alert");
+		nurseSetAlertLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				switchPanel(docSetAlertPanel);
+			}
+		});
+		nurseSetAlertLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
+		nurseSetAlertLabel.setBounds(134, 433, 180, 32);
+		nurseSideBarBKLabel.add(nurseSetAlertLabel);
+		
 		activityContentlayeredPane = new JLayeredPane();
 		activityContentlayeredPane.setBounds(413, 198, 1046, 536);
 		getContentPane().add(activityContentlayeredPane);
@@ -614,8 +774,6 @@ public class Dashboard extends JFrame{
 		medicineMgTextField.setColumns(10);
 		medicineMgTextField.setBounds(259, 266, 226, 35);
 		addMedicineContentPanel.add(medicineMgTextField);
-		
-		
 		
 		addPresContentPanel = new JPanel();
 		addPresContentPanel.setBackground(new Color(229,234,230));
@@ -1140,6 +1298,115 @@ public class Dashboard extends JFrame{
 		docAlertListColumModel.getColumn(1).setPreferredWidth(5);
 		docAlertListColumModel.getColumn(2).setPreferredWidth(5);
 		docAlertListColumModel.getColumn(3).setPreferredWidth(5);
+		
+		addPatientVisitPanel = new JPanel();
+		addPatientVisitPanel.setBounds(413, 198, 1046, 536);
+		addPatientVisitPanel.setForeground(new Color(229,234,230));
+		addPatientVisitPanel.setBackground(new Color(229,234,230));
+		activityContentlayeredPane.add(addPatientVisitPanel, "name_357329325946400");
+		addPatientVisitPanel.setLayout(null);
+		
+		JLabel nursePatientNameLabel = new JLabel("Patient Name");
+		nursePatientNameLabel.setForeground(Color.DARK_GRAY);
+		nursePatientNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		nursePatientNameLabel.setBackground(new Color(229, 234, 230));
+		nursePatientNameLabel.setBounds(91, 96, 144, 35);
+		addPatientVisitPanel.add(nursePatientNameLabel);
+		
+		nursePatientNameTextField = new JTextField();
+		nursePatientNameTextField.setColumns(10);
+		nursePatientNameTextField.setBounds(246, 96, 226, 35);
+		addPatientVisitPanel.add(nursePatientNameTextField);
+		
+		JLabel bedNumberLabel = new JLabel("Bed Number");
+		bedNumberLabel.setForeground(Color.DARK_GRAY);
+		bedNumberLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		bedNumberLabel.setBackground(new Color(229, 234, 230));
+		bedNumberLabel.setBounds(91, 165, 144, 35);
+		addPatientVisitPanel.add(bedNumberLabel);
+		
+		bedNumberTextField = new JTextField();
+		bedNumberTextField.setColumns(10);
+		bedNumberTextField.setBounds(246, 165, 70, 35);
+		addPatientVisitPanel.add(bedNumberTextField);
+		
+		JLabel nurseMedicineNameLabel = new JLabel("Mdeicine Name");
+		nurseMedicineNameLabel.setForeground(Color.DARK_GRAY);
+		nurseMedicineNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		nurseMedicineNameLabel.setBackground(new Color(229, 234, 230));
+		nurseMedicineNameLabel.setBounds(91, 233, 144, 35);
+		addPatientVisitPanel.add(nurseMedicineNameLabel);
+		
+		nurseMedicineTextField = new JTextField();
+		nurseMedicineTextField.setColumns(10);
+		nurseMedicineTextField.setBounds(246, 233, 226, 35);
+		addPatientVisitPanel.add(nurseMedicineTextField);
+		
+		JComboBox nurseMedQuantityComboBox = new JComboBox(items);
+		nurseMedQuantityComboBox.setFont(new Font("Tahoma", Font.BOLD, 14));
+		nurseMedQuantityComboBox.setBounds(246, 302, 91, 35);
+		addPatientVisitPanel.add(nurseMedQuantityComboBox);
+		
+		nurseMdeicineQntyLabel = new JLabel("Mdeicine Qnty.");
+		nurseMdeicineQntyLabel.setForeground(Color.DARK_GRAY);
+		nurseMdeicineQntyLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		nurseMdeicineQntyLabel.setBackground(new Color(229, 234, 230));
+		nurseMdeicineQntyLabel.setBounds(91, 302, 144, 35);
+		addPatientVisitPanel.add(nurseMdeicineQntyLabel);
+		
+		patientVisitScrollPane = new JScrollPane();
+		patientVisitScrollPane.setBounds(554, 47, 464, 444);
+		patientVisitScrollPane.getViewport().setBackground(Color.WHITE);
+		addPatientVisitPanel.add(patientVisitScrollPane);
+		
+		patientVisitTable = new JTable();
+		patientVisitTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		patientVisitTable.setBackground(new Color(238,255,252));
+		patientVisitScrollPane.setViewportView(patientVisitTable);
+		
+		patientVisitModel=new DefaultTableModel();
+		patientVisitModel.setColumnIdentifiers(patientVisitColums);
+		patientVisitTable.setModel(patientVisitModel);
+		patientVisitTable.setRowHeight(40);
+		
+		JButton addPatientVisitButton = new JButton("Add");
+		addPatientVisitButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				patientVisitRow[0]=nursePatientNameTextField.getText().trim();
+				patientVisitRow[1]=bedNumberTextField.getText().trim();
+				patientVisitRow[2]=nurseMedicineTextField.getText().trim();
+				patientVisitRow[3]=nurseMedQuantityComboBox.getSelectedItem().toString().trim();
+				
+				patientVisitModel.addRow(patientVisitRow);
+				
+				nursePatientNameTextField.setText("");
+				bedNumberTextField.setText("");
+				nurseMedQuantityComboBox.setSelectedIndex(0);
+				nurseMedicineTextField.setText("");
+			}
+		});
+		addPatientVisitButton.setForeground(Color.WHITE);
+		addPatientVisitButton.setBackground(new Color(94, 94, 194));
+		addPatientVisitButton.setBounds(158, 404, 118, 41);
+		addPatientVisitPanel.add(addPatientVisitButton);
+		
+		JButton deletePatientVisitButton = new JButton("Delete");
+		deletePatientVisitButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int selectedRow=patientVisitTable.getSelectedRow();
+				patientVisitModel.removeRow(selectedRow);;
+			}
+		});
+		deletePatientVisitButton.setForeground(Color.WHITE);
+		deletePatientVisitButton.setBackground(new Color(220, 59, 59));
+		deletePatientVisitButton.setBounds(301, 404, 118, 41);
+		addPatientVisitPanel.add(deletePatientVisitButton);
+		
+		TableColumnModel patientVisitColumnModel = patientVisitTable.getColumnModel();
+		patientVisitColumnModel.getColumn(0).setPreferredWidth(80);
+		patientVisitColumnModel.getColumn(1).setPreferredWidth(5);
+		patientVisitColumnModel.getColumn(2).setPreferredWidth(40);
+		patientVisitColumnModel.getColumn(3).setPreferredWidth(5);
 		
 		
 		JLabel dashboardTopBar = new JLabel("");

@@ -94,6 +94,9 @@ public class Dashboard extends JFrame{
 	private DefaultTableModel patientVisitModel;
 	private String[] patientVisitColums= {"Patient Name", "Bed No.", "Medicine Name", "Medicine Qnty."};
 	private String[] patientVisitRow=new String[4];
+	private DefaultTableModel nurseAlertListModel;
+	private String[] nurseAlertListColum= {"Patient Name","Bed No.", "Time", "Date"};
+	private String[] nurseAlertListRow=new String[4];
 	private JTextField medicineMgTextField;
 	private JLabel topBarDoctorLogoLabel;
 	private JLabel doctorNameLabel;
@@ -163,6 +166,14 @@ public class Dashboard extends JFrame{
 	private JLabel nurseMdeicineQntyLabel;
 	private JTable patientVisitTable;
 	private JScrollPane patientVisitScrollPane;
+	private JTable nurseDueTable;
+	private JPanel nurseDuePanel;
+	private JPanel nurseSetAlertPanel;
+	private JTextField nurseAlertTimeTextField;
+	private JTable nurseSetAlertTable;
+	private JScrollPane nurseSetAlertScrollPane;
+	private JTable nurseAlertListTable;
+	private JScrollPane nurseAlertListScrollPane;
 	//private Dashboard dashboard;
 	/**
 	 * Launch the application.
@@ -653,7 +664,7 @@ public class Dashboard extends JFrame{
 		nurseDueLogoLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				switchPanel(appointmentDuePanel);
+				switchPanel(nurseDuePanel);
 			}
 		});
 		nurseDueLogoLabel.setBounds(55, 259, 66, 56);
@@ -664,7 +675,7 @@ public class Dashboard extends JFrame{
 		nurseDueLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				switchPanel(appointmentDuePanel);
+				switchPanel(nurseDuePanel);
 			}
 		});
 		nurseDueLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
@@ -675,7 +686,7 @@ public class Dashboard extends JFrame{
 		nurseSetAlertLogoLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				switchPanel(docSetAlertPanel);
+				switchPanel(nurseSetAlertPanel);
 			}
 		});
 		nurseSetAlertLogoLabel.setBounds(55, 418, 66, 56);
@@ -686,7 +697,7 @@ public class Dashboard extends JFrame{
 		nurseSetAlertLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				switchPanel(docSetAlertPanel);
+				switchPanel(nurseSetAlertPanel);
 			}
 		});
 		nurseSetAlertLabel.setFont(new Font("Microsoft YaHei", Font.BOLD, 17));
@@ -932,6 +943,8 @@ public class Dashboard extends JFrame{
 		
 		medicineDueTable = new JTable();
 		medicineDueTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		medicineDueTable.setBackground(new Color(238,255,252));
+		medicineDueTable.setRowHeight(40);
 		medicineDueScrollPane.setViewportView(medicineDueTable);
 		
 		DefaultTableModel dueModel=new DefaultTableModel();
@@ -966,12 +979,12 @@ public class Dashboard extends JFrame{
 		
 		setAlertTable = new JTable();
 		setAlertTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		setAlertTable.setBackground(new Color(238,255,252));
 		setAlertScrollPane.setViewportView(setAlertTable);
 		
 		model.setColumnIdentifiers(colums);
 		setAlertTable.setModel(model);
 		setAlertTable.setRowHeight(40);
-		setAlertTable.setBackground(new Color(238,255,252));
 		
 		JLabel timeLabel = new JLabel("Time");
 		timeLabel.setForeground(Color.DARK_GRAY);
@@ -1011,13 +1024,14 @@ public class Dashboard extends JFrame{
 		
 		alertListTable = new JTable();
 		alertListTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		alertListTable.setBackground(new Color(238,255,252));
 		alertListScrollPane.setViewportView(alertListTable);
 		
 		DefaultTableModel alertListModel=new DefaultTableModel();
 		alertListModel.setColumnIdentifiers(alertColums);
 		alertListTable.setModel(alertListModel);
 		alertListTable.setRowHeight(40);
-		alertListTable.setBackground(new Color(238,255,252));
+		
 		
 		TableColumnModel alertColumnModel = alertListTable.getColumnModel();
 		alertColumnModel.getColumn(0).setPreferredWidth(80);
@@ -1202,6 +1216,7 @@ public class Dashboard extends JFrame{
 		
 		docDueTable = new JTable();
 		docDueTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		docDueTable.setBackground(new Color(238,255,252));
 		docDueScrollPane.setViewportView(docDueTable);
 		
 		docSetAlertPanel = new JPanel();
@@ -1291,6 +1306,20 @@ public class Dashboard extends JFrame{
 		docAlertListModel=new DefaultTableModel();
 		docAlertListModel.setColumnIdentifiers(docAlertListColums);
 		docAlertListTable.setModel(docAlertListModel);
+		
+		JLabel doctorAlertListLabel = new JLabel("Alert List");
+		doctorAlertListLabel.setForeground(Color.DARK_GRAY);
+		doctorAlertListLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		doctorAlertListLabel.setBackground(new Color(229, 234, 230));
+		doctorAlertListLabel.setBounds(61, 364, 70, 28);
+		docSetAlertPanel.add(doctorAlertListLabel);
+		
+		JLabel doctorSelectHereLabel = new JLabel("Select Here");
+		doctorSelectHereLabel.setForeground(Color.DARK_GRAY);
+		doctorSelectHereLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		doctorSelectHereLabel.setBackground(new Color(229, 234, 230));
+		doctorSelectHereLabel.setBounds(590, 10, 80, 28);
+		docSetAlertPanel.add(doctorSelectHereLabel);
 		alertListTable.setRowHeight(40);
 		
 		TableColumnModel docAlertListColumModel=docAlertListTable.getColumnModel();
@@ -1369,6 +1398,12 @@ public class Dashboard extends JFrame{
 		patientVisitTable.setModel(patientVisitModel);
 		patientVisitTable.setRowHeight(40);
 		
+		TableColumnModel patientVisitColumnModel = patientVisitTable.getColumnModel();
+		patientVisitColumnModel.getColumn(0).setPreferredWidth(80);
+		patientVisitColumnModel.getColumn(1).setPreferredWidth(5);
+		patientVisitColumnModel.getColumn(2).setPreferredWidth(40);
+		patientVisitColumnModel.getColumn(3).setPreferredWidth(5);
+		
 		JButton addPatientVisitButton = new JButton("Add");
 		addPatientVisitButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -1402,11 +1437,134 @@ public class Dashboard extends JFrame{
 		deletePatientVisitButton.setBounds(301, 404, 118, 41);
 		addPatientVisitPanel.add(deletePatientVisitButton);
 		
-		TableColumnModel patientVisitColumnModel = patientVisitTable.getColumnModel();
-		patientVisitColumnModel.getColumn(0).setPreferredWidth(80);
-		patientVisitColumnModel.getColumn(1).setPreferredWidth(5);
-		patientVisitColumnModel.getColumn(2).setPreferredWidth(40);
-		patientVisitColumnModel.getColumn(3).setPreferredWidth(5);
+		nurseDuePanel = new JPanel();
+		nurseDuePanel.setBounds(413, 198, 1046, 536);
+		nurseDuePanel.setForeground(new Color(229,234,230));
+		nurseDuePanel.setBackground(new Color(229,234,230));
+		activityContentlayeredPane.add(nurseDuePanel, "name_385195264362000");
+		nurseDuePanel.setLayout(null);
+		
+		JLabel nurseDueTodayLabe = new JLabel("Due Today");
+		nurseDueTodayLabe.setFont(new Font("Tahoma", Font.BOLD, 24));
+		nurseDueTodayLabe.setBounds(175, 242, 205, 65);
+		nurseDuePanel.add(nurseDueTodayLabe);
+		
+		JButton nurseDueRefreshButton = new JButton("Refresh");
+		nurseDueRefreshButton.setForeground(Color.WHITE);
+		nurseDueRefreshButton.setBackground(new Color(146,94,194));
+		nurseDueRefreshButton.setBounds(185, 317, 118, 41);
+		nurseDuePanel.add(nurseDueRefreshButton);
+		
+		JScrollPane nurseDueScrollPane = new JScrollPane();
+		nurseDueScrollPane.setBounds(554, 47, 369, 444);
+		nurseDueScrollPane.getViewport().setBackground(Color.WHITE);
+		nurseDuePanel.add(nurseDueScrollPane);
+		
+		nurseDueTable = new JTable();
+		nurseDueTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		nurseDueTable.setBackground(new Color(238,255,252));
+		nurseDueTable.setRowHeight(40);
+		nurseDueScrollPane.setViewportView(nurseDueTable);
+		
+		nurseSetAlertPanel = new JPanel();
+		nurseSetAlertPanel.setBounds(413, 198, 1046, 536);
+		nurseSetAlertPanel.setForeground(new Color(229,234,230));
+		nurseSetAlertPanel.setBackground(new Color(229,234,230));
+		activityContentlayeredPane.add(nurseSetAlertPanel, "name_386065400734900");
+		nurseSetAlertPanel.setLayout(null);
+		
+		JLabel nurseAlertTimeLabel = new JLabel("Time");
+		nurseAlertTimeLabel.setForeground(Color.DARK_GRAY);
+		nurseAlertTimeLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		nurseAlertTimeLabel.setBackground(new Color(229, 234, 230));
+		nurseAlertTimeLabel.setBounds(60, 99, 59, 28);
+		nurseSetAlertPanel.add(nurseAlertTimeLabel);
+		
+		nurseAlertTimeTextField = new JTextField();
+		nurseAlertTimeTextField.setBackground(Color.WHITE);
+		nurseAlertTimeTextField.setColumns(10);
+		nurseAlertTimeTextField.setBounds(169, 92, 226, 35);
+		nurseSetAlertPanel.add(nurseAlertTimeTextField);
+		
+		JLabel nurseAlertTimeFormatLabel = new JLabel("(hh:mm AM/PM)");
+		nurseAlertTimeFormatLabel.setForeground(Color.DARK_GRAY);
+		nurseAlertTimeFormatLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		nurseAlertTimeFormatLabel.setBackground(new Color(229, 234, 230));
+		nurseAlertTimeFormatLabel.setBounds(60, 133, 114, 28);
+		nurseSetAlertPanel.add(nurseAlertTimeFormatLabel);
+		
+		JLabel nurseAlertDateLabel = new JLabel("Date");
+		nurseAlertDateLabel.setForeground(Color.DARK_GRAY);
+		nurseAlertDateLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		nurseAlertDateLabel.setBackground(new Color(229, 234, 230));
+		nurseAlertDateLabel.setBounds(60, 171, 59, 28);
+		nurseSetAlertPanel.add(nurseAlertDateLabel);
+		
+		JButton nurseSetAlertButton = new JButton("Set Alert");
+		nurseSetAlertButton.setForeground(Color.WHITE);
+		nurseSetAlertButton.setBackground(new Color(94,194,162));
+		nurseSetAlertButton.setBounds(169, 274, 118, 41);
+		nurseSetAlertPanel.add(nurseSetAlertButton);
+		
+		JDateChooser nurseAlertDateChooser = new JDateChooser();
+		nurseAlertDateChooser.setBounds(169, 171, 152, 35);
+		nurseSetAlertPanel.add(nurseAlertDateChooser);
+		
+		nurseSetAlertScrollPane = new JScrollPane();
+		nurseSetAlertScrollPane.setBounds(572, 48, 464, 489);
+		nurseSetAlertScrollPane.getViewport().setBackground(Color.WHITE);
+		nurseSetAlertPanel.add(nurseSetAlertScrollPane);
+		
+		nurseSetAlertTable = new JTable();
+		nurseSetAlertTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		nurseSetAlertTable.setBackground(new Color(238,255,252));
+		nurseSetAlertTable.setRowHeight(40);
+		nurseSetAlertScrollPane.setViewportView(nurseSetAlertTable);
+		nurseSetAlertTable.setModel(patientVisitModel);
+		
+		TableColumnModel nurseSetAlertTableColumnModel = nurseSetAlertTable.getColumnModel();
+		nurseSetAlertTableColumnModel.getColumn(0).setPreferredWidth(80);
+		nurseSetAlertTableColumnModel.getColumn(1).setPreferredWidth(5);
+		nurseSetAlertTableColumnModel.getColumn(2).setPreferredWidth(40);
+		nurseSetAlertTableColumnModel.getColumn(3).setPreferredWidth(5);
+		
+		
+		nurseAlertListScrollPane = new JScrollPane();
+		nurseAlertListScrollPane.setBounds(60, 402, 435, 134);
+		nurseAlertListScrollPane.getViewport().setBackground(Color.WHITE);
+		nurseSetAlertPanel.add(nurseAlertListScrollPane);
+		
+		nurseAlertListTable = new JTable();
+		nurseAlertListTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		nurseAlertListTable.setBackground(new Color(238,255,252));
+		nurseAlertListTable.setRowHeight(40);
+		nurseAlertListScrollPane.setViewportView(nurseAlertListTable);
+		
+		nurseAlertListModel=new DefaultTableModel();
+		nurseAlertListModel.setColumnIdentifiers(nurseAlertListColum);
+		nurseAlertListTable.setModel(nurseAlertListModel);
+		
+		TableColumnModel nurseAlertListTableColumnModel = nurseAlertListTable.getColumnModel();
+		nurseAlertListTableColumnModel.getColumn(0).setPreferredWidth(80);
+		nurseAlertListTableColumnModel.getColumn(1).setPreferredWidth(40);
+		nurseAlertListTableColumnModel.getColumn(2).setPreferredWidth(5);
+		nurseAlertListTableColumnModel.getColumn(3).setPreferredWidth(5);
+		
+		JLabel nurseAlertListLabel = new JLabel("Alert List");
+		nurseAlertListLabel.setForeground(Color.DARK_GRAY);
+		nurseAlertListLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		nurseAlertListLabel.setBackground(new Color(229, 234, 230));
+		nurseAlertListLabel.setBounds(60, 364, 70, 28);
+		nurseSetAlertPanel.add(nurseAlertListLabel);
+		
+		JLabel nurseSelectHereLabel = new JLabel("Select Here");
+		nurseSelectHereLabel.setForeground(Color.DARK_GRAY);
+		nurseSelectHereLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		nurseSelectHereLabel.setBackground(new Color(229, 234, 230));
+		nurseSelectHereLabel.setBounds(572, 10, 80, 28);
+		nurseSetAlertPanel.add(nurseSelectHereLabel);
+		
+		
 		
 		
 		JLabel dashboardTopBar = new JLabel("");

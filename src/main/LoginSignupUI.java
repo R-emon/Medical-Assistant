@@ -48,17 +48,17 @@ public class LoginSignupUI extends JFrame {
 	private JTextField logInUserNameTextField;
 	private JPasswordField loginPasswordField;
 	private JLayeredPane signUpLogInLayeredPane;
-	private Button logInButton;
 	private JPanel logInPanel;
 	private JPanel signUpPanel;
 	private Image crossLogo= new ImageIcon(LoginSignupUI.class.getResource("/images/cross.png")).getImage().getScaledInstance(22, 22, Image.SCALE_SMOOTH);
-	private ButtonGroup userCheckBoxGroup;
-	private JCheckBox patientCheckBox;
-	private JCheckBox doctorCheckBox;
-	private JCheckBox nurseCheckBox;
+	private ButtonGroup userLoginCheckBoxGroup;
+	private JCheckBox patientLoginCheckBox;
+	private JCheckBox doctorLoginCheckBox;
+	private JCheckBox nurseLoginCheckBox;
 	private boolean patientSelected=false;
 	private boolean doctorSelected=false;
 	private boolean nurseSelected=false;
+	private ButtonGroup userSignUpCheckBoxGroup;
 	public static Dashboard dashboard;
 	
 	
@@ -79,16 +79,6 @@ public class LoginSignupUI extends JFrame {
 			}
 		});
 	}
-
-	/**
-	 * Create the frame.
-	 */
-	public void switchLogInSignUpPanel(JPanel panel) {
-		signUpLogInLayeredPane.removeAll();
-		signUpLogInLayeredPane.add(panel);
-		signUpLogInLayeredPane.repaint();
-		signUpLogInLayeredPane.revalidate();
-	}
 //	public Dashboard getDashboardFrame() {
 //		return this.dashboard;
 //	}
@@ -101,6 +91,13 @@ public class LoginSignupUI extends JFrame {
 		
 		loginPageContents();  //all other contents method.
 		
+	}
+	
+	public void switchLogInSignUpPanel(JPanel panel){
+		signUpLogInLayeredPane.removeAll();
+		signUpLogInLayeredPane.add(panel);
+		signUpLogInLayeredPane.repaint();
+		signUpLogInLayeredPane.revalidate();
 	}
 	
 	public void loginPageContents() {
@@ -125,14 +122,14 @@ public class LoginSignupUI extends JFrame {
 //		bkImageLabel=new JLabel("",imgIcon,JLabel.CENTER);
 		bkImageLabel = new JLabel("",new ImageIcon(LoginSignupUI.class.getResource("/images/121.png")),JLabel.CENTER);
 		//lblNewLabel_3.setIcon(new ImageIcon(LoginSignupUI.class.getResource("/images/10198 Small Final.jpg")));
-		bkImageLabel.setBounds(0, 0, 500, 600);
+		bkImageLabel.setBounds(0, 0, 500, 563);
 		//add(bkImageLabel);
 		contentPane.add(bkImageLabel);
 		
 		signUpLogInLayeredPane = new JLayeredPane();
 		signUpLogInLayeredPane.setForeground(Color.WHITE);
 		signUpLogInLayeredPane.setBackground(Color.WHITE);
-		signUpLogInLayeredPane.setBounds(500, 33, 400, 600);
+		signUpLogInLayeredPane.setBounds(500, 33, 386, 530);
 		contentPane.add(signUpLogInLayeredPane);
 		signUpLogInLayeredPane.setLayout(new CardLayout(0, 0));
 		
@@ -221,14 +218,14 @@ public class LoginSignupUI extends JFrame {
 		LogInPasswordSeparator.setBounds(43, 271, 283, 1);
 		logInPanel.add(LogInPasswordSeparator);
 		
-		patientCheckBox = new JCheckBox("Log In as Patient");
-		patientCheckBox.setBackground(Color.WHITE);
-		patientCheckBox.setBounds(43, 296, 130, 26);
-		logInPanel.add(patientCheckBox);
-		patientCheckBox.addActionListener(new ActionListener() {
+		patientLoginCheckBox = new JCheckBox("Log In as Patient");
+		patientLoginCheckBox.setBackground(Color.WHITE);
+		patientLoginCheckBox.setBounds(43, 296, 119, 26);
+		logInPanel.add(patientLoginCheckBox);
+		patientLoginCheckBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(patientCheckBox.isSelected()) {
+				if(patientLoginCheckBox.isSelected()) {
 					patientSelected=true;
 					doctorSelected=false;
 					nurseSelected=false;
@@ -237,11 +234,11 @@ public class LoginSignupUI extends JFrame {
 		});
 		
 		
-		doctorCheckBox = new JCheckBox("Log In as Doctor");
-		doctorCheckBox.setBackground(Color.WHITE);
-		doctorCheckBox.setBounds(43, 327, 130, 26);
-		logInPanel.add(doctorCheckBox);
-		doctorCheckBox.addActionListener(new ActionListener() {
+		doctorLoginCheckBox = new JCheckBox("Log In as Doctor");
+		doctorLoginCheckBox.setBackground(Color.WHITE);
+		doctorLoginCheckBox.setBounds(43, 327, 119, 26);
+		logInPanel.add(doctorLoginCheckBox);
+		doctorLoginCheckBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				doctorSelected=true;
@@ -250,11 +247,11 @@ public class LoginSignupUI extends JFrame {
 			}
 		});
 		
-		nurseCheckBox = new JCheckBox("Log In as Nurse");
-		nurseCheckBox.setBackground(Color.WHITE);
-		nurseCheckBox.setBounds(43, 356, 130, 26);
-		logInPanel.add(nurseCheckBox);
-		nurseCheckBox.addActionListener(new ActionListener() {
+		nurseLoginCheckBox = new JCheckBox("Log In as Nurse");
+		nurseLoginCheckBox.setBackground(Color.WHITE);
+		nurseLoginCheckBox.setBounds(43, 356, 119, 26);
+		logInPanel.add(nurseLoginCheckBox);
+		nurseLoginCheckBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				nurseSelected=true;
@@ -263,20 +260,36 @@ public class LoginSignupUI extends JFrame {
 			}
 		});
 		
-		userCheckBoxGroup=new ButtonGroup();
-		userCheckBoxGroup.add(patientCheckBox);
-		userCheckBoxGroup.add(doctorCheckBox);
-		userCheckBoxGroup.add(nurseCheckBox);
+		userLoginCheckBoxGroup=new ButtonGroup();
+		userLoginCheckBoxGroup.add(patientLoginCheckBox);
+		userLoginCheckBoxGroup.add(doctorLoginCheckBox);
+		userLoginCheckBoxGroup.add(nurseLoginCheckBox);
+		
+		JLabel lblNewLabel = new JLabel("Sign Up");
+		lblNewLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				switchLogInSignUpPanel(signUpPanel);
+			}
+		});
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblNewLabel.setBounds(150, 463, 103, 26);
+		lblNewLabel.setForeground(new Color(241,57,83));
+		logInPanel.add(lblNewLabel);
+		
+		JSeparator signUpSeparator = new JSeparator();
+		signUpSeparator.setBounds(148, 488, 70, 2);
+		logInPanel.add(signUpSeparator);
 		
 		JLabel userNameLabel = new JLabel("USERNAME");
-		userNameLabel.setBounds(43, 79, 157, 26);
+		userNameLabel.setBounds(43, 61, 157, 26);
 		signUpPanel.add(userNameLabel);
 		//bkImageLabel.add(userNameLabel);
 		
 		userNameTextField = new JTextField();
 		userNameTextField.setFont(new Font("Calibri", Font.PLAIN, 13));
 		userNameTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-		userNameTextField.setBounds(43, 102, 283, 36);
+		userNameTextField.setBounds(43, 84, 283, 36);
 		userNameTextField.setColumns(10);
 		signUpPanel.add(userNameTextField);
 		
@@ -285,19 +298,19 @@ public class LoginSignupUI extends JFrame {
 		JSeparator userNameSeparator = new JSeparator();
 		userNameSeparator.setForeground(Color.BLACK);
 		userNameSeparator.setBackground(Color.BLACK);
-		userNameSeparator.setBounds(43, 138, 283, 1);
+		userNameSeparator.setBounds(43, 120, 283, 1);
 		signUpPanel.add(userNameSeparator);
 		//bkImageLabel.add(separator);
 		
 		JLabel emailLabel = new JLabel("EMAIL");
-		emailLabel.setBounds(43, 158, 157, 26);
+		emailLabel.setBounds(43, 140, 157, 26);
 		signUpPanel.add(emailLabel);
 		//bkImageLabel.add(emailLabel);
 		
 		emailTextField = new JTextField();
 		emailTextField.setFont(new Font("Calibri", Font.PLAIN, 13));
 		emailTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-		emailTextField.setBounds(43, 180, 283, 36);
+		emailTextField.setBounds(43, 162, 283, 36);
 		emailTextField.setColumns(10);
 		signUpPanel.add(emailTextField);
 		//bkImageLabel.add(emailTextField);
@@ -305,48 +318,49 @@ public class LoginSignupUI extends JFrame {
 		JSeparator emailSeparator = new JSeparator();
 		emailSeparator.setForeground(Color.BLACK);
 		emailSeparator.setBackground(Color.BLACK);
-		emailSeparator.setBounds(43, 216, 283, 1);
+		emailSeparator.setBounds(43, 198, 283, 1);
 		signUpPanel.add(emailSeparator);
 		//bkImageLabel.add(separator_1);
 		
 		JLabel passwordLabel = new JLabel("PASSWORD");
-		passwordLabel.setBounds(43, 232, 157, 26);
+		passwordLabel.setBounds(43, 214, 157, 26);
 		signUpPanel.add(passwordLabel);
 		//bkImageLabel.add(passwordLabel);
 		
 		passwordTextField = new JPasswordField();
 		passwordTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-		passwordTextField.setBounds(43, 255, 283, 36);
+		passwordTextField.setBounds(43, 237, 283, 36);
 		signUpPanel.add(passwordTextField);
 		//bkImageLabel.add(passwordTextField);
 		
 		JSeparator passwordSeparator = new JSeparator();
 		passwordSeparator.setBackground(Color.BLACK);
 		passwordSeparator.setForeground(Color.BLACK);
-		passwordSeparator.setBounds(43, 291, 283, 1);
+		passwordSeparator.setBounds(43, 273, 283, 1);
 		signUpPanel.add(passwordSeparator);
 		//bkImageLabel.add(separator_1_1);
 		
 		JLabel conPasswordLabel = new JLabel("CONFIRM PASSWORD");
 		conPasswordLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-		conPasswordLabel.setBounds(43, 308, 157, 26);
+		conPasswordLabel.setBounds(43, 290, 157, 26);
 		signUpPanel.add(conPasswordLabel);
 		//bkImageLabel.add(conPasswordTextField_1);
 		
 		conPasswordTextField = new JPasswordField();
 		conPasswordTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-		conPasswordTextField.setBounds(43, 330, 283, 36);
+		conPasswordTextField.setBounds(43, 312, 283, 36);
 		signUpPanel.add(conPasswordTextField);
 		//bkImageLabel.add(conPasswordTextField);
 		
 		JSeparator conPasswordSeparator = new JSeparator();
 		conPasswordSeparator.setBackground(Color.BLACK);
 		conPasswordSeparator.setForeground(Color.BLACK);
-		conPasswordSeparator.setBounds(43, 366, 283, 1);
+		conPasswordSeparator.setBounds(43, 348, 283, 1);
 		signUpPanel.add(conPasswordSeparator);
 		//bkImageLabel.add(separator_1_1_1);
 		
 		Button signUpButton = new Button("Sign UP");
+		signUpButton.setActionCommand("Sign Up");
 		signUpButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				UserAuthentication userAuth=new UserAuthentication();
@@ -370,24 +384,49 @@ public class LoginSignupUI extends JFrame {
 		signUpPanel.add(signUpButton);
 		//bkImageLabel.add(signUpButton);
 		
-		JLabel lblNewLabel_1 = new JLabel("OR");
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblNewLabel_1.setBounds(174, 460, 52, 19);
-		signUpPanel.add(lblNewLabel_1);
-		//bkImageLabel.add(minimizeLabel);
+		JLabel orLabel = new JLabel("OR");
+		orLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		orLabel.setBounds(174, 460, 52, 19);
+		signUpPanel.add(orLabel);
 		
-		logInButton = new Button("Log In");
-		logInButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		JCheckBox patientSignUpCheckBox = new JCheckBox("Sign Up as Patient");
+		patientSignUpCheckBox.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		patientSignUpCheckBox.setBackground(Color.WHITE);
+		patientSignUpCheckBox.setBounds(6, 375, 125, 26);
+		signUpPanel.add(patientSignUpCheckBox);
+		
+		JCheckBox doctorSignUpCheckBox = new JCheckBox("Sign Up as Doctor");
+		doctorSignUpCheckBox.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		doctorSignUpCheckBox.setBackground(Color.WHITE);
+		doctorSignUpCheckBox.setBounds(133, 375, 122, 26);
+		signUpPanel.add(doctorSignUpCheckBox);
+		
+		JCheckBox nurseSignUpCheckBox = new JCheckBox("Sign Up as Nurse");
+		nurseSignUpCheckBox.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		nurseSignUpCheckBox.setBackground(Color.WHITE);
+		nurseSignUpCheckBox.setBounds(257, 375, 123, 26);
+		signUpPanel.add(nurseSignUpCheckBox);
+		
+		userSignUpCheckBoxGroup=new ButtonGroup();
+		userSignUpCheckBoxGroup.add(patientSignUpCheckBox);
+		userSignUpCheckBoxGroup.add(doctorSignUpCheckBox);
+		userSignUpCheckBoxGroup.add(nurseSignUpCheckBox);
+		
+		JLabel logInLabel = new JLabel("Log In");
+		logInLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
 				switchLogInSignUpPanel(logInPanel);
 			}
 		});
-		logInButton.setForeground(Color.WHITE);
-		logInButton.setBackground(new Color(30, 144, 255));
-		logInButton.setBounds(43, 485, 283, 36);
-		signUpPanel.add(logInButton);
+		logInLabel.setForeground(new Color(30, 144, 255));
+		logInLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
+		logInLabel.setBounds(157, 489, 85, 26);
+		signUpPanel.add(logInLabel);
 		
-
+		JSeparator logInSeparator = new JSeparator();
+		logInSeparator.setBounds(155, 514, 60, 2);
+		signUpPanel.add(logInSeparator);
 		
 		JLabel exitLabelLogin = new JLabel("");
 		exitLabelLogin.setIcon(new ImageIcon(crossLogo));

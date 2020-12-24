@@ -81,8 +81,10 @@ public class Dashboard extends JFrame{
 	private DefaultTableModel prescriptionModel;
 	private String[] pressColums= {"Medicine Name", "mg", "Morning", "Evening", "Night", "Days"};
 	private String[] presRow=new String[6];
-	private String[] dueColums= {"Medicine Name", "mg"};
-	private String[] dueRow=new String[2];
+	private DefaultTableModel patientDueModel;
+	private String[] dueColums= {"Medicine Name", "Time", "Date", "Alert Status"};
+	private String[] dueRow=new String[4];
+	private DefaultTableModel alertListModel;
 	private String[] alertColums= {"Medicine Name", "Time", "Date", "Alert Status"};
 	private String[] alertRow=new String[4];
 	private DefaultTableModel addAppointmentModel;
@@ -95,8 +97,14 @@ public class Dashboard extends JFrame{
 	private String[] patientVisitColums= {"Patient Name", "Bed No.", "Medicine Name", "Medicine Qnty."};
 	private String[] patientVisitRow=new String[4];
 	private DefaultTableModel nurseAlertListModel;
-	private String[] nurseAlertListColum= {"Patient Name","Bed No.", "Time", "Date"};
-	private String[] nurseAlertListRow=new String[4];
+	private String[] nurseAlertListColum= {"Patient Name","Bed No.", "Time", "Date","Alert Status"};
+	private String[] nurseAlertListRow=new String[5];
+	private DefaultTableModel docDueModel;
+	private String[] docDueColum= {"Patient Name","Number", "Time","Date","Alert Staus"};
+	private String[] docDueRow=new String[5];
+	private DefaultTableModel nurseDueModel;
+	private String[] nurseDueColum= {"Patient Name","Bed No.", "Time", "Date","Alert Status"};
+	private String[] nurseDueRow=new String[5];
 	private JTextField medicineMgTextField;
 	private JLabel topBarDoctorLogoLabel;
 	private JLabel doctorNameLabel;
@@ -174,6 +182,7 @@ public class Dashboard extends JFrame{
 	private JScrollPane nurseSetAlertScrollPane;
 	private JTable nurseAlertListTable;
 	private JScrollPane nurseAlertListScrollPane;
+	private JDateChooser nurseAlertDateChooser;
 	//private Dashboard dashboard;
 	/**
 	 * Launch the application.
@@ -875,13 +884,19 @@ public class Dashboard extends JFrame{
 		prescriptionTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		prescriptionScrollPane.setViewportView(prescriptionTable);
 		
-		
-		
 		prescriptionModel=new DefaultTableModel();
 		prescriptionModel.setColumnIdentifiers(pressColums);
 		prescriptionTable.setModel(prescriptionModel);
 		prescriptionTable.setRowHeight(30);
 		prescriptionTable.setBackground(new Color(238,255,252));
+		
+		TableColumnModel pressColumnModel = prescriptionTable.getColumnModel();
+		pressColumnModel.getColumn(0).setPreferredWidth(80);
+		pressColumnModel.getColumn(1).setPreferredWidth(5);
+		pressColumnModel.getColumn(2).setPreferredWidth(5);
+		pressColumnModel.getColumn(3).setPreferredWidth(5);
+		pressColumnModel.getColumn(4).setPreferredWidth(5);
+		pressColumnModel.getColumn(5).setPreferredWidth(5);
 		
 		addPrescriptionButton = new JButton("Add");
 		addPrescriptionButton.addActionListener(new ActionListener() {
@@ -920,13 +935,7 @@ public class Dashboard extends JFrame{
 		deletePrescriptionButton.setBounds(292, 456, 118, 41);
 		addPresContentPanel.add(deletePrescriptionButton);
 		
-		TableColumnModel pressColumnModel = prescriptionTable.getColumnModel();
-		pressColumnModel.getColumn(0).setPreferredWidth(80);
-		pressColumnModel.getColumn(1).setPreferredWidth(5);
-		pressColumnModel.getColumn(2).setPreferredWidth(5);
-		pressColumnModel.getColumn(3).setPreferredWidth(5);
-		pressColumnModel.getColumn(4).setPreferredWidth(5);
-		pressColumnModel.getColumn(5).setPreferredWidth(5);
+		
 		
 		
 		medicineDuePanel = new JPanel();
@@ -937,7 +946,7 @@ public class Dashboard extends JFrame{
 		medicineDuePanel.setLayout(null);
 		
 		JScrollPane medicineDueScrollPane = new JScrollPane();
-		medicineDueScrollPane.setBounds(554, 47, 369, 444);
+		medicineDueScrollPane.setBounds(554, 47, 445, 444);
 		medicineDueScrollPane.getViewport().setBackground(Color.WHITE);
 		medicineDuePanel.add(medicineDueScrollPane);
 		
@@ -947,12 +956,17 @@ public class Dashboard extends JFrame{
 		medicineDueTable.setRowHeight(40);
 		medicineDueScrollPane.setViewportView(medicineDueTable);
 		
-		DefaultTableModel dueModel=new DefaultTableModel();
-		dueModel.setColumnIdentifiers(dueColums);
-		medicineDueTable.setModel(dueModel);
-		medicineDueTable.setRowHeight(30);
+		patientDueModel=new DefaultTableModel();
+		patientDueModel.setColumnIdentifiers(dueColums);
+		medicineDueTable.setModel(patientDueModel);
+		medicineDueTable.setRowHeight(40);
 		medicineDueTable.setBackground(new Color(238,255,252));
 		
+		TableColumnModel patientDueColumnModel = medicineDueTable.getColumnModel();
+		patientDueColumnModel.getColumn(0).setPreferredWidth(80);
+		patientDueColumnModel.getColumn(1).setPreferredWidth(5);
+		patientDueColumnModel.getColumn(2).setPreferredWidth(5);
+		patientDueColumnModel.getColumn(3).setPreferredWidth(5);
 		
 		JLabel medicineDueTodayLabe = new JLabel("Due Today");
 		medicineDueTodayLabe.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -1027,11 +1041,10 @@ public class Dashboard extends JFrame{
 		alertListTable.setBackground(new Color(238,255,252));
 		alertListScrollPane.setViewportView(alertListTable);
 		
-		DefaultTableModel alertListModel=new DefaultTableModel();
+		alertListModel=new DefaultTableModel();
 		alertListModel.setColumnIdentifiers(alertColums);
 		alertListTable.setModel(alertListModel);
-		alertListTable.setRowHeight(40);
-		
+		alertListTable.setRowHeight(30);
 		
 		TableColumnModel alertColumnModel = alertListTable.getColumnModel();
 		alertColumnModel.getColumn(0).setPreferredWidth(80);
@@ -1072,6 +1085,18 @@ public class Dashboard extends JFrame{
 		setAlertButton.setBounds(169, 274, 118, 41);
 		setAlertPanel.add(setAlertButton);
 		
+		JButton patientTurnOffAlertButton = new JButton("Turn Off Alert");
+		patientTurnOffAlertButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int selectedRowIndex=alertListTable.getSelectedRow();
+				alertListModel.setValueAt("Alert Off", selectedRowIndex, 3);
+			}
+		});
+		patientTurnOffAlertButton.setForeground(Color.WHITE);
+		patientTurnOffAlertButton.setBackground(new Color(220, 59, 59));
+		patientTurnOffAlertButton.setBounds(316, 274, 118, 41);
+		setAlertPanel.add(patientTurnOffAlertButton);
+		
 		addAppointPanel = new JPanel();
 		addAppointPanel.setBackground(new Color(229,234,230));
 		addAppointPanel.setForeground(new Color(229,234,230));
@@ -1092,7 +1117,6 @@ public class Dashboard extends JFrame{
 		addAppointmentModel.setColumnIdentifiers(addAppointColums);
 		addAppointmentTable.setModel(addAppointmentModel);
 		addAppointmentTable.setRowHeight(30);
-		
 		
 		TableColumnModel appointColumnModel = addAppointmentTable.getColumnModel();
 		appointColumnModel.getColumn(0).setPreferredWidth(80);
@@ -1210,7 +1234,7 @@ public class Dashboard extends JFrame{
 		appointmentDuePanel.add(docDueTodayLabel);
 		
 		JScrollPane docDueScrollPane = new JScrollPane();
-		docDueScrollPane.setBounds(554, 47, 369, 444);
+		docDueScrollPane.setBounds(554, 47, 445, 444);
 		docDueScrollPane.getViewport().setBackground(Color.WHITE);
 		appointmentDuePanel.add(docDueScrollPane);
 		
@@ -1218,6 +1242,18 @@ public class Dashboard extends JFrame{
 		docDueTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		docDueTable.setBackground(new Color(238,255,252));
 		docDueScrollPane.setViewportView(docDueTable);
+		
+		docDueModel=new DefaultTableModel();
+		docDueModel.setColumnIdentifiers(docDueColum);
+		docDueTable.setModel(docDueModel);
+		docDueTable.setRowHeight(40);
+		
+		TableColumnModel docDueColumnModel = docDueTable.getColumnModel();
+		docDueColumnModel.getColumn(0).setPreferredWidth(80);
+		docDueColumnModel.getColumn(1).setPreferredWidth(40);
+		docDueColumnModel.getColumn(2).setPreferredWidth(5);
+		docDueColumnModel.getColumn(3).setPreferredWidth(5);
+		docDueColumnModel.getColumn(4).setPreferredWidth(5);
 		
 		docSetAlertPanel = new JPanel();
 		docSetAlertPanel.setBackground(new Color(229,234,230));
@@ -1301,6 +1337,7 @@ public class Dashboard extends JFrame{
 		docAlertListTable = new JTable();
 		docAlertListTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		docAlertListTable.setBackground(new Color(238,255,252));
+		docAlertListTable.setRowHeight(30);
 		docAlertListScrollPane.setViewportView(docAlertListTable);
 		
 		docAlertListModel=new DefaultTableModel();
@@ -1320,7 +1357,6 @@ public class Dashboard extends JFrame{
 		doctorSelectHereLabel.setBackground(new Color(229, 234, 230));
 		doctorSelectHereLabel.setBounds(590, 10, 80, 28);
 		docSetAlertPanel.add(doctorSelectHereLabel);
-		alertListTable.setRowHeight(40);
 		
 		TableColumnModel docAlertListColumModel=docAlertListTable.getColumnModel();
 		docAlertListColumModel.getColumn(0).setPreferredWidth(80);
@@ -1456,7 +1492,7 @@ public class Dashboard extends JFrame{
 		nurseDuePanel.add(nurseDueRefreshButton);
 		
 		JScrollPane nurseDueScrollPane = new JScrollPane();
-		nurseDueScrollPane.setBounds(554, 47, 369, 444);
+		nurseDueScrollPane.setBounds(554, 47, 464, 444);
 		nurseDueScrollPane.getViewport().setBackground(Color.WHITE);
 		nurseDuePanel.add(nurseDueScrollPane);
 		
@@ -1465,6 +1501,18 @@ public class Dashboard extends JFrame{
 		nurseDueTable.setBackground(new Color(238,255,252));
 		nurseDueTable.setRowHeight(40);
 		nurseDueScrollPane.setViewportView(nurseDueTable);
+		
+		nurseDueModel=new DefaultTableModel();
+		nurseDueModel.setColumnIdentifiers(nurseDueColum);
+		nurseDueTable.setModel(nurseDueModel);
+		
+		TableColumnModel nurseDueColumnModel = nurseDueTable.getColumnModel();
+		nurseDueColumnModel.getColumn(0).setPreferredWidth(80);
+		nurseDueColumnModel.getColumn(1).setPreferredWidth(5);
+		nurseDueColumnModel.getColumn(2).setPreferredWidth(5);
+		nurseDueColumnModel.getColumn(3).setPreferredWidth(40);
+		nurseDueColumnModel.getColumn(4).setPreferredWidth(10);
+		
 		
 		nurseSetAlertPanel = new JPanel();
 		nurseSetAlertPanel.setBounds(413, 198, 1046, 536);
@@ -1501,12 +1549,26 @@ public class Dashboard extends JFrame{
 		nurseSetAlertPanel.add(nurseAlertDateLabel);
 		
 		JButton nurseSetAlertButton = new JButton("Set Alert");
+		nurseSetAlertButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Date date=nurseAlertDateChooser.getDate();
+				String strDate=DateFormat.getInstance().format(date);
+				String[] arrDate=strDate.split(",");
+				int selectedRowIndex=nurseSetAlertTable.getSelectedRow();
+				nurseAlertListRow[0]=(String) patientVisitModel.getValueAt(selectedRowIndex, 0).toString();
+				nurseAlertListRow[1]=(String) patientVisitModel.getValueAt(selectedRowIndex, 1).toString();
+				nurseAlertListRow[2]=(String) nurseAlertTimeTextField.getText().trim();
+				nurseAlertListRow[3]=(String) arrDate[0];
+				nurseAlertListRow[4]="Alert on";
+				nurseAlertListModel.addRow(nurseAlertListRow);
+			}
+		});
 		nurseSetAlertButton.setForeground(Color.WHITE);
 		nurseSetAlertButton.setBackground(new Color(94,194,162));
 		nurseSetAlertButton.setBounds(169, 274, 118, 41);
 		nurseSetAlertPanel.add(nurseSetAlertButton);
 		
-		JDateChooser nurseAlertDateChooser = new JDateChooser();
+		nurseAlertDateChooser = new JDateChooser();
 		nurseAlertDateChooser.setBounds(169, 171, 152, 35);
 		nurseSetAlertPanel.add(nurseAlertDateChooser);
 		
@@ -1537,7 +1599,7 @@ public class Dashboard extends JFrame{
 		nurseAlertListTable = new JTable();
 		nurseAlertListTable.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		nurseAlertListTable.setBackground(new Color(238,255,252));
-		nurseAlertListTable.setRowHeight(40);
+		nurseAlertListTable.setRowHeight(30);
 		nurseAlertListScrollPane.setViewportView(nurseAlertListTable);
 		
 		nurseAlertListModel=new DefaultTableModel();
@@ -1546,9 +1608,10 @@ public class Dashboard extends JFrame{
 		
 		TableColumnModel nurseAlertListTableColumnModel = nurseAlertListTable.getColumnModel();
 		nurseAlertListTableColumnModel.getColumn(0).setPreferredWidth(80);
-		nurseAlertListTableColumnModel.getColumn(1).setPreferredWidth(40);
+		nurseAlertListTableColumnModel.getColumn(1).setPreferredWidth(10);
 		nurseAlertListTableColumnModel.getColumn(2).setPreferredWidth(5);
 		nurseAlertListTableColumnModel.getColumn(3).setPreferredWidth(5);
+		nurseAlertListTableColumnModel.getColumn(4).setPreferredWidth(10);
 		
 		JLabel nurseAlertListLabel = new JLabel("Alert List");
 		nurseAlertListLabel.setForeground(Color.DARK_GRAY);

@@ -183,6 +183,7 @@ public class Dashboard extends JFrame{
 	private JTable nurseAlertListTable;
 	private JScrollPane nurseAlertListScrollPane;
 	private JDateChooser nurseAlertDateChooser;
+	private JButton nurseTurnOffAlertButton;
 	//private Dashboard dashboard;
 	/**
 	 * Launch the application.
@@ -1358,6 +1359,18 @@ public class Dashboard extends JFrame{
 		doctorSelectHereLabel.setBounds(590, 10, 80, 28);
 		docSetAlertPanel.add(doctorSelectHereLabel);
 		
+		JButton docTurnOffAlertButton = new JButton("Turn Off Alert");
+		docTurnOffAlertButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int selectedRowIndex=docAlertListTable.getSelectedRow();
+				docAlertListModel.setValueAt("Alert Off", selectedRowIndex, 3);
+			}
+		});
+		docTurnOffAlertButton.setForeground(Color.WHITE);
+		docTurnOffAlertButton.setBackground(new Color(220, 59, 59));
+		docTurnOffAlertButton.setBounds(304, 274, 118, 41);
+		docSetAlertPanel.add(docTurnOffAlertButton);
+		
 		TableColumnModel docAlertListColumModel=docAlertListTable.getColumnModel();
 		docAlertListColumModel.getColumn(0).setPreferredWidth(80);
 		docAlertListColumModel.getColumn(1).setPreferredWidth(5);
@@ -1627,7 +1640,17 @@ public class Dashboard extends JFrame{
 		nurseSelectHereLabel.setBounds(572, 10, 80, 28);
 		nurseSetAlertPanel.add(nurseSelectHereLabel);
 		
-		
+		nurseTurnOffAlertButton = new JButton("Turn Off Alert");
+		nurseTurnOffAlertButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int selectedRowIndex=nurseAlertListTable.getSelectedRow();
+				nurseAlertListModel.setValueAt("Alert Off", selectedRowIndex, 4);
+			}
+		});
+		nurseTurnOffAlertButton.setForeground(Color.WHITE);
+		nurseTurnOffAlertButton.setBackground(new Color(220, 59, 59));
+		nurseTurnOffAlertButton.setBounds(297, 274, 118, 41);
+		nurseSetAlertPanel.add(nurseTurnOffAlertButton);
 		
 		
 		JLabel dashboardTopBar = new JLabel("");

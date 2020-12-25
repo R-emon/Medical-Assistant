@@ -1,7 +1,13 @@
 package main;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
+
 
 public class Patient extends User implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -33,7 +39,36 @@ public class Patient extends User implements Serializable{
 	public void setAlert() {
 		
 	}
-
+	
+	public void addUser(String filePath, ArrayList<Patient> patientsArr) {
+		
+		File file=new File(filePath);
+		if(!file.exists()) {
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				
+				e.printStackTrace();
+			}
+		}
+		try {
+			FileOutputStream fos=new FileOutputStream(file);
+			ObjectOutputStream oos=new ObjectOutputStream(fos);
+			
+			Iterator<Patient> iter= patientsArr.iterator();
+			
+			while(iter.hasNext()) {
+				Patient tempS=(Patient) iter.next();
+				oos.writeObject(tempS);
+			}
+			
+			oos.close();
+			fos.close();
+			System.out.println("Objects written succesfully");
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 
 	public ArrayList<String> getAddMedicineName() {

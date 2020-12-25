@@ -24,6 +24,14 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
@@ -55,12 +63,16 @@ public class LoginSignupUI extends JFrame {
 	private JCheckBox patientLoginCheckBox;
 	private JCheckBox doctorLoginCheckBox;
 	private JCheckBox nurseLoginCheckBox;
-	private boolean patientSelected=false;
-	private boolean doctorSelected=false;
-	private boolean nurseSelected=false;
+	private boolean patientLoginSelected=false;
+	private boolean doctorLoginSelected=false;
+	private boolean nurseLoginSelected=false;
+	private boolean patientSignUpSelected=false;
+	private boolean doctorSignUpSelected=false;
+	private boolean nurseSignUpSelected=false;
 	private ButtonGroup userSignUpCheckBoxGroup;
 	public static Dashboard dashboard;
-	
+	private String filePath="src/data/patientData.txt";
+	private static ArrayList<Patient> patientArray=new ArrayList<Patient>();
 	
 	/**
 	 * Launch the application.
@@ -89,6 +101,7 @@ public class LoginSignupUI extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(300, 150, 900, 600); // all properties of first main frame UI.
 		
+		
 		loginPageContents();  //all other contents method.
 		
 	}
@@ -100,12 +113,42 @@ public class LoginSignupUI extends JFrame {
 		signUpLogInLayeredPane.revalidate();
 	}
 	
+	public void loadPatientData(String filePath,ArrayList<Patient> arr) {
+		File file=new File(filePath);
+		try {
+			file.createNewFile();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			FileInputStream fis=new FileInputStream(file);
+			ObjectInputStream ois=new ObjectInputStream(fis);
+			
+			//arr.clear();
+		
+			while(fis.available()!=0) {
+				Patient tempPatient=(Patient) ois.readObject();
+				System.out.println(tempPatient.getName());
+				arr.add(tempPatient);
+			}
+			
+			
+			fis.close();
+			ois.close();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void loginPageContents() {
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		//loadPatientData(filePath,patientArray);
 		
 		/*
 		 * JPanel panel = new JPanel(); panel.setBackground(Color.WHITE);
@@ -174,37 +217,58 @@ public class LoginSignupUI extends JFrame {
 		Button logInPanelLogInButton = new Button("Log In");
 		logInPanelLogInButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UserAuthentication auth=new UserAuthentication();
+				
 				String userName=logInUserNameTextField.getText().trim();
 				String password=String.valueOf(loginPasswordField.getPassword()).trim();
-				boolean authCheck=auth.verifyUser(userName, password);
-				if(authCheck==true && doctorSelected==true ) {
-					dashboard=new Dashboard(userName, frame);
-					dashboard.setVisible(true);
-					dashboard.switchDoctorPanel();
-					frame.setVisible(false);
-					//doctorSelected=false;
-					
+				
+				ArrayList<Patient> tempArray=new ArrayList<Patient>();
+				
+				loadPatientData(filePath, tempArray);
+				
+				Iterator<Patient> iter=tempArray.iterator();
+				while(iter.hasNext()) {
+					Patient tempPatient=(Patient)iter.next();
+					if(tempPatient.getName().equals(userName) && tempPatient.getName().equals(password)) {
+						dashboard=new Dashboard(userName, frame);
+						dashboard.setVisible(true);
+						dashboard.switchPatientPanel();
+						frame.setVisible(false);
+						break;
+					}
 				}
-				else if(authCheck==true && patientSelected==true) {
-					dashboard=new Dashboard(userName, frame);
-					dashboard.setVisible(true);
-					dashboard.switchPatientPanel();
-					frame.setVisible(false);
-					//patientSelected=false;
-					
-				}
-				else if(authCheck==true && nurseSelected==true) {
-					dashboard=new Dashboard(userName, frame);
-					dashboard.setVisible(true);
-					dashboard.switchNursePanel();
-					frame.setVisible(false);
-					//nurseSelected=false;
-					
-				}
-				else if(authCheck==false){
-					JOptionPane.showMessageDialog(frame, "Wrong User Name or Password","Alert", JOptionPane.WARNING_MESSAGE);
-				}
+				
+				
+//				UserAuthentication auth=new UserAuthentication();
+//				String userName=logInUserNameTextField.getText().trim();
+//				String password=String.valueOf(loginPasswordField.getPassword()).trim();
+//				boolean authCheck=auth.verifyUser(userName, password);
+//				if(authCheck==true && doctorLoginSelected==true ) {
+//					dashboard=new Dashboard(userName, frame);
+//					dashboard.setVisible(true);
+//					dashboard.switchDoctorPanel();
+//					frame.setVisible(false);
+//					//doctorSelected=false;
+//					
+//				}
+//				else if(authCheck==true && patientLoginSelected==true) {
+//					dashboard=new Dashboard(userName, frame);
+//					dashboard.setVisible(true);
+//					dashboard.switchPatientPanel();
+//					frame.setVisible(false);
+//					//patientSelected=false;
+//					
+//				}
+//				else if(authCheck==true && nurseLoginSelected==true) {
+//					dashboard=new Dashboard(userName, frame);
+//					dashboard.setVisible(true);
+//					dashboard.switchNursePanel();
+//					frame.setVisible(false);
+//					//nurseSelected=false;
+//					
+//				}
+//				else if(authCheck==false){
+//					JOptionPane.showMessageDialog(frame, "Wrong User Name or Password","Alert", JOptionPane.WARNING_MESSAGE);
+//				}
 			}
 		});
 		logInPanelLogInButton.setForeground(Color.WHITE);
@@ -226,9 +290,9 @@ public class LoginSignupUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(patientLoginCheckBox.isSelected()) {
-					patientSelected=true;
-					doctorSelected=false;
-					nurseSelected=false;
+					patientLoginSelected=true;
+					doctorLoginSelected=false;
+					nurseLoginSelected=false;
 				}
 			}
 		});
@@ -241,9 +305,9 @@ public class LoginSignupUI extends JFrame {
 		doctorLoginCheckBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				doctorSelected=true;
-				patientSelected=false;
-				nurseSelected=false;
+				doctorLoginSelected=true;
+				patientLoginSelected=false;
+				nurseLoginSelected=false;
 			}
 		});
 		
@@ -254,9 +318,9 @@ public class LoginSignupUI extends JFrame {
 		nurseLoginCheckBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				nurseSelected=true;
-				patientSelected=false;
-				doctorSelected=false;
+				nurseLoginSelected=true;
+				patientLoginSelected=false;
+				doctorLoginSelected=false;
 			}
 		});
 		
@@ -363,19 +427,38 @@ public class LoginSignupUI extends JFrame {
 		signUpButton.setActionCommand("Sign Up");
 		signUpButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				UserAuthentication userAuth=new UserAuthentication();
-				String tempUserName= userNameTextField.getText().trim();
+//				UserAuthentication userAuth=new UserAuthentication();
+//				String tempUserName= userNameTextField.getText().trim();
+//				String tempEmail= emailTextField.getText().trim();
+//				String tempPassword= String.valueOf(passwordTextField.getPassword()).trim();
+//				String tempConPassWord= String.valueOf(conPasswordTextField.getPassword()).trim();
+//				boolean multiCheck=userAuth.checkMultipleUser(tempUserName);
+//				if(multiCheck==true) {
+//					JOptionPane.showMessageDialog(frame, "This user name Already exist!","Alert",JOptionPane.WARNING_MESSAGE);
+//				}
+//				else {
+//				userAuth.addUser(tempUserName, tempEmail, tempPassword, tempConPassWord);
+//				JOptionPane.showMessageDialog(frame, "Sign Up Successful","Success",JOptionPane.WARNING_MESSAGE);
+//				}
+				
+				String tempUserName=userNameTextField.getText().trim();
 				String tempEmail= emailTextField.getText().trim();
 				String tempPassword= String.valueOf(passwordTextField.getPassword()).trim();
 				String tempConPassWord= String.valueOf(conPasswordTextField.getPassword()).trim();
-				boolean multiCheck=userAuth.checkMultipleUser(tempUserName);
-				if(multiCheck==true) {
-					JOptionPane.showMessageDialog(frame, "This user name Already exist!","Alert",JOptionPane.WARNING_MESSAGE);
+				String tempUserType="";
+				if(patientSignUpSelected==true) {
+					tempUserType="Patient";
 				}
-				else {
-				userAuth.addUser(tempUserName, tempEmail, tempPassword, tempConPassWord);
-				JOptionPane.showMessageDialog(frame, "Sign Up Successful","Success",JOptionPane.WARNING_MESSAGE);
+				else if(doctorSignUpSelected==true) {
+					tempUserType="Doctor";
 				}
+				else if(nurseSignUpSelected==true) {
+					tempUserType="Nurse";
+				}
+				Patient tempPatient=new Patient(tempUserName, tempEmail, tempPassword, tempConPassWord, tempUserType);
+				patientArray.add(tempPatient);
+				tempPatient.addUser(filePath, patientArray);
+				
 			}
 		});
 		signUpButton.setBounds(43, 420, 283, 36);
@@ -390,18 +473,39 @@ public class LoginSignupUI extends JFrame {
 		signUpPanel.add(orLabel);
 		
 		JCheckBox patientSignUpCheckBox = new JCheckBox("Sign Up as Patient");
+		patientSignUpCheckBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				patientSignUpSelected=true;
+				doctorSignUpSelected=false;
+				nurseSignUpSelected=false;
+			}
+		});
 		patientSignUpCheckBox.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		patientSignUpCheckBox.setBackground(Color.WHITE);
 		patientSignUpCheckBox.setBounds(6, 375, 125, 26);
 		signUpPanel.add(patientSignUpCheckBox);
 		
 		JCheckBox doctorSignUpCheckBox = new JCheckBox("Sign Up as Doctor");
+		doctorSignUpCheckBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				patientSignUpSelected=false;
+				doctorSignUpSelected=true;
+				nurseSignUpSelected=false;
+			}
+		});
 		doctorSignUpCheckBox.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		doctorSignUpCheckBox.setBackground(Color.WHITE);
 		doctorSignUpCheckBox.setBounds(133, 375, 122, 26);
 		signUpPanel.add(doctorSignUpCheckBox);
 		
 		JCheckBox nurseSignUpCheckBox = new JCheckBox("Sign Up as Nurse");
+		nurseSignUpCheckBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				patientSignUpSelected=false;
+				doctorSignUpSelected=false;
+				nurseSignUpSelected=true;
+			}
+		});
 		nurseSignUpCheckBox.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		nurseSignUpCheckBox.setBackground(Color.WHITE);
 		nurseSignUpCheckBox.setBounds(257, 375, 123, 26);
@@ -490,4 +594,5 @@ public class LoginSignupUI extends JFrame {
 			}
 		});
 	}
+	
 }

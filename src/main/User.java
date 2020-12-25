@@ -1,6 +1,5 @@
 package main;
 
-import java.util.ArrayList;
 
 public abstract class User {
 	private String name;
@@ -24,7 +23,7 @@ public abstract class User {
 	public abstract void setAlert();
 	
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -32,7 +31,7 @@ public abstract class User {
 	}
 
 	public String getEmailAddress() {
-		return emailAddress;
+		return this.emailAddress;
 	}
 
 	public void setEmailAddress(String emailAddress) {
@@ -40,7 +39,7 @@ public abstract class User {
 	}
 
 	public String getPassword() {
-		return password;
+		return this.password;
 	}
 
 	public void setPassword(String password) {
@@ -48,7 +47,7 @@ public abstract class User {
 	}
 
 	public String getConfirmPassword() {
-		return confirmPassword;
+		return this.confirmPassword;
 	}
 
 	public void setConfirmPassword(String confirmPassword) {
@@ -56,7 +55,7 @@ public abstract class User {
 	}
 
 	public String getUserType() {
-		return userType;
+		return this.userType;
 	}
 
 	public void setUserType(String userType) {

@@ -10,7 +10,7 @@ public class Patient extends User implements Serializable{
 	private ArrayList<Boolean> addMedDelete=new ArrayList<Boolean>();
 	private ArrayList<String> addPresMedicineName=new ArrayList<String>();
 	private ArrayList<String> addPresMg=new ArrayList<String>();
-	private ArrayList<String> addPresMornig=new ArrayList<String>();
+	private ArrayList<String> addPresMorning=new ArrayList<String>();
 	private ArrayList<String> addPresEvening=new ArrayList<String>();
 	private ArrayList<String> addPresNight=new ArrayList<String>();
 	private ArrayList<String> totalCourseDays=new ArrayList<String>();
@@ -42,7 +42,7 @@ public class Patient extends User implements Serializable{
 
 
 	public void setAddMedicineName(String name) {
-		this.addMedicineName.add(name);
+		this.addMedicineName.add(name.trim());
 	}
 	
 	public void deleAddMedicineName(String name) {
@@ -78,15 +78,14 @@ public class Patient extends User implements Serializable{
 
 
 
-	public ArrayList<Boolean> getAddMedDelete() {
-		return addMedDelete;
-	}
+//	public ArrayList<Boolean> getAddMedDelete() {
+//		return addMedDelete;
+//	}
 
 
-
-	public void setAddMedDelete(ArrayList<Boolean> addMedDelete) {
-		this.addMedDelete = addMedDelete;
-	}
+//	public void setAddMedDelete(ArrayList<Boolean> addMedDelete) {
+//		this.addMedDelete = addMedDelete;
+//	}
 
 
 
@@ -94,11 +93,20 @@ public class Patient extends User implements Serializable{
 		return addPresMedicineName;
 	}
 
-
-
-	public void setAddPresMedicineName(ArrayList<String> addPresMedicineName) {
-		this.addPresMedicineName = addPresMedicineName;
+	public void setAddPresMedicineName(String name) {
+		this.addPresMedicineName.add(name.trim());
 	}
+	
+	public void deleteAddPressMedicineName(String name) {
+		for(int i=0; i<this.addPresMedicineName.size(); i++) {
+			if(this.addPresMedicineName.get(i).equals(name))
+				this.addPresMedicineName.remove(i);
+		}
+	}
+
+//	public void setAddPresMedicineName(ArrayList<String> addPresMedicineName) {
+//		this.addPresMedicineName = addPresMedicineName;
+//	}
 
 
 
@@ -106,23 +114,41 @@ public class Patient extends User implements Serializable{
 		return addPresMg;
 	}
 
-
-
-	public void setAddPresMg(ArrayList<String> addPresMg) {
-		this.addPresMg = addPresMg;
+	public void setAddPresMg(String name) {
+		this.addPresMg.add(name);
+	}
+	
+	public void deleteAddPresMg(String mg) {
+		for(int i=0; i<this.addPresMg.size(); i++) {
+			if(this.addPresMg.get(i).equals(mg))
+				this.addPresMg.remove(i);
+		}
 	}
 
+//	public void setAddPresMg(ArrayList<String> addPresMg) {
+//		this.addPresMg = addPresMg;
+//	}
 
 
-	public ArrayList<String> getAddPresMornig() {
-		return addPresMornig;
+
+	public ArrayList<String> getAddPresMorning() {
+		return addPresMorning;
 	}
 
-
-
-	public void setAddPresMornig(ArrayList<String> addPresMornig) {
-		this.addPresMornig = addPresMornig;
+	public void setAddPresMoring(String count) {
+		this.addPresMorning.add(count);
 	}
+	
+	public void deleteAddPresMorning(String count) {
+		for(int i=0; i<this.addPresMorning.size(); i++) {
+			if(this.addPresMorning.get(i).equals(count))
+				this.addPresMorning.remove(i);
+		}
+	}
+
+//	public void setAddPresMornig(ArrayList<String> addPresMornig) {
+//		this.addPresMornig = addPresMornig;
+//	}
 
 
 
@@ -130,11 +156,20 @@ public class Patient extends User implements Serializable{
 		return addPresEvening;
 	}
 
-
-
-	public void setAddPresEvening(ArrayList<String> addPresEvening) {
-		this.addPresEvening = addPresEvening;
+	public void setAddPresEvening(String count) {
+		this.addPresEvening.add(count);
 	}
+	
+	public void deleteAddPressEvening(String count) {
+		for(int i=0; i<this.addPresEvening.size(); i++) {
+			if(this.addPresEvening.get(i).equals(count))
+				this.addPresEvening.remove(i);
+		}
+	}
+
+//	public void setAddPresEvening(ArrayList<String> addPresEvening) {
+//		this.addPresEvening = addPresEvening;
+//	}
 
 
 
@@ -142,11 +177,20 @@ public class Patient extends User implements Serializable{
 		return addPresNight;
 	}
 
-
-
-	public void setAddPresNight(ArrayList<String> addPresNight) {
-		this.addPresNight = addPresNight;
+	public void setAddPresNight(String count) {
+		this.addPresNight.add(count);
 	}
+	
+	public void deleteAddPresNight(String count) {
+		for(int i=0; i<this.addPresNight.size(); i++) {
+			if(this.addPresNight.get(i).equals(count))
+				this.addPresNight.remove(i);
+		}
+	}
+
+//	public void setAddPresNight(ArrayList<String> addPresNight) {
+//		this.addPresNight = addPresNight;
+//	}
 
 
 
@@ -154,23 +198,31 @@ public class Patient extends User implements Serializable{
 		return totalCourseDays;
 	}
 
-
-
-	public void setTotalCourseDays(ArrayList<String> totalCourseDays) {
-		this.totalCourseDays = totalCourseDays;
+	public void setTotalCourseDays(String days) {
+		this.totalCourseDays.add(days);
+	}
+	
+	public void deleteTotalCourseDays(String days) {
+		for(int i=0; i<this.totalCourseDays.size(); i++) {
+			if(this.totalCourseDays.get(i).equals(days))
+				this.totalCourseDays.remove(i);
+		}
 	}
 
-
-
-	public ArrayList<Boolean> getAddPresDelete() {
-		return addPresDelete;
-	}
+//	public void setTotalCourseDays(ArrayList<String> totalCourseDays) {
+//		this.totalCourseDays = totalCourseDays;
+//	}
 
 
 
-	public void setAddPresDelete(ArrayList<Boolean> addPresDelete) {
-		this.addPresDelete = addPresDelete;
-	}
+//	public ArrayList<Boolean> getAddPresDelete() {
+//		return addPresDelete;
+//	}
+
+
+//	public void setAddPresDelete(ArrayList<Boolean> addPresDelete) {
+//		this.addPresDelete = addPresDelete;
+//	}
 
 
 
@@ -178,11 +230,20 @@ public class Patient extends User implements Serializable{
 		return alertMedicineName;
 	}
 
-
-
-	public void setAlertMedicineName(ArrayList<String> alertMedicineName) {
-		this.alertMedicineName = alertMedicineName;
+	public void setAlertMedicineName(String name) {
+		this.alertMedicineName.add(name);
 	}
+	
+	public void deleteAlertMedicineName(String name) {
+		for(int i=0; i<this.alertMedicineName.size(); i++) {
+			if(this.alertMedicineName.get(i).equals(name))
+				this.alertMedicineName.remove(i);
+		}
+	}
+
+//	public void setAlertMedicineName(ArrayList<String> alertMedicineName) {
+//		this.alertMedicineName = alertMedicineName;
+//	}
 
 
 
@@ -190,11 +251,20 @@ public class Patient extends User implements Serializable{
 		return alertTime;
 	}
 
-
-
-	public void setAlertTime(ArrayList<String> alertTime) {
-		this.alertTime = alertTime;
+	public void setAlertTime(String time) {
+		this.alertTime.add(time);
 	}
+	
+	public void deleteAlertTime(String time) {
+		for(int i=0; i<this.alertTime.size(); i++) {
+			if(this.alertTime.get(i).equals(time))
+				this.alertTime.remove(i);
+		}
+	}
+
+//	public void setAlertTime(ArrayList<String> alertTime) {
+//		this.alertTime = alertTime;
+//	}
 
 
 
@@ -202,11 +272,20 @@ public class Patient extends User implements Serializable{
 		return alertDate;
 	}
 
-
-
-	public void setAlertDate(ArrayList<String> alertDate) {
-		this.alertDate = alertDate;
+	public void setAlertDate(String date) {
+		this.alertDate.add(date);	
 	}
+	
+	public void deleteAlertDate(String date) {
+		for(int i=0; i<this.alertDate.size(); i++) {
+			if(this.alertDate.get(i).equals(date))
+				this.alertDate.remove(i);
+		}
+	}
+
+//	public void setAlertDate(ArrayList<String> alertDate) {
+//		this.alertDate = alertDate;
+//	}
 
 
 
@@ -214,11 +293,20 @@ public class Patient extends User implements Serializable{
 		return alertStatus;
 	}
 
-
-
-	public void setAlertStatus(ArrayList<String> alertStatus) {
-		this.alertStatus = alertStatus;
+	public void setAlertStaus(String alertStatus) {
+		this.alertStatus.add(alertStatus);
 	}
+	
+	public void deleteAlertStatus(String alertStatus) {
+		for(int i=0; i<this.alertStatus.size(); i++) {
+			if(this.alertStatus.get(i).equals(alertStatus))
+				this.alertStatus.remove(i);
+		}
+	}
+
+//	public void setAlertStatus(ArrayList<String> alertStatus) {
+//		this.alertStatus = alertStatus;
+//	}
 	
 	
 

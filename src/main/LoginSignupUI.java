@@ -129,7 +129,7 @@ public class LoginSignupUI extends JFrame {
 		
 			while(fis.available()!=0) {
 				Patient tempPatient=(Patient) ois.readObject();
-				System.out.println(tempPatient.getName());
+				//System.out.println(tempPatient.getName());
 				arr.add(tempPatient);
 			}
 			
@@ -220,22 +220,29 @@ public class LoginSignupUI extends JFrame {
 				
 				String userName=logInUserNameTextField.getText().trim();
 				String password=String.valueOf(loginPasswordField.getPassword()).trim();
-				
-				ArrayList<Patient> tempArray=new ArrayList<Patient>();
-				
-				loadPatientData(filePath, tempArray);
-				
-				Iterator<Patient> iter=tempArray.iterator();
-				while(iter.hasNext()) {
-					Patient tempPatient=(Patient)iter.next();
-					if(tempPatient.getName().equals(userName) && tempPatient.getName().equals(password)) {
-						dashboard=new Dashboard(userName, frame);
-						dashboard.setVisible(true);
-						dashboard.switchPatientPanel();
-						frame.setVisible(false);
-						break;
+				if(patientLoginSelected==true) {
+					ArrayList<Patient> tempArray=new ArrayList<Patient>();
+					loadPatientData(filePath, tempArray);
+					Iterator<Patient> iter=tempArray.iterator();
+					while(iter.hasNext()) {
+						Patient tempPatient=(Patient)iter.next();
+						System.out.println(tempPatient.getName());
+						System.out.println(tempPatient.getPassword());
+						if((tempPatient.getName().equals(userName)) && (tempPatient.getPassword().equals(password))) {
+							System.out.println("true");
+							dashboard=new Dashboard(userName, frame);
+							dashboard.setVisible(true);
+							dashboard.switchPatientPanel();
+							frame.setVisible(false);
+							break;
+						}
 					}
 				}
+				
+				
+				
+				
+				
 				
 				
 //				UserAuthentication auth=new UserAuthentication();

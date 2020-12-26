@@ -10,7 +10,7 @@ import java.util.Iterator;
 
 
 public class Patient extends User implements Serializable{
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 	private ArrayList<String> addMedicineName=new ArrayList<String>();
 	private ArrayList<String> addMg=new ArrayList<String>();
 	private ArrayList<Boolean> addMedDelete=new ArrayList<Boolean>();

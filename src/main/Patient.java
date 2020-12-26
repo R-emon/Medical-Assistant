@@ -1,8 +1,10 @@
 package main;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -69,8 +71,35 @@ public class Patient extends User implements Serializable{
 			e.printStackTrace();
 		}
 	}
+	
+	public void loadPatientData(String filePath,ArrayList<Patient> arr) {
+		File file=new File(filePath);
+		try {
+			file.createNewFile();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 
-
+		try {
+			FileInputStream fis=new FileInputStream(file);
+			ObjectInputStream ois=new ObjectInputStream(fis);
+			
+			//arr.clear();
+		
+			while(fis.available()!=0) {
+				Patient tempPatient=(Patient) ois.readObject();
+				//System.out.println(tempPatient.getName());
+				arr.add(tempPatient);
+			}
+			
+			
+			fis.close();
+			ois.close();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public ArrayList<String> getAddMedicineName() {
 		return addMedicineName;
 	}

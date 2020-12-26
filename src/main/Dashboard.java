@@ -30,7 +30,9 @@ import javax.swing.JComboBox;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 
 //import com.sun.java.swing.plaf.windows.WindowsBorders.DashedBorder;
 import com.toedter.calendar.JDateChooser;
@@ -184,6 +186,7 @@ public class Dashboard extends JFrame{
 	private JScrollPane nurseAlertListScrollPane;
 	private JDateChooser nurseAlertDateChooser;
 	private JButton nurseTurnOffAlertButton;
+	private String filePath="src/data/patientData.txt";
 	//private Dashboard dashboard;
 	/**
 	 * Launch the application.
@@ -741,12 +744,30 @@ public class Dashboard extends JFrame{
 		JButton addMedicineButton = new JButton("Add");
 		addMedicineButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				row[0]=medicineNameTextField.getText().trim();
-				row[1]=medicineMgTextField.getText().trim();
+				String medName=medicineNameTextField.getText().trim();
+				String medMg=medicineMgTextField.getText().trim();
+				row[0]=medName;
+				row[1]=medMg;
 				model.addRow(row);
-				
 				medicineNameTextField.setText("");
 				medicineMgTextField.setText("");
+				
+				ArrayList<Patient> tempArrayP=new ArrayList<Patient>();
+				Patient tempP=new Patient();
+				tempP.loadPatientData(filePath, tempArrayP);
+				
+				for(int i=0;i<tempArrayP.size(); i++) {
+					Patient temp=(Patient) tempArrayP.get(i);
+					if(temp.getName().equalsIgnoreCase(userName)) {
+						temp.setAddMedicineName(medName);
+						temp.setAddMg(medMg);
+						tempArrayP.set(i, temp);
+						break;
+					}
+				}
+				
+				tempP.addUser(filePath, tempArrayP);
+				
 			}
 		});
 		addMedicineButton.setBounds(184, 343, 118, 41);
@@ -783,6 +804,7 @@ public class Dashboard extends JFrame{
 		medicineTable.setModel(model);
 		medicineTable.setRowHeight(40);
 		medicineTable.setBackground(new Color(238,255,252));
+		loadDataToAddMedTable();
 		
 		JLabel mgLabel = new JLabel("mg/Unit");
 		mgLabel.setForeground(Color.DARK_GRAY);
@@ -1710,4 +1732,36 @@ public class Dashboard extends JFrame{
 		appDashboardTitleLabel.setBounds(41, 10, 100, 13);
 		dashboardTopBar.add(appDashboardTitleLabel);
 	}
+	
+	public void loadDataToAddMedTable() {
+		ArrayList<Patient> tempArrP=new ArrayList<Patient>();
+		Patient tempP=new Patient();
+		tempP.loadPatientData(filePath, tempArrP);
+		
+		Iterator<Patient> iter=tempArrP.iterator();
+		
+		while(iter.hasNext()) {
+			Patient temp=(Patient) iter.next();
+			if(temp.getName().equalsIgnoreCase(userName)) {
+				ArrayList<String> tempArrM=temp.getAddMedicineName();
+				Iterator<String> i=tempArrM.iterator();
+				ArrayList<String> tempArrMg=temp.getAddMg();
+				Iterator<String> j=tempArrMg.iterator();
+				while(i.hasNext() && j.hasNext()) {
+					row[0]=(String)i.next().trim();
+					row[1]=(String)j.next().trim();
+					model.addRow(row);
+				}
+				break;
+			}
+		}
+
+	}
+	
+	
+	
+	
+	
+	
+	
 }

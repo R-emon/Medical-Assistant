@@ -463,8 +463,14 @@ public class LoginSignupUI extends JFrame {
 					tempUserType="Nurse";
 				}
 				Patient tempPatient=new Patient(tempUserName, tempEmail, tempPassword, tempConPassWord, tempUserType);
+				tempPatient.loadPatientData(filePath, patientArray);
 				patientArray.add(tempPatient);
 				tempPatient.addUser(filePath, patientArray);
+				
+				userNameTextField.setText("");
+				emailTextField.setName("");
+				passwordTextField.setText("");
+				conPasswordTextField.setText("");
 				
 			}
 		});

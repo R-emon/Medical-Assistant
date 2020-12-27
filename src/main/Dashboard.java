@@ -779,8 +779,24 @@ public class Dashboard extends JFrame{
 		deleteMedicineButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow=medicineTable.getSelectedRow();
+				String selectedMedName=model.getValueAt(selectedRow, 0).toString().trim();
+				String selectedMg=model.getValueAt(selectedRow, 1).toString().trim();
 				if(selectedRow>=0) {
 					model.removeRow(selectedRow);
+					ArrayList<Patient> tempArr=new ArrayList<Patient>();
+					Patient tempP=new Patient();
+					tempP.loadPatientData(filePath, tempArr);
+					
+					for(int i=0; i<tempArr.size(); i++) {
+						Patient temp=(Patient)tempArr.get(i);
+						if(temp.getName().equalsIgnoreCase(userName)) {
+							temp.deleAddMedicineName(selectedMedName);
+							temp.deleteAddMg(selectedMg);
+							tempArr.set(i, temp);
+							break;
+						}
+					}
+					tempP.addUser(filePath, tempArr);
 				}
 			}
 		});

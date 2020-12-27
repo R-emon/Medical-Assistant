@@ -1812,7 +1812,7 @@ public class Dashboard extends JFrame{
 			if(temp.getName().equalsIgnoreCase(userName)) {
 				ArrayList<String> tempArrM=temp.getAddPresMedicineName();
 				Iterator<String> iterTempArrM=tempArrM.iterator();
-				ArrayList<String> tempArrMg=temp.getAddMg();
+				ArrayList<String> tempArrMg=temp.getAddPresMg();
 				Iterator<String> iterTempArrMg=tempArrMg.iterator();
 				ArrayList<String> tempArrMoring=temp.getAddPresMorning();
 				Iterator<String> iterTempArrMoring=tempArrMoring.iterator();

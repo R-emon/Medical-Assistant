@@ -89,8 +89,9 @@ public class Patient extends User implements Serializable{
 				//System.out.println(tempPatient.getName());
 				arr.add(tempPatient);
 			}
-			fis.close();
+			
 			ois.close();
+			fis.close();
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

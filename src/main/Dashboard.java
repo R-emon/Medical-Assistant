@@ -147,7 +147,6 @@ public class Dashboard extends JFrame{
 	private JTextField docPatientNameTextField;
 	private JTextField patientNumTextField;
 	private JTextField appointmentTimeTextField;
-	private JLabel lblhhmmAmpm;
 	private JDateChooser appointmentDateChooser;
 	private JButton addAppointmentButton;
 	private JButton deleteAppointmentButton;
@@ -820,7 +819,7 @@ public class Dashboard extends JFrame{
 		medicineTable.setModel(model);
 		medicineTable.setRowHeight(40);
 		medicineTable.setBackground(new Color(238,255,252));
-		loadDataToAddMedTable();
+		loadDataToPatientAddMedTable();
 		
 		JLabel mgLabel = new JLabel("mg/Unit");
 		mgLabel.setForeground(Color.DARK_GRAY);
@@ -936,25 +935,52 @@ public class Dashboard extends JFrame{
 		pressColumnModel.getColumn(3).setPreferredWidth(5);
 		pressColumnModel.getColumn(4).setPreferredWidth(5);
 		pressColumnModel.getColumn(5).setPreferredWidth(5);
+		loadDataToPatientAddPresTable();
 		
 		addPrescriptionButton = new JButton("Add");
 		addPrescriptionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				presRow[0]=addPressMedNameTxtField.getText().trim();
-				presRow[1]=addPressMgTextField.getText().trim();
-				presRow[2]=morningComboBox.getSelectedItem().toString().trim();
-				presRow[3]=eveningComboBox.getSelectedItem().toString().trim();
-				presRow[4]=nightComboBox.getSelectedItem().toString().trim();
-				presRow[5]=courseForTextField.getText().trim();
+				String pressMedName=addPressMedNameTxtField.getText().trim();
+				String pressMg=addPressMgTextField.getText().trim();
+				String morningNumber=morningComboBox.getSelectedItem().toString().trim();
+				String eveningNumber=eveningComboBox.getSelectedItem().toString().trim();
+				String nigntNumber=nightComboBox.getSelectedItem().toString().trim();
+				String courseTotalNumber=courseForTextField.getText().trim();
 				
+				presRow[0]=pressMedName;
+				presRow[1]=pressMg;
+				presRow[2]=morningNumber;
+				presRow[3]=eveningNumber;
+				presRow[4]=nigntNumber;
+				presRow[5]=courseTotalNumber;
 				prescriptionModel.addRow(presRow);
-				
+
 				addPressMedNameTxtField.setText("");
 				addPressMgTextField.setText("");
 				morningComboBox.setSelectedIndex(0);
 				eveningComboBox.setSelectedIndex(0);
 				nightComboBox.setSelectedIndex(0);
 				courseForTextField.setText("");
+				
+				ArrayList<Patient> tempArrayP=new ArrayList<Patient>();
+				Patient tempP=new Patient();
+				tempP.loadPatientData(filePath, tempArrayP);
+				
+				for(int i=0; i<tempArrayP.size(); i++) {
+					Patient temp=(Patient) tempArrayP.get(i);
+					if(temp.getName().equalsIgnoreCase(userName)) {
+						temp.setAddPresMedicineName(pressMedName);
+						temp.setAddPresMg(pressMg);
+						temp.setAddPresMoring(morningNumber);
+						temp.setAddPresEvening(eveningNumber);
+						temp.setAddPresNight(nigntNumber);
+						temp.setTotalCourseDays(courseTotalNumber);
+						tempArrayP.add(i, temp);
+						break;
+					}
+				}
+				tempP.addUser(filePath, tempArrayP);
+				
 			}
 		});
 		addPrescriptionButton.setForeground(Color.WHITE);
@@ -1210,12 +1236,12 @@ public class Dashboard extends JFrame{
 		appointmentDateLabel.setBounds(45, 289, 177, 35);
 		addAppointPanel.add(appointmentDateLabel);
 		
-		lblhhmmAmpm = new JLabel("(hh:mm AM/PM)");
-		lblhhmmAmpm.setForeground(Color.DARK_GRAY);
-		lblhhmmAmpm.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblhhmmAmpm.setBackground(new Color(229, 234, 230));
-		lblhhmmAmpm.setBounds(436, 206, 114, 28);
-		addAppointPanel.add(lblhhmmAmpm);
+		JLabel addAppointmentDateFormat = new JLabel("(hh:mm AM/PM)");
+		addAppointmentDateFormat.setForeground(Color.DARK_GRAY);
+		addAppointmentDateFormat.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		addAppointmentDateFormat.setBackground(new Color(229, 234, 230));
+		addAppointmentDateFormat.setBounds(436, 206, 114, 28);
+		addAppointPanel.add(addAppointmentDateFormat);
 		
 		addAppointmentButton = new JButton("Add");
 		addAppointmentButton.addActionListener(new ActionListener() {
@@ -1749,7 +1775,7 @@ public class Dashboard extends JFrame{
 		dashboardTopBar.add(appDashboardTitleLabel);
 	}
 	
-	public void loadDataToAddMedTable() {
+	public void loadDataToPatientAddMedTable() {
 		ArrayList<Patient> tempArrP=new ArrayList<Patient>();
 		Patient tempP=new Patient();
 		tempP.loadPatientData(filePath, tempArrP);
@@ -1774,9 +1800,45 @@ public class Dashboard extends JFrame{
 
 	}
 	
-	
-	
-	
+	public void loadDataToPatientAddPresTable() {
+		ArrayList<Patient> tempArrP=new ArrayList<Patient>();
+		Patient tempP=new Patient();
+		tempP.loadPatientData(filePath, tempArrP);
+		
+		Iterator<Patient> iter=tempArrP.iterator();
+		
+		while(iter.hasNext()) {
+			Patient temp=(Patient) iter.next();
+			if(temp.getName().equalsIgnoreCase(userName)) {
+				ArrayList<String> tempArrM=temp.getAddPresMedicineName();
+				Iterator<String> iterTempArrM=tempArrM.iterator();
+				ArrayList<String> tempArrMg=temp.getAddMg();
+				Iterator<String> iterTempArrMg=tempArrMg.iterator();
+				ArrayList<String> tempArrMoring=temp.getAddPresMorning();
+				Iterator<String> iterTempArrMoring=tempArrMoring.iterator();
+				ArrayList<String> tempArrEvening=temp.getAddPresEvening();
+				Iterator<String> iterTemparrEvening=tempArrEvening.iterator();
+				ArrayList<String> tempArrNight=temp.getAddPresNight();
+				Iterator<String> iterTempArrNight=tempArrNight.iterator();
+				ArrayList<String> tempArrTotalCourseDay=temp.getTotalCourseDays();
+				Iterator<String> iterTempArrTotalCourseDay=tempArrTotalCourseDay.iterator();
+				
+				while(iterTempArrM.hasNext() && iterTempArrMg.hasNext() && iterTempArrMoring.hasNext() && iterTemparrEvening.hasNext()
+						&& iterTempArrNight.hasNext() && iterTempArrTotalCourseDay.hasNext()) {
+					presRow[0]=(String) iterTempArrM.next().trim();
+					presRow[1]=(String) iterTempArrMg.next().trim();
+					presRow[2]=(String) iterTempArrMoring.next().trim();
+					presRow[3]=(String) iterTemparrEvening.next().trim();
+					presRow[4]=(String) iterTempArrNight.next().trim();
+					presRow[5]=(String) iterTempArrTotalCourseDay.next().trim();
+					prescriptionModel.addRow(presRow);
+					
+				}
+				break;
+			}
+			
+		}
+	}
 	
 	
 	

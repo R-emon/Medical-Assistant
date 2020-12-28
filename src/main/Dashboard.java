@@ -1208,7 +1208,43 @@ public class Dashboard extends JFrame{
 		patientTurnOffAlertButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int selectedRowIndex=alertListTable.getSelectedRow();
-				alertListModel.setValueAt("Alert Off", selectedRowIndex, 3);
+				String selectedAlertListMedName=alertListModel.getValueAt(selectedRowIndex, 0).toString().trim();
+				String selectedAlertListTime=alertListModel.getValueAt(selectedRowIndex, 1).toString().trim();
+				String selectedAlertListDate=alertListModel.getValueAt(selectedRowIndex, 2).toString().trim();
+				String selectedAlertListStatus=alertListModel.getValueAt(selectedRowIndex, 3).toString().trim();
+				alertListModel.setValueAt("Off", selectedRowIndex, 3);
+				
+				ArrayList<Patient> tempArrP=new ArrayList<Patient>();
+				Patient tempP=new Patient();
+				tempP.loadPatientData(filePath, tempArrP);
+				
+				for(int i=0; i<tempArrP.size(); i++) {
+					Patient temp=tempArrP.get(i);
+					if(temp.getName().equalsIgnoreCase(userName)) {
+						ArrayList<String> tempArrAlerListMedName=temp.getAlertMedicineName();
+						Iterator<String> iterTempArrAlertListMedName=tempArrAlerListMedName.iterator();
+						ArrayList<String> tempArrAlertListTime=temp.getAlertTime();
+						Iterator<String> iterTempArrAlertListTime=tempArrAlertListTime.iterator();
+						ArrayList<String> tempArrAlertListDate=temp.getAlertDate();
+						Iterator<String> iterTempAlertListDate=tempArrAlertListDate.iterator();
+						ArrayList<String> tempAlertListStatus=temp.getAlertStatus();
+						
+						
+						int statusIndex=0;
+						while(iterTempArrAlertListMedName.hasNext() && iterTempArrAlertListTime.hasNext() && iterTempAlertListDate.hasNext()) {
+							
+							if(iterTempArrAlertListMedName.next().equalsIgnoreCase(selectedAlertListMedName) && iterTempArrAlertListTime.next().equalsIgnoreCase(selectedAlertListTime) 
+									&& iterTempAlertListDate.next().equalsIgnoreCase(selectedAlertListDate)) {
+								tempAlertListStatus.set(statusIndex, "Off");
+								break;
+							}
+							statusIndex++;
+						}
+						tempArrP.set(i, temp);
+						break;
+					}
+				}
+				tempP.addUser(filePath, tempArrP);
 			}
 		});
 		patientTurnOffAlertButton.setForeground(Color.WHITE);
@@ -1926,7 +1962,6 @@ public class Dashboard extends JFrame{
 			}
 		}
 	}
-	
 	
 	
 }

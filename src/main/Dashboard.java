@@ -992,7 +992,34 @@ public class Dashboard extends JFrame{
 		deletePrescriptionButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow=prescriptionTable.getSelectedRow();
-				prescriptionModel.removeRow(selectedRow);;
+				String selectedPresMedName=prescriptionModel.getValueAt(selectedRow, 0).toString().trim();
+				String selectedPresMg=prescriptionModel.getValueAt(selectedRow, 1).toString().trim();
+				String selectedMorningCount=prescriptionModel.getValueAt(selectedRow, 2).toString().trim();
+				String selectedEveningCount=prescriptionModel.getValueAt(selectedRow, 3).toString().trim();
+				String selectedNightCount=prescriptionModel.getValueAt(selectedRow, 4).toString().trim();
+				String selectedCourseDays=prescriptionModel.getValueAt(selectedRow, 5).toString().trim();
+				if(selectedRow>=0) {
+					prescriptionModel.removeRow(selectedRow);
+					ArrayList<Patient> tempArrP=new ArrayList<Patient>();
+					Patient tempP=new Patient();
+					tempP.loadPatientData(filePath, tempArrP);
+					
+					for(int i=0; i<tempArrP.size(); i++) {
+						Patient temp=(Patient) tempArrP.get(i);
+						if(temp.getName().equalsIgnoreCase(userName)) {
+							temp.deleteAddPressMedicineName(selectedPresMedName);
+							temp.deleteAddPresMg(selectedPresMg);
+							temp.deleteAddPresMorning(selectedMorningCount);
+							temp.deleteAddPressEvening(selectedEveningCount);
+							temp.deleteAddPresNight(selectedNightCount);
+							temp.deleteTotalCourseDays(selectedCourseDays);
+							tempArrP.set(i, temp);
+							break;
+						}
+					}
+					tempP.addUser(filePath, tempArrP);
+				}
+				
 			}
 		});
 		deletePrescriptionButton.setForeground(Color.WHITE);

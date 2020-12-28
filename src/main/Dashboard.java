@@ -1143,6 +1143,7 @@ public class Dashboard extends JFrame{
 		alertColumnModel.getColumn(1).setPreferredWidth(5);
 		alertColumnModel.getColumn(2).setPreferredWidth(5);
 		alertColumnModel.getColumn(3).setPreferredWidth(5);
+		loadDataToPatientSetAlertListTable();
 
 		JLabel alertListLabel = new JLabel("Alert List");
 		alertListLabel.setForeground(Color.DARK_GRAY);
@@ -1161,15 +1162,41 @@ public class Dashboard extends JFrame{
 		JButton setAlertButton = new JButton("Set Alert");
 		setAlertButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				int selectedRowIndex=setAlertTable.getSelectedRow();
 				Date date=dueDateChooser.getDate();
 				String strDate=DateFormat.getInstance().format(date);
 				String[] arrDate=strDate.split(",");
-				int selectedRowIndex=setAlertTable.getSelectedRow();
-				alertRow[0]=(String) model.getValueAt(selectedRowIndex, 0).toString();
-				alertRow[1]=(String) timeTextField.getText().trim();
-				alertRow[2]=(String) arrDate[0];
-				alertRow[3]="Alert on";
+				
+				String setAlertListMedName=model.getValueAt(selectedRowIndex, 0).toString().trim();
+				String setAlertListTime=timeTextField.getText().trim();
+				String splitedDate=arrDate[0];
+				String setAlertListAlertStatus="On";
+				
+				alertRow[0]= setAlertListMedName;
+				alertRow[1]= setAlertListTime;
+				alertRow[2]= splitedDate;
+				alertRow[3]= setAlertListAlertStatus;
 				alertListModel.addRow(alertRow);
+				
+				timeTextField.setText("");
+				dueDateChooser.cleanup();
+				
+				ArrayList<Patient> tempArrP=new ArrayList<Patient>();
+				Patient tempP=new Patient();
+				tempP.loadPatientData(filePath, tempArrP);
+				
+				for(int i=0; i<tempArrP.size(); i++) {
+					Patient temp=tempArrP.get(i);
+					if(temp.getName().equalsIgnoreCase(userName)) {
+						temp.setAlertMedicineName(setAlertListMedName);
+						temp.setAlertTime(setAlertListTime);
+						temp.setAlertDate(splitedDate);
+						temp.setAlertStaus(setAlertListAlertStatus);
+						tempArrP.set(i, temp);
+						break;
+					}
+				}
+				tempP.addUser(filePath, tempArrP);
 			}
 		});
 		setAlertButton.setForeground(Color.WHITE);
@@ -1864,6 +1891,39 @@ public class Dashboard extends JFrame{
 				break;
 			}
 			
+		}
+	}
+	
+	public void loadDataToPatientSetAlertListTable() {
+		ArrayList<Patient> tempArrP=new ArrayList<Patient>();
+		Patient tempP=new Patient();
+		tempP.loadPatientData(filePath, tempArrP);
+		
+		Iterator<Patient> iter=tempArrP.iterator();
+		
+		while(iter.hasNext()) {
+			Patient temp=(Patient) iter.next();
+			if(temp.getName().equalsIgnoreCase(userName)) {
+				ArrayList<String> tempArrAlerListMedName=temp.getAlertMedicineName();
+				Iterator<String> iterTempArrAlertListMedName=tempArrAlerListMedName.iterator();
+				ArrayList<String> tempArrAlertListTime=temp.getAlertTime();
+				Iterator<String> iterTempArrAlertListTime=tempArrAlertListTime.iterator();
+				ArrayList<String> tempArrAlertListDate=temp.getAlertDate();
+				Iterator<String> iterTempAlertListDate=tempArrAlertListDate.iterator();
+				ArrayList<String> tempAlertListStatus=temp.getAlertStatus();
+				Iterator<String> iterTempAlertListStatus=tempAlertListStatus.iterator();
+				
+				while(iterTempArrAlertListMedName.hasNext() && iterTempArrAlertListTime.hasNext() && iterTempAlertListDate.hasNext() 
+						&& iterTempAlertListStatus.hasNext()) {
+					alertRow[0]=(String) iterTempArrAlertListMedName.next().trim();
+					alertRow[1]=(String) iterTempArrAlertListTime.next().trim();
+					alertRow[2]=(String) iterTempAlertListDate.next().trim();
+					alertRow[3]=(String) iterTempAlertListStatus.next().trim();
+					alertListModel.addRow(alertRow);
+		
+				}
+				break;
+			}
 		}
 	}
 	

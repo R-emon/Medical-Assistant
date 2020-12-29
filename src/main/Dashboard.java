@@ -30,6 +30,7 @@ import javax.swing.JComboBox;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -1059,6 +1060,7 @@ public class Dashboard extends JFrame{
 		patientDueColumnModel.getColumn(1).setPreferredWidth(5);
 		patientDueColumnModel.getColumn(2).setPreferredWidth(5);
 		patientDueColumnModel.getColumn(3).setPreferredWidth(5);
+		loadTodaysDueDataToPatientDueTable();
 		
 		JLabel medicineDueTodayLabe = new JLabel("Due Today");
 		medicineDueTodayLabe.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -1066,6 +1068,11 @@ public class Dashboard extends JFrame{
 		medicineDuePanel.add(medicineDueTodayLabe);
 		
 		dueRefreshButton = new JButton("Refresh");
+		dueRefreshButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				loadTodaysDueDataToPatientDueTable();
+			}
+		});
 		dueRefreshButton.setForeground(Color.WHITE);
 		dueRefreshButton.setBackground(new Color(146,94,194));
 		dueRefreshButton.setBounds(185, 317, 118, 41);
@@ -1963,5 +1970,38 @@ public class Dashboard extends JFrame{
 		}
 	}
 	
+	public void loadTodaysDueDataToPatientDueTable() {
+		ArrayList<Patient> tempArrP=new ArrayList<Patient>();
+		Patient tempP=new Patient();
+		tempP.loadPatientData(filePath, tempArrP);
+		
+		Iterator<Patient> iter=tempArrP.iterator();
+		
+		while(iter.hasNext()) {
+			Patient temp=(Patient) iter.next();
+			if(temp.getName().equalsIgnoreCase(userName)) {
+				
+				ArrayList<String> alertDueMedName=temp.getAlertMedicineName();
+				ArrayList<String> alertDueDateArr=temp.getAlertDate();
+				ArrayList<String> alertDueTimeArr=temp.getAlertTime();
+				ArrayList<String> alertStatusDue=temp.getAlertStatus();
+				Date currentSystemDate=new Date();
+				SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yy");
+				String currentDate=sdf.format(currentSystemDate);
+				
+				for(int i=0; i<alertDueMedName.size(); i++) {
+					if(alertDueDateArr.get(i).equalsIgnoreCase(currentDate)) {
+						
+						dueRow[0]=alertDueMedName.get(i).trim();
+						dueRow[1]=alertDueDateArr.get(i).trim();
+						dueRow[2]=alertDueTimeArr.get(i).trim();
+						dueRow[3]=alertStatusDue.get(i).trim();
+						patientDueModel.addRow(dueRow);
+					}
+				}
+				break;
+			}
+		}
+	}
 	
 }

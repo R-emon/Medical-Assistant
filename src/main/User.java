@@ -1,6 +1,7 @@
 package main;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public abstract class User implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -23,6 +24,8 @@ public abstract class User implements Serializable{
 	}
 	
 	public abstract void setAlert();
+	public abstract void addUser(String filePath, ArrayList<Patient> patientsArr);
+	public abstract void loadPatientData(String filePath,ArrayList<Patient> arr);
 	
 	public String getName() {
 		return this.name;

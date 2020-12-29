@@ -1218,7 +1218,6 @@ public class Dashboard extends JFrame{
 				String selectedAlertListMedName=alertListModel.getValueAt(selectedRowIndex, 0).toString().trim();
 				String selectedAlertListTime=alertListModel.getValueAt(selectedRowIndex, 1).toString().trim();
 				String selectedAlertListDate=alertListModel.getValueAt(selectedRowIndex, 2).toString().trim();
-				String selectedAlertListStatus=alertListModel.getValueAt(selectedRowIndex, 3).toString().trim();
 				alertListModel.setValueAt("Off", selectedRowIndex, 3);
 				
 				ArrayList<Patient> tempArrP=new ArrayList<Patient>();
@@ -1235,7 +1234,6 @@ public class Dashboard extends JFrame{
 						ArrayList<String> tempArrAlertListDate=temp.getAlertDate();
 						Iterator<String> iterTempAlertListDate=tempArrAlertListDate.iterator();
 						ArrayList<String> tempAlertListStatus=temp.getAlertStatus();
-						
 						
 						int statusIndex=0;
 						while(iterTempArrAlertListMedName.hasNext() && iterTempArrAlertListTime.hasNext() && iterTempAlertListDate.hasNext()) {

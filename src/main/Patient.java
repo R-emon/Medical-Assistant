@@ -41,7 +41,7 @@ public class Patient extends User implements Serializable{
 	public void setAlert() {
 		
 	}
-	
+	@Override
 	public void addUser(String filePath, ArrayList<Patient> patientsArr) {
 		
 		File file=new File(filePath);
@@ -71,7 +71,7 @@ public class Patient extends User implements Serializable{
 			e.printStackTrace();
 		}
 	}
-	
+	@Override
 	public void loadPatientData(String filePath,ArrayList<Patient> arr) {
 		File file=new File(filePath);
 		try {
@@ -108,7 +108,7 @@ public class Patient extends User implements Serializable{
 	
 	public void deleAddMedicineName(String name) {
 		for(int i=0; i<this.addMedicineName.size(); i++) {
-			if(this.addMedicineName.get(i).equals(name)) {
+			if(this.addMedicineName.get(i).equalsIgnoreCase(name)) {
 				this.addMedicineName.remove(i);
 				break;
 			}
@@ -130,7 +130,7 @@ public class Patient extends User implements Serializable{
 	
 	public void deleteAddMg(String mg) {
 		for(int i=0; i<this.addMg.size(); i++) {
-			if(this.addMg.get(i).equals(mg)) {
+			if(this.addMg.get(i).equalsIgnoreCase(mg)) {
 				this.addMg.remove(i);
 				break;
 			}
@@ -165,7 +165,7 @@ public class Patient extends User implements Serializable{
 	
 	public void deleteAddPressMedicineName(String name) {
 		for(int i=0; i<this.addPresMedicineName.size(); i++) {
-			if(this.addPresMedicineName.get(i).equals(name)) {
+			if(this.addPresMedicineName.get(i).equalsIgnoreCase(name)) {
 				this.addPresMedicineName.remove(i);
 				break;
 			}
@@ -189,7 +189,7 @@ public class Patient extends User implements Serializable{
 	
 	public void deleteAddPresMg(String mg) {
 		for(int i=0; i<this.addPresMg.size(); i++) {
-			if(this.addPresMg.get(i).equals(mg)) {
+			if(this.addPresMg.get(i).equalsIgnoreCase(mg)) {
 				this.addPresMg.remove(i);
 				break;
 			}
@@ -213,7 +213,7 @@ public class Patient extends User implements Serializable{
 	
 	public void deleteAddPresMorning(String count) {
 		for(int i=0; i<this.addPresMorning.size(); i++) {
-			if(this.addPresMorning.get(i).equals(count)) {
+			if(this.addPresMorning.get(i).equalsIgnoreCase(count)) {
 				this.addPresMorning.remove(i);
 				break;
 			}
@@ -237,7 +237,7 @@ public class Patient extends User implements Serializable{
 	
 	public void deleteAddPressEvening(String count) {
 		for(int i=0; i<this.addPresEvening.size(); i++) {
-			if(this.addPresEvening.get(i).equals(count)) {
+			if(this.addPresEvening.get(i).equalsIgnoreCase(count)) {
 				this.addPresEvening.remove(i);
 				break;
 			}
@@ -285,7 +285,7 @@ public class Patient extends User implements Serializable{
 	
 	public void deleteTotalCourseDays(String days) {
 		for(int i=0; i<this.totalCourseDays.size(); i++) {
-			if(this.totalCourseDays.get(i).equals(days)) {
+			if(this.totalCourseDays.get(i).equalsIgnoreCase(days)) {
 				this.totalCourseDays.remove(i);
 				break;
 			}
@@ -320,7 +320,7 @@ public class Patient extends User implements Serializable{
 	
 	public void deleteAlertMedicineName(String name) {
 		for(int i=0; i<this.alertMedicineName.size(); i++) {
-			if(this.alertMedicineName.get(i).equals(name)) {
+			if(this.alertMedicineName.get(i).equalsIgnoreCase(name)) {
 				this.alertMedicineName.remove(i);
 				break;
 			}
@@ -344,7 +344,7 @@ public class Patient extends User implements Serializable{
 	
 	public void deleteAlertTime(String time) {
 		for(int i=0; i<this.alertTime.size(); i++) {
-			if(this.alertTime.get(i).equals(time)) {
+			if(this.alertTime.get(i).equalsIgnoreCase(time)) {
 				this.alertTime.remove(i);
 				break;
 			}
@@ -368,7 +368,7 @@ public class Patient extends User implements Serializable{
 	
 	public void deleteAlertDate(String date) {
 		for(int i=0; i<this.alertDate.size(); i++) {
-			if(this.alertDate.get(i).equals(date)) {
+			if(this.alertDate.get(i).equalsIgnoreCase(date)) {
 				this.alertDate.remove(i);
 				break;
 			}
@@ -392,7 +392,7 @@ public class Patient extends User implements Serializable{
 	
 	public void deleteAlertStatus(String alertStatus) {
 		for(int i=0; i<this.alertStatus.size(); i++) {
-			if(this.alertStatus.get(i).equals(alertStatus)) {
+			if(this.alertStatus.get(i).equalsIgnoreCase(alertStatus)) {
 				this.alertStatus.remove(i);
 				break;
 			}

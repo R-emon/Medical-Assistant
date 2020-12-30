@@ -258,9 +258,14 @@ public class LoginSignupUI extends JFrame {
 						if((tempPatient.getName().equals(userName)) && (tempPatient.getPassword().equals(password))) {
 							System.out.println("true");
 							dashboard=new Dashboard(userName, frame);
+							Thread dashBoradThread = new Thread(dashboard);
 							dashboard.setVisible(true);
 							dashboard.switchPatientPanel();
 							frame.setVisible(false);
+							dashBoradThread.start();
+//							dashBoradThread.join();
+
+							
 							break;
 						}
 					}
@@ -278,9 +283,11 @@ public class LoginSignupUI extends JFrame {
 						if((tempDoctor.getName().equals(userName)) && (tempDoctor.getPassword().equals(password))) {
 							System.out.println("ture");
 							dashboard=new Dashboard(userName, frame);
+							Thread dashBoardThread=new Thread(dashboard);
 							dashboard.setVisible(true);
 							dashboard.switchDoctorPanel();
 							frame.setVisible(false);
+							dashBoardThread.start();
 							break;
 						}
 					}
@@ -512,7 +519,7 @@ public class LoginSignupUI extends JFrame {
 					tempUserType="Doctor";
 					ArrayList<Doctor> tempArrD=new ArrayList<Doctor>();
 					Doctor tempDoctor=new Doctor(tempUserName, tempEmail, tempPassword, tempConPassWord, tempUserType);
-					tempDoctor.loadPatientData(docFilePath, tempArrD);
+					tempDoctor.loadDoctorData(docFilePath, tempArrD);
 					tempArrD.add(tempDoctor);
 					tempDoctor.addUser(docFilePath, tempArrD);
 					

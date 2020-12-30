@@ -66,7 +66,7 @@ public class Doctor extends User implements Serializable{
 	}
 	
 	
-	public void loadPatientData(String filePath,ArrayList<Doctor> arr) {
+	public void loadDoctorData(String filePath,ArrayList<Doctor> arr) {
 		File file=new File(filePath);
 		try {
 			file.createNewFile();
@@ -159,11 +159,11 @@ public class Doctor extends User implements Serializable{
 		}
 	}
 
-	public ArrayList<String> getDocAlertMedName() {
+	public ArrayList<String> getDocAlertPatientName() {
 		return docAlertPatientName;
 	}
 	
-	public void setDocAlertMedName(String name) {
+	public void setDocAlertPatientName(String name) {
 		this.docAlertPatientName.add(name.trim());
 	}
 	

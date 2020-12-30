@@ -115,6 +115,7 @@ public class Patient extends User implements Serializable{
 			}
 		}
 	}
+	
 //	public void setAddMedicineName(ArrayList<String> addMedicineName) {
 //		this.addMedicineName = addMedicineName;
 //	}

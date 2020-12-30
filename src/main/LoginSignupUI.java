@@ -72,7 +72,9 @@ public class LoginSignupUI extends JFrame {
 	private ButtonGroup userSignUpCheckBoxGroup;
 	public static Dashboard dashboard;
 	private String filePath="src/data/patientData.txt";
-	private static ArrayList<Patient> patientArray=new ArrayList<Patient>();
+	private String docFilePath="src/data/doctorData.txt";
+	//private static ArrayList<Patient> patientArray=new ArrayList<Patient>();
+	//private static ArrayList<Doctor> doctorArray=new ArrayList<Doctor>();
 	
 	/**
 	 * Launch the application.
@@ -132,8 +134,32 @@ public class LoginSignupUI extends JFrame {
 				//System.out.println(tempPatient.getName());
 				arr.add(tempPatient);
 			}
+			fis.close();
+			ois.close();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void loadDoctorData(String filePath,ArrayList<Doctor> arr) {
+		File file=new File(filePath);
+		try {
+			file.createNewFile();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			FileInputStream fis=new FileInputStream(file);
+			ObjectInputStream ois=new ObjectInputStream(fis);
 			
-			
+			//arr.clear();
+		
+			while(fis.available()!=0) {
+				Doctor tempPatient=(Doctor) ois.readObject();
+				//System.out.println(tempPatient.getName());
+				arr.add(tempPatient);
+			}
 			fis.close();
 			ois.close();
 		}catch(Exception e) {
@@ -223,6 +249,7 @@ public class LoginSignupUI extends JFrame {
 				if(patientLoginSelected==true) {
 					ArrayList<Patient> tempArray=new ArrayList<Patient>();
 					loadPatientData(filePath, tempArray);
+					System.out.println(tempArray.size());
 					Iterator<Patient> iter=tempArray.iterator();
 					while(iter.hasNext()) {
 						Patient tempPatient=(Patient)iter.next();
@@ -239,10 +266,25 @@ public class LoginSignupUI extends JFrame {
 					}
 				}
 				
-				
-				
-				
-				
+				if(doctorLoginSelected==true) {
+					ArrayList<Doctor> tempArrD=new ArrayList<Doctor>();
+					loadDoctorData(docFilePath, tempArrD);
+					System.out.println(tempArrD.size());
+					Iterator<Doctor> iter=tempArrD.iterator();
+					while(iter.hasNext()) {
+						Doctor tempDoctor=(Doctor) iter.next();
+						System.out.println(tempDoctor.getName());
+						System.out.println(tempDoctor.getPassword());
+						if((tempDoctor.getName().equals(userName)) && (tempDoctor.getPassword().equals(password))) {
+							System.out.println("ture");
+							dashboard=new Dashboard(userName, frame);
+							dashboard.setVisible(true);
+							dashboard.switchDoctorPanel();
+							frame.setVisible(false);
+							break;
+						}
+					}
+				}
 				
 				
 //				UserAuthentication auth=new UserAuthentication();
@@ -455,22 +497,42 @@ public class LoginSignupUI extends JFrame {
 				String tempUserType="";
 				if(patientSignUpSelected==true) {
 					tempUserType="Patient";
+					ArrayList<Patient> tempArrP=new ArrayList<Patient>();
+					Patient tempPatient=new Patient(tempUserName, tempEmail, tempPassword, tempConPassWord, tempUserType);
+					tempPatient.loadPatientData(filePath, tempArrP);
+					tempArrP.add(tempPatient);
+					tempPatient.addUser(filePath, tempArrP);
+					
+					userNameTextField.setText("");
+					emailTextField.setText("");
+					passwordTextField.setText("");
+					conPasswordTextField.setText("");
 				}
 				else if(doctorSignUpSelected==true) {
 					tempUserType="Doctor";
+					ArrayList<Doctor> tempArrD=new ArrayList<Doctor>();
+					Doctor tempDoctor=new Doctor(tempUserName, tempEmail, tempPassword, tempConPassWord, tempUserType);
+					tempDoctor.loadPatientData(docFilePath, tempArrD);
+					tempArrD.add(tempDoctor);
+					tempDoctor.addUser(docFilePath, tempArrD);
+					
+					userNameTextField.setText("");
+					emailTextField.setText("");
+					passwordTextField.setText("");
+					conPasswordTextField.setText("");
 				}
 				else if(nurseSignUpSelected==true) {
 					tempUserType="Nurse";
 				}
-				Patient tempPatient=new Patient(tempUserName, tempEmail, tempPassword, tempConPassWord, tempUserType);
-				tempPatient.loadPatientData(filePath, patientArray);
-				patientArray.add(tempPatient);
-				tempPatient.addUser(filePath, patientArray);
-				
-				userNameTextField.setText("");
-				emailTextField.setName("");
-				passwordTextField.setText("");
-				conPasswordTextField.setText("");
+//				Patient tempPatient=new Patient(tempUserName, tempEmail, tempPassword, tempConPassWord, tempUserType);
+//				tempPatient.loadPatientData(filePath, patientArray);
+//				patientArray.add(tempPatient);
+//				tempPatient.addUser(filePath, patientArray);
+//				
+//				userNameTextField.setText("");
+//				emailTextField.setName("");
+//				passwordTextField.setText("");
+//				conPasswordTextField.setText("");
 				
 			}
 		});

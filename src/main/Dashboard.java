@@ -187,6 +187,7 @@ public class Dashboard extends JFrame{
 	private JDateChooser nurseAlertDateChooser;
 	private JButton nurseTurnOffAlertButton;
 	private String filePath="src/data/patientData.txt";
+	private String docFilePath="src/data/doctorData.txt";
 	//private Dashboard dashboard;
 	/**
 	 * Launch the application.

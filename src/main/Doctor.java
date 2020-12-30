@@ -18,8 +18,8 @@ public class Doctor extends User implements Serializable{
 	private ArrayList<String> addAppointTime=new ArrayList<String>();
 	private ArrayList<String> addAppointDate=new ArrayList<String>();
 	private ArrayList<String> docAlertPatientName=new ArrayList<String>();
-	private ArrayList<String> docAlertTime=new ArrayList<String>();;
-	private ArrayList<String> docAlertDate=new ArrayList<String>();;
+	private ArrayList<String> docAlertTime=new ArrayList<String>();
+	private ArrayList<String> docAlertDate=new ArrayList<String>();
 	private ArrayList<String> docAlertStatus=new ArrayList<String>();
 
 	public Doctor() {
@@ -34,8 +34,8 @@ public class Doctor extends User implements Serializable{
 	public void setAlert() {
 		
 	}
-	@Override
-	public void addUser(String filePath, ArrayList<Patient> patientsArr) {
+	
+	public void addUser(String filePath, ArrayList<Doctor> patientsArr) {
 		
 		File file=new File(filePath);
 		if(!file.exists()) {
@@ -50,10 +50,10 @@ public class Doctor extends User implements Serializable{
 			FileOutputStream fos=new FileOutputStream(file);
 			ObjectOutputStream oos=new ObjectOutputStream(fos);
 			
-			Iterator<Patient> iter= patientsArr.iterator();
+			Iterator<Doctor> iter= patientsArr.iterator();
 			
 			while(iter.hasNext()) {
-				Patient tempS=(Patient) iter.next();
+				Doctor tempS=(Doctor) iter.next();
 				oos.writeObject(tempS);
 			}
 			
@@ -65,8 +65,8 @@ public class Doctor extends User implements Serializable{
 		}
 	}
 	
-	@Override
-	public void loadPatientData(String filePath,ArrayList<Patient> arr) {
+	
+	public void loadPatientData(String filePath,ArrayList<Doctor> arr) {
 		File file=new File(filePath);
 		try {
 			file.createNewFile();
@@ -79,7 +79,7 @@ public class Doctor extends User implements Serializable{
 			ObjectInputStream ois=new ObjectInputStream(fis);
 			//arr.clear();
 			while(fis.available()!=0) {
-				Patient tempPatient=(Patient) ois.readObject();
+				Doctor tempPatient=(Doctor) ois.readObject();
 				//System.out.println(tempPatient.getName());
 				arr.add(tempPatient);
 			}

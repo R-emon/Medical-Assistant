@@ -41,7 +41,7 @@ public class Patient extends User implements Serializable{
 	public void setAlert() {
 		
 	}
-	@Override
+	
 	public void addUser(String filePath, ArrayList<Patient> patientsArr) {
 		
 		File file=new File(filePath);
@@ -71,7 +71,8 @@ public class Patient extends User implements Serializable{
 			e.printStackTrace();
 		}
 	}
-	@Override
+	
+	
 	public void loadPatientData(String filePath,ArrayList<Patient> arr) {
 		File file=new File(filePath);
 		try {

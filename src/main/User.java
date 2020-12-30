@@ -24,8 +24,6 @@ public abstract class User implements Serializable{
 	}
 	
 	public abstract void setAlert();
-	public abstract void addUser(String filePath, ArrayList<Patient> patientsArr);
-	public abstract void loadPatientData(String filePath,ArrayList<Patient> arr);
 	
 	public String getName() {
 		return this.name;

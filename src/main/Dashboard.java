@@ -1607,7 +1607,36 @@ public class Dashboard extends JFrame implements Runnable{
 		docTurnOffAlertButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int selectedRowIndex=docAlertListTable.getSelectedRow();
+				String alerListPatientName=docAlertListModel.getValueAt(selectedRowIndex, 0).toString().trim();
+				String alertListTime=docAlertListModel.getValueAt(selectedRowIndex, 1).toString().trim();
+				String alertListDate=docAlertListModel.getValueAt(selectedRowIndex, 2).toString().trim();
+				String alertListStatus="Off";
 				docAlertListModel.setValueAt("Alert Off", selectedRowIndex, 3);
+				
+				ArrayList<Doctor> tempArrD=new ArrayList<Doctor>();
+				Doctor tempD=new Doctor();
+				tempD.loadDoctorData(docFilePath, tempArrD);
+				
+				for(int i=0; i<tempArrD.size(); i++) {
+					Doctor temp=(Doctor) tempArrD.get(i);
+					if(temp.getName().equalsIgnoreCase(userName)) {
+						ArrayList<String> tempAlertListPatientName=temp.getDocAlertPatientName();
+						ArrayList<String> tempAlertListTime=temp.getDocAlertTime();
+						ArrayList<String> tempAlertListDate=temp.getDocAlertDate();
+						ArrayList<String> tempAlertListStatus=temp.getDocAlertStatus();
+						
+						for(int j=0; j<tempAlertListPatientName.size(); j++) {
+							if(tempAlertListPatientName.get(j).equalsIgnoreCase(alerListPatientName) && tempAlertListTime.get(j).equalsIgnoreCase(alertListTime) 
+								&& tempAlertListDate.get(j).equalsIgnoreCase(alertListDate)) {
+								tempAlertListStatus.set(j, alertListStatus);
+								break;
+							}
+						}
+						tempArrD.set(i, temp);
+						break;
+					}
+				}
+				tempD.addUser(docFilePath, tempArrD);
 			}
 		});
 		docTurnOffAlertButton.setForeground(Color.WHITE);

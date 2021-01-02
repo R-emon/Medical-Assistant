@@ -188,6 +188,7 @@ public class Dashboard extends JFrame implements Runnable{
 	private JButton nurseTurnOffAlertButton;
 	private String filePath="src/data/patientData.txt";
 	private String docFilePath="src/data/doctorData.txt";
+	private String nurseFilePath="src/data/NurseData.txt";
 	//private Dashboard dashboard;
 	/**
 	 * Launch the application.
@@ -1721,21 +1722,42 @@ public class Dashboard extends JFrame implements Runnable{
 		patientVisitColumnModel.getColumn(1).setPreferredWidth(5);
 		patientVisitColumnModel.getColumn(2).setPreferredWidth(40);
 		patientVisitColumnModel.getColumn(3).setPreferredWidth(5);
+		loadDataToNursePatientVisitTable();
 		
 		JButton addPatientVisitButton = new JButton("Add");
 		addPatientVisitButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				patientVisitRow[0]=nursePatientNameTextField.getText().trim();
-				patientVisitRow[1]=bedNumberTextField.getText().trim();
-				patientVisitRow[2]=nurseMedicineTextField.getText().trim();
-				patientVisitRow[3]=nurseMedQuantityComboBox.getSelectedItem().toString().trim();
-				
+				String visitPatientName=nursePatientNameTextField.getText().trim();
+				String visitBedNumber=bedNumberTextField.getText().trim();
+				String visitMedicineName=nurseMedicineTextField.getText().trim();
+				String visitMedicineQty=nurseMedQuantityComboBox.getSelectedItem().toString().trim();
+				patientVisitRow[0]=visitPatientName;
+				patientVisitRow[1]=visitBedNumber;
+				patientVisitRow[2]=visitMedicineName;
+				patientVisitRow[3]=visitMedicineQty;
 				patientVisitModel.addRow(patientVisitRow);
 				
 				nursePatientNameTextField.setText("");
 				bedNumberTextField.setText("");
 				nurseMedQuantityComboBox.setSelectedIndex(0);
 				nurseMedicineTextField.setText("");
+				
+				ArrayList<Nurse> tempArrN=new ArrayList<Nurse>();
+				Nurse tempN=new Nurse();
+				tempN.loadNurseData(nurseFilePath, tempArrN);
+				
+				for(int i=0; i<tempArrN.size(); i++) {
+					Nurse temp=(Nurse) tempArrN.get(i);
+					if(temp.getName().equalsIgnoreCase(userName)) {
+						temp.setAddVisitPatientName(visitPatientName);
+						temp.setAddVisitBedNumber(visitBedNumber);
+						temp.setAddVisitMedName(visitMedicineName);
+						temp.setAddVisitMedQty(visitMedicineQty);
+						tempArrN.set(i, temp);
+						break;
+					}
+				}
+				tempN.addUser(nurseFilePath, tempArrN);
 			}
 		});
 		addPatientVisitButton.setForeground(Color.WHITE);
@@ -1980,206 +2002,240 @@ public class Dashboard extends JFrame implements Runnable{
 		dashboardTopBar.add(appDashboardTitleLabel);
 	}
 	
-public void loadDataToPatientAddMedTable() {
-	ArrayList<Patient> tempArrP=new ArrayList<Patient>();
-	Patient tempP=new Patient();
-	tempP.loadPatientData(filePath, tempArrP);
+	public void loadDataToPatientAddMedTable() {
+		ArrayList<Patient> tempArrP=new ArrayList<Patient>();
+		Patient tempP=new Patient();
+		tempP.loadPatientData(filePath, tempArrP);
 		
-	Iterator<Patient> iter=tempArrP.iterator();
+		Iterator<Patient> iter=tempArrP.iterator();
 		
-	while(iter.hasNext()) {
-		Patient temp=(Patient) iter.next();
-		if(temp.getName().equalsIgnoreCase(userName)) {
-			ArrayList<String> tempArrM=temp.getAddMedicineName();
-			Iterator<String> i=tempArrM.iterator();
-			ArrayList<String> tempArrMg=temp.getAddMg();
-			Iterator<String> j=tempArrMg.iterator();
-			while(i.hasNext() && j.hasNext()) {
-				row[0]=(String)i.next().trim();
-				row[1]=(String)j.next().trim();
-				model.addRow(row);
-			}
-			break;
-		}
-	}
-
-}
-	
-public void loadDataToPatientAddPresTable() {
-	ArrayList<Patient> tempArrP=new ArrayList<Patient>();
-	Patient tempP=new Patient();
-	tempP.loadPatientData(filePath, tempArrP);
-		
-	Iterator<Patient> iter=tempArrP.iterator();
-		
-	while(iter.hasNext()) {
-		Patient temp=(Patient) iter.next();
-		if(temp.getName().equalsIgnoreCase(userName)) {
-			ArrayList<String> tempArrM=temp.getAddPresMedicineName();
-			Iterator<String> iterTempArrM=tempArrM.iterator();
-			ArrayList<String> tempArrMg=temp.getAddPresMg();
-			Iterator<String> iterTempArrMg=tempArrMg.iterator();
-			ArrayList<String> tempArrMoring=temp.getAddPresMorning();
-			Iterator<String> iterTempArrMoring=tempArrMoring.iterator();
-			ArrayList<String> tempArrEvening=temp.getAddPresEvening();
-			Iterator<String> iterTemparrEvening=tempArrEvening.iterator();
-			ArrayList<String> tempArrNight=temp.getAddPresNight();
-			Iterator<String> iterTempArrNight=tempArrNight.iterator();
-			ArrayList<String> tempArrTotalCourseDay=temp.getTotalCourseDays();
-			Iterator<String> iterTempArrTotalCourseDay=tempArrTotalCourseDay.iterator();
-				
-			while(iterTempArrM.hasNext() && iterTempArrMg.hasNext() && iterTempArrMoring.hasNext() && iterTemparrEvening.hasNext()
-					&& iterTempArrNight.hasNext() && iterTempArrTotalCourseDay.hasNext()) {
-				presRow[0]=(String) iterTempArrM.next().trim();
-				presRow[1]=(String) iterTempArrMg.next().trim();
-				presRow[2]=(String) iterTempArrMoring.next().trim();
-				presRow[3]=(String) iterTemparrEvening.next().trim();
-				presRow[4]=(String) iterTempArrNight.next().trim();
-				presRow[5]=(String) iterTempArrTotalCourseDay.next().trim();
-				prescriptionModel.addRow(presRow);
-					
-			}
-			break;
-		}
-			
-	}
-}
-	
-public void loadDataToPatientSetAlertListTable() {
-	ArrayList<Patient> tempArrP=new ArrayList<Patient>();
-	Patient tempP=new Patient();
-	tempP.loadPatientData(filePath, tempArrP);
-		
-	Iterator<Patient> iter=tempArrP.iterator();
-		
-	while(iter.hasNext()) {
-		Patient temp=(Patient) iter.next();
-		if(temp.getName().equalsIgnoreCase(userName)) {
-			ArrayList<String> tempArrAlerListMedName=temp.getAlertMedicineName();
-			Iterator<String> iterTempArrAlertListMedName=tempArrAlerListMedName.iterator();
-			ArrayList<String> tempArrAlertListTime=temp.getAlertTime();
-			Iterator<String> iterTempArrAlertListTime=tempArrAlertListTime.iterator();
-			ArrayList<String> tempArrAlertListDate=temp.getAlertDate();
-			Iterator<String> iterTempAlertListDate=tempArrAlertListDate.iterator();
-			ArrayList<String> tempAlertListStatus=temp.getAlertStatus();
-			Iterator<String> iterTempAlertListStatus=tempAlertListStatus.iterator();
-				
-			while(iterTempArrAlertListMedName.hasNext() && iterTempArrAlertListTime.hasNext() && iterTempAlertListDate.hasNext() 
-					&& iterTempAlertListStatus.hasNext()) {
-				alertRow[0]=(String) iterTempArrAlertListMedName.next().trim();
-				alertRow[1]=(String) iterTempArrAlertListTime.next().trim();
-				alertRow[2]=(String) iterTempAlertListDate.next().trim();
-				alertRow[3]=(String) iterTempAlertListStatus.next().trim();
-				alertListModel.addRow(alertRow);
-		
-			}
-			break;
-		}
-	}
-}
-	
-public void loadTodaysDueDataToPatientDueTable() {
-	ArrayList<Patient> tempArrP=new ArrayList<Patient>();
-	Patient tempP=new Patient();
-	tempP.loadPatientData(filePath, tempArrP);
-		
-	Iterator<Patient> iter=tempArrP.iterator();
-		
-	while(iter.hasNext()) {
-		Patient temp=(Patient) iter.next();
-		if(temp.getName().equalsIgnoreCase(userName)) {
-				
-			ArrayList<String> alertDueMedName=temp.getAlertMedicineName();
-			ArrayList<String> alertDueDateArr=temp.getAlertDate();
-			ArrayList<String> alertDueTimeArr=temp.getAlertTime();
-			ArrayList<String> alertStatusDue=temp.getAlertStatus();
-			Date currentSystemDate=new Date();
-			SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yy");
-			String currentDate=sdf.format(currentSystemDate);
-				
-			for(int i=0; i<alertDueMedName.size(); i++) {
-				if(alertDueDateArr.get(i).equalsIgnoreCase(currentDate)) {
-						
-					dueRow[0]=alertDueMedName.get(i).trim();
-					dueRow[1]=alertDueDateArr.get(i).trim();
-					dueRow[2]=alertDueTimeArr.get(i).trim();
-					dueRow[3]=alertStatusDue.get(i).trim();
-					patientDueModel.addRow(dueRow);
+		while(iter.hasNext()) {
+			Patient temp=(Patient) iter.next();
+			if(temp.getName().equalsIgnoreCase(userName)) {
+				ArrayList<String> tempArrM=temp.getAddMedicineName();
+				Iterator<String> i=tempArrM.iterator();
+				ArrayList<String> tempArrMg=temp.getAddMg();
+				Iterator<String> j=tempArrMg.iterator();
+				while(i.hasNext() && j.hasNext()) {
+					row[0]=(String)i.next().trim();
+					row[1]=(String)j.next().trim();
+					model.addRow(row);
 				}
+				break;
 			}
-			break;
 		}
+
 	}
-}
 	
-public void loadDataToDoctorAppointTable() {
-	ArrayList<Doctor> tempArrD=new ArrayList<Doctor>();
-	Doctor tempD=new Doctor();
-	tempD.loadDoctorData(docFilePath, tempArrD);
+	public void loadDataToPatientAddPresTable() {
+		ArrayList<Patient> tempArrP=new ArrayList<Patient>();
+		Patient tempP=new Patient();
+		tempP.loadPatientData(filePath, tempArrP);
 		
-	Iterator<Doctor> iter=tempArrD.iterator();
+		Iterator<Patient> iter=tempArrP.iterator();
 		
-	while(iter.hasNext()) {
-		Doctor temp=iter.next();
-		if(temp.getName().equalsIgnoreCase(userName)) {
-			ArrayList<String> tempArrPName=temp.getAddAppointPatientName();
-			Iterator<String> iterTempArrPName=tempArrPName.iterator();
-			ArrayList<String> tempArrPNum=temp.getAddAppointPatientNumber();
-			Iterator<String> iterTempArrPNum=tempArrPNum.iterator();
-			ArrayList<String> tempArrTime=temp.getAddAppointTime();
-			Iterator<String> iterTempArrTime=tempArrTime.iterator();
-			ArrayList<String> tempArrDate=temp.getAddAppointDate();
-			Iterator<String> iterTempArrDate=tempArrDate.iterator();
+		while(iter.hasNext()) {
+			Patient temp=(Patient) iter.next();
+			if(temp.getName().equalsIgnoreCase(userName)) {
+				ArrayList<String> tempArrM=temp.getAddPresMedicineName();
+				Iterator<String> iterTempArrM=tempArrM.iterator();
+				ArrayList<String> tempArrMg=temp.getAddPresMg();
+				Iterator<String> iterTempArrMg=tempArrMg.iterator();
+				ArrayList<String> tempArrMoring=temp.getAddPresMorning();
+				Iterator<String> iterTempArrMoring=tempArrMoring.iterator();
+				ArrayList<String> tempArrEvening=temp.getAddPresEvening();
+				Iterator<String> iterTemparrEvening=tempArrEvening.iterator();
+				ArrayList<String> tempArrNight=temp.getAddPresNight();
+				Iterator<String> iterTempArrNight=tempArrNight.iterator();
+				ArrayList<String> tempArrTotalCourseDay=temp.getTotalCourseDays();
+				Iterator<String> iterTempArrTotalCourseDay=tempArrTotalCourseDay.iterator();
 				
-			while(iterTempArrPName.hasNext() && iterTempArrPNum.hasNext() && iterTempArrTime.hasNext() && iterTempArrDate.hasNext()) {
-				addAppointRow[0]=(String) iterTempArrPName.next().trim();
-				addAppointRow[1]=(String) iterTempArrPNum.next().trim();
-				addAppointRow[2]=(String) iterTempArrTime.next().trim();
-				addAppointRow[3]=(String) iterTempArrDate.next().trim();
-				addAppointmentModel.addRow(addAppointRow);
+				while(iterTempArrM.hasNext() && iterTempArrMg.hasNext() && iterTempArrMoring.hasNext() && iterTemparrEvening.hasNext()
+						&& iterTempArrNight.hasNext() && iterTempArrTotalCourseDay.hasNext()) {
+					presRow[0]=(String) iterTempArrM.next().trim();
+					presRow[1]=(String) iterTempArrMg.next().trim();
+					presRow[2]=(String) iterTempArrMoring.next().trim();
+					presRow[3]=(String) iterTemparrEvening.next().trim();
+					presRow[4]=(String) iterTempArrNight.next().trim();
+					presRow[5]=(String) iterTempArrTotalCourseDay.next().trim();
+					prescriptionModel.addRow(presRow);
+					
+				}
+				break;
 			}
-			break;
-		}
-	}
-}
-	
-public void loadDataToDocSetAlertListTable() {
-	ArrayList<Doctor> tempArrD=new ArrayList<Doctor>();
-	Doctor tempD=new Doctor();
-	tempD.loadDoctorData(docFilePath, tempArrD);
-		
-	Iterator<Doctor> iter=tempArrD.iterator();
-		
-	while(iter.hasNext()) {
-		Doctor temp=(Doctor) iter.next();
-		if(temp.getName().equalsIgnoreCase(userName)) {
-			ArrayList<String> alertListPatientName=temp.getDocAlertPatientName();
-			Iterator<String> iterAlertListPatientName=alertListPatientName.iterator();
-			ArrayList<String> alertListTime=temp.getDocAlertTime();
-			Iterator<String> iterAlertListTime=alertListTime.iterator();
-			ArrayList<String> alertListDate=temp.getDocAlertDate();
-			Iterator<String> iterAlertListDate=alertListDate.iterator();
-			ArrayList<String> alertListStatus=temp.getDocAlertStatus();
-			Iterator<String> iterAlertListStatus=alertListStatus.iterator();
 			
-			while(iterAlertListPatientName.hasNext() && iterAlertListTime.hasNext() && iterAlertListDate.hasNext() && iterAlertListStatus.hasNext()) {
-				docAlertListRow[0]=iterAlertListPatientName.next().trim();
-				docAlertListRow[1]=iterAlertListTime.next().trim();
-				docAlertListRow[2]=iterAlertListDate.next().trim();
-				docAlertListRow[3]=iterAlertListStatus.next().trim();
-				docAlertListModel.addRow(docAlertListRow);
-			}
-			break;
 		}
 	}
-}
+	
+	public void loadDataToPatientSetAlertListTable() {
+		ArrayList<Patient> tempArrP=new ArrayList<Patient>();
+		Patient tempP=new Patient();
+		tempP.loadPatientData(filePath, tempArrP);
+		
+		Iterator<Patient> iter=tempArrP.iterator();
+		
+		while(iter.hasNext()) {
+			Patient temp=(Patient) iter.next();
+			if(temp.getName().equalsIgnoreCase(userName)) {
+				ArrayList<String> tempArrAlerListMedName=temp.getAlertMedicineName();
+				Iterator<String> iterTempArrAlertListMedName=tempArrAlerListMedName.iterator();
+				ArrayList<String> tempArrAlertListTime=temp.getAlertTime();
+				Iterator<String> iterTempArrAlertListTime=tempArrAlertListTime.iterator();
+				ArrayList<String> tempArrAlertListDate=temp.getAlertDate();
+				Iterator<String> iterTempAlertListDate=tempArrAlertListDate.iterator();
+				ArrayList<String> tempAlertListStatus=temp.getAlertStatus();
+				Iterator<String> iterTempAlertListStatus=tempAlertListStatus.iterator();
+				
+				while(iterTempArrAlertListMedName.hasNext() && iterTempArrAlertListTime.hasNext() && iterTempAlertListDate.hasNext() 
+						&& iterTempAlertListStatus.hasNext()) {
+					alertRow[0]=(String) iterTempArrAlertListMedName.next().trim();
+					alertRow[1]=(String) iterTempArrAlertListTime.next().trim();
+					alertRow[2]=(String) iterTempAlertListDate.next().trim();
+					alertRow[3]=(String) iterTempAlertListStatus.next().trim();
+					alertListModel.addRow(alertRow);
+		
+				}
+				break;
+			}
+		}
+	}
+	
+	public void loadTodaysDueDataToPatientDueTable() {
+		ArrayList<Patient> tempArrP=new ArrayList<Patient>();
+		Patient tempP=new Patient();
+		tempP.loadPatientData(filePath, tempArrP);
+		
+		Iterator<Patient> iter=tempArrP.iterator();
+		
+		while(iter.hasNext()) {
+			Patient temp=(Patient) iter.next();
+			if(temp.getName().equalsIgnoreCase(userName)) {
+				
+				ArrayList<String> alertDueMedName=temp.getAlertMedicineName();
+				ArrayList<String> alertDueDateArr=temp.getAlertDate();
+				ArrayList<String> alertDueTimeArr=temp.getAlertTime();
+				ArrayList<String> alertStatusDue=temp.getAlertStatus();
+				Date currentSystemDate=new Date();
+				SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yy");
+				String currentDate=sdf.format(currentSystemDate);
+				
+				for(int i=0; i<alertDueMedName.size(); i++) {
+					if(alertDueDateArr.get(i).equalsIgnoreCase(currentDate)) {
+						
+						dueRow[0]=alertDueMedName.get(i).trim();
+						dueRow[1]=alertDueDateArr.get(i).trim();
+						dueRow[2]=alertDueTimeArr.get(i).trim();
+						dueRow[3]=alertStatusDue.get(i).trim();
+						patientDueModel.addRow(dueRow);
+					}
+				}
+				break;
+			}
+		}
+	}
+	
+	public void loadDataToDoctorAppointTable() {
+		ArrayList<Doctor> tempArrD=new ArrayList<Doctor>();
+		Doctor tempD=new Doctor();
+		tempD.loadDoctorData(docFilePath, tempArrD);
+		
+		Iterator<Doctor> iter=tempArrD.iterator();
+		
+		while(iter.hasNext()) {
+			Doctor temp=iter.next();
+			if(temp.getName().equalsIgnoreCase(userName)) {
+				ArrayList<String> tempArrPName=temp.getAddAppointPatientName();
+				Iterator<String> iterTempArrPName=tempArrPName.iterator();
+				ArrayList<String> tempArrPNum=temp.getAddAppointPatientNumber();
+				Iterator<String> iterTempArrPNum=tempArrPNum.iterator();
+				ArrayList<String> tempArrTime=temp.getAddAppointTime();
+				Iterator<String> iterTempArrTime=tempArrTime.iterator();
+				ArrayList<String> tempArrDate=temp.getAddAppointDate();
+				Iterator<String> iterTempArrDate=tempArrDate.iterator();
+				
+				while(iterTempArrPName.hasNext() && iterTempArrPNum.hasNext() && iterTempArrTime.hasNext() && iterTempArrDate.hasNext()) {
+					addAppointRow[0]=(String) iterTempArrPName.next().trim();
+					addAppointRow[1]=(String) iterTempArrPNum.next().trim();
+					addAppointRow[2]=(String) iterTempArrTime.next().trim();
+					addAppointRow[3]=(String) iterTempArrDate.next().trim();
+					addAppointmentModel.addRow(addAppointRow);
+				}
+				break;
+			}
+		}
+	}
+	
+	public void loadDataToDocSetAlertListTable() {
+		ArrayList<Doctor> tempArrD=new ArrayList<Doctor>();
+		Doctor tempD=new Doctor();
+		tempD.loadDoctorData(docFilePath, tempArrD);
+		
+		Iterator<Doctor> iter=tempArrD.iterator();
+		
+		while(iter.hasNext()) {
+			Doctor temp=(Doctor) iter.next();
+			if(temp.getName().equalsIgnoreCase(userName)) {
+				ArrayList<String> alertListPatientName=temp.getDocAlertPatientName();
+				Iterator<String> iterAlertListPatientName=alertListPatientName.iterator();
+				ArrayList<String> alertListTime=temp.getDocAlertTime();
+				Iterator<String> iterAlertListTime=alertListTime.iterator();
+				ArrayList<String> alertListDate=temp.getDocAlertDate();
+				Iterator<String> iterAlertListDate=alertListDate.iterator();
+				ArrayList<String> alertListStatus=temp.getDocAlertStatus();
+				Iterator<String> iterAlertListStatus=alertListStatus.iterator();
+			
+				while(iterAlertListPatientName.hasNext() && iterAlertListTime.hasNext() && iterAlertListDate.hasNext() && iterAlertListStatus.hasNext()) {
+					docAlertListRow[0]=iterAlertListPatientName.next().trim();
+					docAlertListRow[1]=iterAlertListTime.next().trim();
+					docAlertListRow[2]=iterAlertListDate.next().trim();
+					docAlertListRow[3]=iterAlertListStatus.next().trim();
+					docAlertListModel.addRow(docAlertListRow);
+				}
+				break;
+			}
+		}
+	}
+	
+	public void loadDataToNursePatientVisitTable() {
+		ArrayList<Nurse> tempArrN=new ArrayList<Nurse>();
+		Nurse tempN=new Nurse();
+		tempN.loadNurseData(nurseFilePath, tempArrN);
+		Iterator<Nurse> iter=tempArrN.iterator();
+		
+		while(iter.hasNext()) {
+			Nurse temp=(Nurse) iter.next();
+			if(temp.getName().equalsIgnoreCase(userName)) {
+				ArrayList<String> visitPatientName=temp.getAddVisitPatientName();
+				Iterator<String> iterVisitPatientName=visitPatientName.iterator();
+				ArrayList<String> visitPatientBedNumber=temp.getAddVisitBedNumber();
+				Iterator<String> iterVisitPatientBedNumber=visitPatientBedNumber.iterator();
+				ArrayList<String> visitPatientMedName=temp.getAddVisitMedName();
+				Iterator<String> iterVisitPatientMedName=visitPatientMedName.iterator();
+				ArrayList<String> visitPatientMedQty=temp.getAddVisitMedQty();
+				Iterator<String> iterVisitPatientMedQty=visitPatientMedQty.iterator();
+				
+				while(iterVisitPatientName.hasNext() && iterVisitPatientBedNumber.hasNext() && iterVisitPatientMedName.hasNext() 
+						&& iterVisitPatientMedQty.hasNext()) {
+					patientVisitRow[0]=iterVisitPatientName.next().trim();
+					patientVisitRow[1]=iterVisitPatientBedNumber.next().trim();
+					patientVisitRow[2]=iterVisitPatientMedName.next().trim();
+					patientVisitRow[3]=iterVisitPatientMedQty.next().trim();
+					patientVisitModel.addRow(patientVisitRow);
+					
+					}
+				break;
+			}
+		}
+	}
 
-
-
-
-
-
-
-
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

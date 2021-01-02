@@ -45,16 +45,8 @@ public abstract class User implements Serializable{
 		return this.password;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	public String getConfirmPassword() {
 		return this.confirmPassword;
-	}
-
-	public void setConfirmPassword(String confirmPassword) {
-		this.confirmPassword = confirmPassword;
 	}
 
 	public String getUserType() {

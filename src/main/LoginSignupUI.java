@@ -73,6 +73,7 @@ public class LoginSignupUI extends JFrame {
 	public static Dashboard dashboard;
 	private String filePath="src/data/patientData.txt";
 	private String docFilePath="src/data/doctorData.txt";
+	private String nurseFilePath="src/data/NurseData.txt";
 	//private static ArrayList<Patient> patientArray=new ArrayList<Patient>();
 	//private static ArrayList<Doctor> doctorArray=new ArrayList<Doctor>();
 	
@@ -157,6 +158,31 @@ public class LoginSignupUI extends JFrame {
 		
 			while(fis.available()!=0) {
 				Doctor tempPatient=(Doctor) ois.readObject();
+				//System.out.println(tempPatient.getName());
+				arr.add(tempPatient);
+			}
+			fis.close();
+			ois.close();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public void loadNurseData(String filePath,ArrayList<Nurse> arr) {
+		File file=new File(filePath);
+		try {
+			file.createNewFile();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			FileInputStream fis=new FileInputStream(file);
+			ObjectInputStream ois=new ObjectInputStream(fis);
+			
+			//arr.clear();
+		
+			while(fis.available()!=0) {
+				Nurse tempPatient=(Nurse) ois.readObject();
 				//System.out.println(tempPatient.getName());
 				arr.add(tempPatient);
 			}
@@ -264,11 +290,11 @@ public class LoginSignupUI extends JFrame {
 							frame.setVisible(false);
 							dashBoradThread.start();
 //							dashBoradThread.join();
-
-							
 							break;
 						}
 					}
+					logInUserNameTextField.setText("");
+					loginPasswordField.setText("");
 				}
 				
 				if(doctorLoginSelected==true) {
@@ -291,6 +317,31 @@ public class LoginSignupUI extends JFrame {
 							break;
 						}
 					}
+					logInUserNameTextField.setText("");
+					loginPasswordField.setText("");
+				}
+				
+				if(nurseLoginSelected==true) {
+					ArrayList<Nurse> tempArrN=new ArrayList<Nurse>();
+					loadNurseData(nurseFilePath, tempArrN);
+					Iterator<Nurse> iter=tempArrN.iterator();
+					while(iter.hasNext()) {
+						Nurse tempNurse=(Nurse) iter.next();
+						System.out.println(tempNurse.getName());
+						System.out.println(tempNurse.getPassword());
+						if((tempNurse.getName().equals(userName)) && (tempNurse.getPassword().equals(password))){
+							System.out.println("ture");
+							dashboard=new Dashboard(userName, frame);
+							Thread dashBoardThread=new Thread(dashboard);
+							dashboard.setVisible(true);
+							dashboard.switchNursePanel();;
+							frame.setVisible(false);
+							dashBoardThread.start();
+							break;
+						}
+					}
+					logInUserNameTextField.setText("");
+					loginPasswordField.setText("");
 				}
 				
 				
@@ -530,6 +581,16 @@ public class LoginSignupUI extends JFrame {
 				}
 				else if(nurseSignUpSelected==true) {
 					tempUserType="Nurse";
+					ArrayList<Nurse> tempArrN=new ArrayList<Nurse>();
+					Nurse tempNurse=new Nurse(tempUserName, tempEmail, tempPassword, tempConPassWord, tempUserType);
+					tempNurse.loadNurseData(nurseFilePath, tempArrN);
+					tempArrN.add(tempNurse);
+					tempNurse.addUser(nurseFilePath, tempArrN);
+					
+					userNameTextField.setText("");
+					emailTextField.setText("");
+					passwordTextField.setText("");
+					conPasswordTextField.setText("");
 				}
 //				Patient tempPatient=new Patient(tempUserName, tempEmail, tempPassword, tempConPassWord, tempUserType);
 //				tempPatient.loadPatientData(filePath, patientArray);

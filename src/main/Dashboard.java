@@ -1439,6 +1439,11 @@ public class Dashboard extends JFrame implements Runnable{
 		appointmentDuePanel.setLayout(null);
 		
 		JButton docDueRefreshButton = new JButton("Refresh");
+		docDueRefreshButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				loadDataToDoctorDueTable();
+			}
+		});
 		docDueRefreshButton.setForeground(Color.WHITE);
 		docDueRefreshButton.setBackground(new Color(146, 94, 194));
 		docDueRefreshButton.setBounds(185, 317, 118, 41);
@@ -1470,6 +1475,7 @@ public class Dashboard extends JFrame implements Runnable{
 		docDueColumnModel.getColumn(2).setPreferredWidth(5);
 		docDueColumnModel.getColumn(3).setPreferredWidth(5);
 		docDueColumnModel.getColumn(4).setPreferredWidth(5);
+		loadDataToDoctorDueTable();
 		
 		docSetAlertPanel = new JPanel();
 		docSetAlertPanel.setBackground(new Color(229,234,230));
@@ -2118,9 +2124,18 @@ public class Dashboard extends JFrame implements Runnable{
 				Date currentSystemDate=new Date();
 				SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yy");
 				String currentDate=sdf.format(currentSystemDate);
+				System.out.println(currentDate);
 				
 				for(int i=0; i<alertDueMedName.size(); i++) {
-					if(alertDueDateArr.get(i).equalsIgnoreCase(currentDate)) {
+					String[] dateArr=alertDueDateArr.get(i).split("/");
+					int first=(int) Integer.valueOf(dateArr[0]);
+					int second=(int) Integer.valueOf(dateArr[1]);
+					String month=first<10 ? "0"+dateArr[0] : dateArr[0];
+					String date=second<10 ? "0"+dateArr[1] : dateArr[1];
+					
+					String convertedDate=month+"/"+date+"/"+dateArr[2];
+					System.out.println(convertedDate);
+					if(convertedDate.equalsIgnoreCase(currentDate)) {
 						
 						dueRow[0]=alertDueMedName.get(i).trim();
 						dueRow[1]=alertDueDateArr.get(i).trim();
@@ -2159,6 +2174,50 @@ public class Dashboard extends JFrame implements Runnable{
 					addAppointRow[2]=(String) iterTempArrTime.next().trim();
 					addAppointRow[3]=(String) iterTempArrDate.next().trim();
 					addAppointmentModel.addRow(addAppointRow);
+				}
+				break;
+			}
+		}
+	}
+	
+	public void loadDataToDoctorDueTable() {
+		ArrayList<Doctor> tempArrD=new ArrayList<Doctor>();
+		Doctor tempD=new Doctor();
+		tempD.loadDoctorData(docFilePath, tempArrD);
+		
+		Iterator<Doctor> iter=tempArrD.iterator();
+		
+		while(iter.hasNext()) {
+			Doctor temp=(Doctor) iter.next();
+			if(temp.getName().equalsIgnoreCase(userName)) {
+				ArrayList<String> duePatientName=temp.getDocAlertPatientName();
+				ArrayList<String> duePatientNum=temp.getAddAppointPatientNumber();
+				ArrayList<String> duePatientTime=temp.getDocAlertTime();
+				ArrayList<String> duePatientDate=temp.getDocAlertDate();
+				ArrayList<String> dueAppointAlertStatus=temp.getDocAlertStatus();
+				
+				Date currentSystemDate=new Date();
+				SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yy");
+				String currentDate=sdf.format(currentSystemDate);
+				
+				for(int i=0; i<duePatientName.size(); i++) {
+					String[] dateArr=duePatientDate.get(i).split("/");
+					int first=(int) Integer.valueOf(dateArr[0]);
+					int second=(int) Integer.valueOf(dateArr[1]);
+					String month=first<10 ? "0"+dateArr[0] : dateArr[0];
+					String date=second<10 ? "0"+dateArr[1] : dateArr[1];
+					
+					String convertedDate=month+"/"+date+"/"+dateArr[2];
+					System.out.println(convertedDate);
+					
+					if(convertedDate.equalsIgnoreCase(currentDate)) {
+						docDueRow[0]=duePatientName.get(i).trim();
+						docDueRow[1]=duePatientNum.get(i).trim();
+						docDueRow[2]=duePatientTime.get(i).trim();
+						docDueRow[3]=duePatientDate.get(i).trim();
+						docDueRow[4]=dueAppointAlertStatus.get(i).trim();
+						docDueModel.addRow(docDueRow);
+					}
 				}
 				break;
 			}

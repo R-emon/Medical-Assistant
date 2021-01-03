@@ -1889,12 +1889,36 @@ public class Dashboard extends JFrame implements Runnable{
 				String strDate=DateFormat.getInstance().format(date);
 				String[] arrDate=strDate.split(",");
 				int selectedRowIndex=nurseSetAlertTable.getSelectedRow();
-				nurseAlertListRow[0]=(String) patientVisitModel.getValueAt(selectedRowIndex, 0).toString();
-				nurseAlertListRow[1]=(String) patientVisitModel.getValueAt(selectedRowIndex, 1).toString();
-				nurseAlertListRow[2]=(String) nurseAlertTimeTextField.getText().trim();
-				nurseAlertListRow[3]=(String) arrDate[0];
-				nurseAlertListRow[4]="Alert on";
+				String setNurseAlertPatientName=(String) patientVisitModel.getValueAt(selectedRowIndex, 0).toString();
+				String setNurseAlertBedNumber=(String) patientVisitModel.getValueAt(selectedRowIndex, 1).toString();
+				String setNurseAlertTime=(String) nurseAlertTimeTextField.getText().trim();
+				String setNurseAlertDate=(String) arrDate[0];
+				String setNurseAlertStatus="On";
+				nurseAlertListRow[0]=setNurseAlertPatientName;
+				nurseAlertListRow[1]=setNurseAlertBedNumber;
+				nurseAlertListRow[2]=setNurseAlertTime;
+				nurseAlertListRow[3]=setNurseAlertDate;
+				nurseAlertListRow[4]=setNurseAlertStatus;
 				nurseAlertListModel.addRow(nurseAlertListRow);
+				nurseAlertTimeTextField.setText("");
+				
+				ArrayList<Nurse> tempArrN=new ArrayList<Nurse>();
+				Nurse tempN=new Nurse();
+				tempN.loadNurseData(nurseFilePath, tempArrN);
+				
+				for(int i=0; i<tempArrN.size(); i++) {
+					Nurse temp=(Nurse) tempArrN.get(i);
+					if(temp.getName().equalsIgnoreCase(userName)) {
+						temp.setNurseAlertPatientName(setNurseAlertPatientName);
+						temp.setAlertPatientBedNumber(setNurseAlertBedNumber);
+						temp.setNurseAlertDate(setNurseAlertDate);
+						temp.setNurseAlertTime(setNurseAlertTime);
+						temp.setNurseAlertStatus(setNurseAlertStatus);
+						tempArrN.set(i, temp);
+						break;
+					}
+				}
+				tempN.addUser(nurseFilePath, tempArrN);
 			}
 		});
 		nurseSetAlertButton.setForeground(Color.WHITE);
@@ -1946,6 +1970,7 @@ public class Dashboard extends JFrame implements Runnable{
 		nurseAlertListTableColumnModel.getColumn(2).setPreferredWidth(5);
 		nurseAlertListTableColumnModel.getColumn(3).setPreferredWidth(5);
 		nurseAlertListTableColumnModel.getColumn(4).setPreferredWidth(10);
+		loadDataToNurseSetAlertListTable();
 		
 		JLabel nurseAlertListLabel = new JLabel("Alert List");
 		nurseAlertListLabel.setForeground(Color.DARK_GRAY);
@@ -1965,7 +1990,39 @@ public class Dashboard extends JFrame implements Runnable{
 		nurseTurnOffAlertButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int selectedRowIndex=nurseAlertListTable.getSelectedRow();
+				String alertListPatientName=nurseAlertListModel.getValueAt(selectedRowIndex, 0).toString().trim();
+				String alertListBedNumber=nurseAlertListModel.getValueAt(selectedRowIndex, 1).toString().trim();
+				String alertListTime=nurseAlertListModel.getValueAt(selectedRowIndex, 2).toString().trim();
+				String alertListDate=nurseAlertListModel.getValueAt(selectedRowIndex, 3).toString().trim();
+				String alertListStatus="Off";
 				nurseAlertListModel.setValueAt("Alert Off", selectedRowIndex, 4);
+				
+				ArrayList<Nurse> tempArrN=new ArrayList<Nurse>();
+				Nurse tempN=new Nurse();
+				tempN.loadNurseData(nurseFilePath, tempArrN);
+				
+				for(int i=0; i<tempArrN.size(); i++) {
+					Nurse temp=(Nurse) tempArrN.get(i);
+					if(temp.getName().equalsIgnoreCase(userName)) {
+						ArrayList<String> tempAlertListPatientName=temp.getSetAlertPatientName();
+						ArrayList<String> tempAlertListBedNumber=temp.getSetAlertPatientBedNumber();
+						ArrayList<String> tempAlertListTime=temp.getSetAlertTime();
+						ArrayList<String> tempAlertListDate=temp.getSetAlertDate();
+						ArrayList<String> tempAlertListStatus=temp.getSetAlertStatus();
+						
+						for(int j=0; j<tempAlertListPatientName.size(); j++) {
+							if(tempAlertListPatientName.get(j).equalsIgnoreCase(alertListPatientName) && tempAlertListBedNumber.get(j).equalsIgnoreCase(alertListBedNumber) 
+									&& tempAlertListTime.get(j).equalsIgnoreCase(alertListTime) && tempAlertListDate.get(j).equalsIgnoreCase(alertListDate)) {
+								
+								tempAlertListStatus.set(j, alertListStatus);
+								break;
+							}
+						}
+						tempArrN.set(i, temp);
+						break;
+					}
+				}
+				tempN.addUser(nurseFilePath, tempArrN);
 			}
 		});
 		nurseTurnOffAlertButton.setForeground(Color.WHITE);
@@ -2311,5 +2368,38 @@ public class Dashboard extends JFrame implements Runnable{
 		}
 	}
 	
+	public void loadDataToNurseSetAlertListTable() {
+		ArrayList<Nurse> tempArrN=new ArrayList<Nurse>();
+		Nurse tempN=new Nurse();
+		tempN.loadNurseData(nurseFilePath, tempArrN);
+		Iterator<Nurse> iter=tempArrN.iterator();
+		
+		while(iter.hasNext()) {
+			Nurse temp=iter.next();
+			if(temp.getName().equalsIgnoreCase(userName)) {
+				ArrayList<String> alertListPatientName=temp.getSetAlertPatientName();
+				Iterator<String> iterAlertListPatientName=alertListPatientName.iterator();
+				ArrayList<String> alertListPatientBedNumber=temp.getSetAlertPatientBedNumber();
+				Iterator<String> iterAlertListPatientBedNumber=alertListPatientBedNumber.iterator();
+				ArrayList<String> alertListTime=temp.getSetAlertTime();
+				Iterator<String> iterAlertListTime=alertListTime.iterator();
+				ArrayList<String> alertListDate=temp.getSetAlertDate();
+				Iterator<String> iterAlertListDate=alertListDate.iterator();
+				ArrayList<String> alertListStatus=temp.getSetAlertStatus();
+				Iterator<String> iterAlertListStatus=alertListStatus.iterator();
+				
+				while(iterAlertListPatientName.hasNext() && iterAlertListPatientBedNumber.hasNext() && iterAlertListTime.hasNext()
+						&& iterAlertListDate.hasNext() && iterAlertListStatus.hasNext()) {
+					nurseAlertListRow[0]=iterAlertListPatientName.next().trim();
+					nurseAlertListRow[1]=iterAlertListPatientBedNumber.next().trim();
+					nurseAlertListRow[2]=iterAlertListTime.next().trim();
+					nurseAlertListRow[3]=iterAlertListDate.next().trim();
+					nurseAlertListRow[4]=iterAlertListStatus.next().trim();
+					nurseAlertListModel.addRow(nurseAlertListRow);
+				}
+				break;
+			}
+		}
+	}
 
 }

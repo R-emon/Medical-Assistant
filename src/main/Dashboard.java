@@ -1775,7 +1775,31 @@ public class Dashboard extends JFrame implements Runnable{
 		deletePatientVisitButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow=patientVisitTable.getSelectedRow();
-				patientVisitModel.removeRow(selectedRow);;
+				String selectedPatientName=patientVisitModel.getValueAt(selectedRow, 0).toString().trim();
+				String selectedBedNumber=patientVisitModel.getValueAt(selectedRow, 1).toString().trim();
+				String selectedMedicineName=patientVisitModel.getValueAt(selectedRow, 2).toString().trim();
+				String selectedMedicineQty=patientVisitModel.getValueAt(selectedRow, 3).toString().trim();
+				
+				if(selectedRow>=0) {
+					patientVisitModel.removeRow(selectedRow);
+					ArrayList<Nurse> tempArrN=new ArrayList<Nurse>();
+					Nurse tempN=new Nurse();
+					tempN.loadNurseData(nurseFilePath, tempArrN);
+					
+					for(int i=0; i<tempArrN.size(); i++) {
+						Nurse temp=(Nurse) tempArrN.get(i);
+						if(temp.getName().equalsIgnoreCase(userName)) {
+							temp.deleteAddVisitPatientName(selectedPatientName);
+							temp.deleteAddVisitMedName(selectedMedicineName);
+							temp.deleteAddVisitBedNumber(selectedBedNumber);
+							temp.deleteAddVisitMedQty(selectedMedicineQty);
+							tempArrN.set(i, temp);
+							break;
+						}
+					}
+					tempN.addUser(nurseFilePath, tempArrN);
+				}
+				
 			}
 		});
 		deletePatientVisitButton.setForeground(Color.WHITE);
@@ -2286,15 +2310,6 @@ public class Dashboard extends JFrame implements Runnable{
 			}
 		}
 	}
-
-	
-	
-	
-	
-	
-	
-	
-	
 	
 
 }

@@ -1084,6 +1084,7 @@ public class Dashboard extends JFrame implements Runnable{
 		dueRefreshButton = new JButton("Refresh");
 		dueRefreshButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				patientDueModel.setRowCount(0);
 				loadTodaysDueDataToPatientDueTable();
 			}
 		});
@@ -1441,6 +1442,7 @@ public class Dashboard extends JFrame implements Runnable{
 		JButton docDueRefreshButton = new JButton("Refresh");
 		docDueRefreshButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				docDueModel.setRowCount(0);
 				loadDataToDoctorDueTable();
 			}
 		});
@@ -1820,6 +1822,12 @@ public class Dashboard extends JFrame implements Runnable{
 		nurseDuePanel.add(nurseDueTodayLabe);
 		
 		JButton nurseDueRefreshButton = new JButton("Refresh");
+		nurseDueRefreshButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				nurseDueModel.setRowCount(0);
+				loadDataToNurseDueTable();
+			}
+		});
 		nurseDueRefreshButton.setForeground(Color.WHITE);
 		nurseDueRefreshButton.setBackground(new Color(146,94,194));
 		nurseDueRefreshButton.setBounds(185, 317, 118, 41);
@@ -1846,7 +1854,7 @@ public class Dashboard extends JFrame implements Runnable{
 		nurseDueColumnModel.getColumn(2).setPreferredWidth(5);
 		nurseDueColumnModel.getColumn(3).setPreferredWidth(40);
 		nurseDueColumnModel.getColumn(4).setPreferredWidth(10);
-		
+		loadDataToNurseDueTable();
 		
 		nurseSetAlertPanel = new JPanel();
 		nurseSetAlertPanel.setBounds(413, 198, 1046, 536);
@@ -2401,5 +2409,48 @@ public class Dashboard extends JFrame implements Runnable{
 			}
 		}
 	}
-
+	
+	public void loadDataToNurseDueTable() {
+		ArrayList<Nurse> tempArrN=new ArrayList<Nurse>();
+		Nurse tempN=new Nurse();
+		tempN.loadNurseData(nurseFilePath, tempArrN);
+		
+		Iterator<Nurse> iter=tempArrN.iterator();
+		
+		while(iter.hasNext()) {
+			Nurse temp=(Nurse) iter.next();
+			if(temp.getName().equalsIgnoreCase(userName)) {
+				ArrayList<String> duePatientName=temp.getSetAlertPatientName();
+				ArrayList<String> dueBedNumber=temp.getSetAlertPatientBedNumber();
+				ArrayList<String> dueAlertListTime=temp.getSetAlertTime();
+				ArrayList<String> dueAlertListDate=temp.getSetAlertDate();
+				ArrayList<String> dueAlertListStatus=temp.getSetAlertStatus();
+				
+				Date currentSystemDate=new Date();
+				SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yy");
+				String currentDate=sdf.format(currentSystemDate);
+				
+				for(int i=0; i<duePatientName.size(); i++) {
+					String[] dateArr=dueAlertListDate.get(i).split("/");
+					int first=(int) Integer.valueOf(dateArr[0]);
+					int second=(int) Integer.valueOf(dateArr[1]);
+					String month=first<10 ? "0"+dateArr[0] : dateArr[0];
+					String date=second<10 ? "0"+dateArr[1] : dateArr[1];
+					
+					String convertedDate=month+"/"+date+"/"+dateArr[2];
+					
+					if(convertedDate.equalsIgnoreCase(currentDate)) {
+						nurseDueRow[0]=duePatientName.get(i).trim();
+						nurseDueRow[1]=dueBedNumber.get(i).trim();
+						nurseDueRow[2]=dueAlertListTime.get(i).trim();
+						nurseDueRow[3]=dueAlertListDate.get(i).trim();
+						nurseDueRow[4]=dueAlertListStatus.get(i).trim();
+						nurseDueModel.addRow(nurseDueRow);
+					}
+				}
+				break;
+			}
+		}
+	}
+	
 }

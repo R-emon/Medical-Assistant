@@ -284,12 +284,13 @@ public class LoginSignupUI extends JFrame {
 						if((tempPatient.getName().equals(userName)) && (tempPatient.getPassword().equals(password))) {
 							System.out.println("true");
 							dashboard=new Dashboard(userName, frame);
-							Thread dashBoradThread = new Thread(dashboard);
+							Thread dashBoardThread = new Thread(dashboard);
 							dashboard.setVisible(true);
 							dashboard.switchPatientPanel();
+							dashboard.logInStatus(true);
 							frame.setVisible(false);
-							dashBoradThread.start();
-//							dashBoradThread.join();
+							dashBoardThread.start();
+							
 							break;
 						}
 					}
@@ -307,11 +308,12 @@ public class LoginSignupUI extends JFrame {
 						System.out.println(tempDoctor.getName());
 						System.out.println(tempDoctor.getPassword());
 						if((tempDoctor.getName().equals(userName)) && (tempDoctor.getPassword().equals(password))) {
-							System.out.println("ture");
+							System.out.println("true");
 							dashboard=new Dashboard(userName, frame);
 							Thread dashBoardThread=new Thread(dashboard);
 							dashboard.setVisible(true);
 							dashboard.switchDoctorPanel();
+							dashboard.logInStatus(true);
 							frame.setVisible(false);
 							dashBoardThread.start();
 							break;
@@ -335,6 +337,7 @@ public class LoginSignupUI extends JFrame {
 							Thread dashBoardThread=new Thread(dashboard);
 							dashboard.setVisible(true);
 							dashboard.switchNursePanel();;
+							dashboard.logInStatus(true);
 							frame.setVisible(false);
 							dashBoardThread.start();
 							break;

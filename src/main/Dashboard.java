@@ -295,6 +295,8 @@ public class Dashboard extends JFrame implements Runnable{
 		setUndecorated(true);
 		initialize();
 	}
+	
+	//Dission not taken on Thread.
 	@Override
 	public void run()
 	{

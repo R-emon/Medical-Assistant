@@ -38,7 +38,7 @@ import java.util.Iterator;
 //import com.sun.java.swing.plaf.windows.WindowsBorders.DashedBorder;
 import com.toedter.calendar.JDateChooser;
 
-public class Dashboard extends JFrame implements Runnable{
+public class Dashboard extends JFrame{
 
 	private JPanel dashboardContentPane;
 	public JPanel patientTopBarPanel;
@@ -186,8 +186,6 @@ public class Dashboard extends JFrame implements Runnable{
 	private JScrollPane nurseAlertListScrollPane;
 	private JDateChooser nurseAlertDateChooser;
 	private JButton nurseTurnOffAlertButton;
-	private boolean logIn=false;
-	private boolean exitThread=false;
 	private String filePath="src/data/patientData.txt";
 	private String docFilePath="src/data/doctorData.txt";
 	private String nurseFilePath="src/data/NurseData.txt";
@@ -274,13 +272,6 @@ public class Dashboard extends JFrame implements Runnable{
 		activityContentlayeredPane.revalidate();
 	}
 	
-	public void logInStatus(boolean logIn) {
-		this.logIn=logIn;
-	}
-	
-//	public Dashboard getDashboardFrame() {
-//		return this.dashboard;
-//	}
 
 	public Dashboard(String name, LoginSignupUI frame) {
 		this.userName=name;
@@ -296,48 +287,6 @@ public class Dashboard extends JFrame implements Runnable{
 		initialize();
 	}
 	
-	//Dission not taken on Thread.
-	@Override
-	public void run()
-	{
-		ArrayList<Patient> tempArrP=new ArrayList<Patient>();
-		Patient tempP=new Patient();
-		tempP.loadPatientData(filePath, tempArrP);
-		Patient temp = null;
-		for(int i=0;i<tempArrP.size(); i++) {
-			if(tempArrP.get(i).getName().equalsIgnoreCase(userName)) {
-				temp=(Patient)tempArrP.get(i);
-				break;
-			}
-		}
-		
-		ArrayList<String> patientAlertTime=temp.getAlertTime();
-		Iterator<String> iterPatientAlertTime=patientAlertTime.iterator();
-		ArrayList<String> patientAlertDate=temp.getAlertDate();
-		Iterator<String> iterPatientAlertDate=patientAlertDate.iterator();
-
-		while(!exitThread)
-		{
-			System.out.println("Hello world!");
-			
-			if(iterPatientAlertTime.hasNext() && iterPatientAlertDate.hasNext()) {
-				String time=iterPatientAlertTime.next();
-				String date=iterPatientAlertDate.next();
-				System.out.println(time);
-				System.out.println(date);
-				
-				Date currentSystemDate=new Date();
-				SimpleDateFormat dateformat=new SimpleDateFormat("MM/dd/yy");
-				String currentDate=dateformat.format(currentSystemDate);
-				
-				
-			}
-			
-			
-			
-			try {Thread.sleep(5000);} catch(Exception e) {}
-		}
-	}
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -385,9 +334,7 @@ public class Dashboard extends JFrame implements Runnable{
 		logOutLogoLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				exitThread=true;
 				frame.setVisible(true);
-				//setVisible(false);
 				dispose();
 			}
 		});
@@ -399,9 +346,7 @@ public class Dashboard extends JFrame implements Runnable{
 		logOutLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				exitThread=true;
 				frame.setVisible(true);
-				//setVisible(false);
 				dispose();
 			}
 		});
@@ -442,9 +387,7 @@ public class Dashboard extends JFrame implements Runnable{
 		doctorLogOutLogoLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				exitThread=true;
 				frame.setVisible(true);
-				//setVisible(false);
 				dispose();
 			}
 		});
@@ -456,9 +399,7 @@ public class Dashboard extends JFrame implements Runnable{
 		doctorLogOutLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				exitThread=true;
 				frame.setVisible(true);
-				//setVisible(false);
 				dispose();
 			}
 		});
@@ -498,9 +439,7 @@ public class Dashboard extends JFrame implements Runnable{
 		nurseLogOutLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				exitThread=true;
 				frame.setVisible(true);
-				//setVisible(false);
 				dispose();
 			}
 		});
@@ -513,9 +452,7 @@ public class Dashboard extends JFrame implements Runnable{
 		nurseLogOutLogoLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				exitThread=true;
 				frame.setVisible(true);
-				//setVisible(false);
 				dispose();
 			}
 		});
@@ -939,7 +876,6 @@ public class Dashboard extends JFrame implements Runnable{
 		morningComboBox = new JComboBox(items);
 		morningComboBox.setFont(new Font("Tahoma", Font.BOLD, 14));
 		morningComboBox.setBounds(82, 280, 91, 35);
-		//morningcomboBox.add(items);
 		addPresContentPanel.add(morningComboBox);
 		
 		JLabel eveningLabel = new JLabel("Evening");
@@ -1194,7 +1130,7 @@ public class Dashboard extends JFrame implements Runnable{
 		dueDateChooser = new JDateChooser();
 		dueDateChooser.setBounds(169, 171, 152, 35);
 		setAlertPanel.add(dueDateChooser);
-		//dueDateChooser.get
+		
 		JScrollPane alertListScrollPane = new JScrollPane();
 		alertListScrollPane.setBounds(60, 402, 435, 134);
 		alertListScrollPane.getViewport().setBackground(Color.WHITE);

@@ -74,8 +74,8 @@ public class LoginSignupUI extends JFrame {
 	private String filePath="src/data/patientData.txt";
 	private String docFilePath="src/data/doctorData.txt";
 	private String nurseFilePath="src/data/NurseData.txt";
-	//private static ArrayList<Patient> patientArray=new ArrayList<Patient>();
-	//private static ArrayList<Doctor> doctorArray=new ArrayList<Doctor>();
+	
+	
 	
 	/**
 	 * Launch the application.
@@ -94,9 +94,7 @@ public class LoginSignupUI extends JFrame {
 			}
 		});
 	}
-//	public Dashboard getDashboardFrame() {
-//		return this.dashboard;
-//	}
+
 	public LoginSignupUI() { //first login UI frame constructor.
 		setIconImage(Toolkit.getDefaultToolkit().getImage(LoginSignupUI.class.getResource("/images/doctor.png")));
 		setTitle("Medical Assistant");
@@ -127,12 +125,9 @@ public class LoginSignupUI extends JFrame {
 		try {
 			FileInputStream fis=new FileInputStream(file);
 			ObjectInputStream ois=new ObjectInputStream(fis);
-			
-			//arr.clear();
 		
 			while(fis.available()!=0) {
 				Patient tempPatient=(Patient) ois.readObject();
-				//System.out.println(tempPatient.getName());
 				arr.add(tempPatient);
 			}
 			fis.close();
@@ -154,11 +149,8 @@ public class LoginSignupUI extends JFrame {
 			FileInputStream fis=new FileInputStream(file);
 			ObjectInputStream ois=new ObjectInputStream(fis);
 			
-			//arr.clear();
-		
 			while(fis.available()!=0) {
 				Doctor tempPatient=(Doctor) ois.readObject();
-				//System.out.println(tempPatient.getName());
 				arr.add(tempPatient);
 			}
 			fis.close();
@@ -178,12 +170,9 @@ public class LoginSignupUI extends JFrame {
 		try {
 			FileInputStream fis=new FileInputStream(file);
 			ObjectInputStream ois=new ObjectInputStream(fis);
-			
-			//arr.clear();
 		
 			while(fis.available()!=0) {
 				Nurse tempPatient=(Nurse) ois.readObject();
-				//System.out.println(tempPatient.getName());
 				arr.add(tempPatient);
 			}
 			fis.close();
@@ -193,6 +182,83 @@ public class LoginSignupUI extends JFrame {
 		}
 	}
 	
+	public boolean multipleUserNameCheck(String name) {
+		ArrayList<Patient> tempArrP=new ArrayList<Patient>();
+		Iterator<Patient> iterTempArrP=tempArrP.iterator();
+		ArrayList<Nurse> tempArrN=new ArrayList<Nurse>();
+		Iterator<Nurse> iterTempArrN=tempArrN.iterator();
+		ArrayList<Doctor> tempArrD=new ArrayList<Doctor>();
+		Iterator<Doctor> iterTempArrD=tempArrD.iterator();
+		
+		Patient tempP=new Patient();
+		tempP.loadPatientData(filePath, tempArrP);
+		Doctor tempD=new Doctor();
+		tempD.loadDoctorData(docFilePath, tempArrD);
+		Nurse tempN=new Nurse();
+		tempN.loadNurseData(nurseFilePath, tempArrN);
+		
+//		while(true) {
+//			if(iterTempArrP.hasNext()) {
+//				Patient temp=(Patient) iterTempArrP.next();
+//				if(temp.getName().equals(name)) {
+//					return true;
+//				}
+//			}
+//			else if(iterTempArrD.hasNext()) {
+//				Doctor temp=(Doctor) iterTempArrD.next();
+//				if(temp.getName().equals(name)) {
+//					return true;
+//				}
+//			}
+//			else if(iterTempArrN.hasNext()) {
+//				Nurse temp=(Nurse) iterTempArrN.next();
+//				if(temp.getName().equals(name)) {
+//					return true;
+//				}
+//			}
+//			else 
+//				return false;
+//		}
+		
+//		while(iterTempArrP.hasNext()) {
+//			Patient temp=(Patient) iterTempArrP.next();
+//			if(temp.getName().equals(name)) {
+//				return true;
+//			}
+//		}
+//		while(iterTempArrD.hasNext()) {
+//			Doctor temp=(Doctor) iterTempArrD.next();
+//			if(temp.getName().equals(name)){
+//				return true;
+//			}
+//		}
+//		while(iterTempArrN.hasNext()) {
+//			Nurse temp=(Nurse) iterTempArrN.next();
+//			if(temp.getName().equals(name)) {
+//				return true;
+//			}
+//		}
+		
+		for(int i=0; i<tempArrP.size(); i++) {
+			Patient temp=(Patient) tempArrP.get(i);
+			if(temp.getName().equals(name))
+				return true;
+		}
+		for(int i=0; i<tempArrD.size(); i++) {
+			Doctor temp=(Doctor) tempArrD.get(i);
+			if(temp.getName().equals(name))
+				return true;
+		}
+		for(int i=0; i<tempArrN.size(); i++) {
+			Nurse temp=(Nurse) tempArrN.get(i);
+			if(temp.getName().equals(name))
+				return true;
+		}
+		
+		
+		return false;
+	}
+	
 	public void loginPageContents() {
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
@@ -200,25 +266,8 @@ public class LoginSignupUI extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		//loadPatientData(filePath,patientArray);
-		
-		/*
-		 * JPanel panel = new JPanel(); panel.setBackground(Color.WHITE);
-		 * panel.setBounds(0, 0, 500, 600); contentPane.add(panel);
-		 * panel.setLayout(null);
-		 */
-		
-		
-//		ImageIcon imgIcon=new ImageIcon(LoginSignupUI.class.getResource("/images/10198.jpg"));
-//		
-//		Image img=imgIcon.getImage();
-//		Image tempImg=img.getScaledInstance(500, 600, Image.SCALE_SMOOTH);
-//		imgIcon =new ImageIcon(tempImg);
-//		bkImageLabel=new JLabel("",imgIcon,JLabel.CENTER);
 		bkImageLabel = new JLabel("",new ImageIcon(LoginSignupUI.class.getResource("/images/121.png")),JLabel.CENTER);
-		//lblNewLabel_3.setIcon(new ImageIcon(LoginSignupUI.class.getResource("/images/10198 Small Final.jpg")));
 		bkImageLabel.setBounds(0, 0, 500, 563);
-		//add(bkImageLabel);
 		contentPane.add(bkImageLabel);
 		
 		signUpLogInLayeredPane = new JLayeredPane();
@@ -284,13 +333,9 @@ public class LoginSignupUI extends JFrame {
 						if((tempPatient.getName().equals(userName)) && (tempPatient.getPassword().equals(password))) {
 							System.out.println("true");
 							dashboard=new Dashboard(userName, frame);
-							Thread dashBoardThread = new Thread(dashboard);
 							dashboard.setVisible(true);
 							dashboard.switchPatientPanel();
-							dashboard.logInStatus(true);
 							frame.setVisible(false);
-							dashBoardThread.start();
-							
 							break;
 						}
 					}
@@ -310,12 +355,9 @@ public class LoginSignupUI extends JFrame {
 						if((tempDoctor.getName().equals(userName)) && (tempDoctor.getPassword().equals(password))) {
 							System.out.println("true");
 							dashboard=new Dashboard(userName, frame);
-							Thread dashBoardThread=new Thread(dashboard);
 							dashboard.setVisible(true);
 							dashboard.switchDoctorPanel();
-							dashboard.logInStatus(true);
 							frame.setVisible(false);
-							dashBoardThread.start();
 							break;
 						}
 					}
@@ -334,51 +376,16 @@ public class LoginSignupUI extends JFrame {
 						if((tempNurse.getName().equals(userName)) && (tempNurse.getPassword().equals(password))){
 							System.out.println("ture");
 							dashboard=new Dashboard(userName, frame);
-							Thread dashBoardThread=new Thread(dashboard);
 							dashboard.setVisible(true);
-							dashboard.switchNursePanel();;
-							dashboard.logInStatus(true);
+							dashboard.switchNursePanel();
 							frame.setVisible(false);
-							dashBoardThread.start();
 							break;
 						}
 					}
 					logInUserNameTextField.setText("");
 					loginPasswordField.setText("");
 				}
-				
-				
-//				UserAuthentication auth=new UserAuthentication();
-//				String userName=logInUserNameTextField.getText().trim();
-//				String password=String.valueOf(loginPasswordField.getPassword()).trim();
-//				boolean authCheck=auth.verifyUser(userName, password);
-//				if(authCheck==true && doctorLoginSelected==true ) {
-//					dashboard=new Dashboard(userName, frame);
-//					dashboard.setVisible(true);
-//					dashboard.switchDoctorPanel();
-//					frame.setVisible(false);
-//					//doctorSelected=false;
-//					
-//				}
-//				else if(authCheck==true && patientLoginSelected==true) {
-//					dashboard=new Dashboard(userName, frame);
-//					dashboard.setVisible(true);
-//					dashboard.switchPatientPanel();
-//					frame.setVisible(false);
-//					//patientSelected=false;
-//					
-//				}
-//				else if(authCheck==true && nurseLoginSelected==true) {
-//					dashboard=new Dashboard(userName, frame);
-//					dashboard.setVisible(true);
-//					dashboard.switchNursePanel();
-//					frame.setVisible(false);
-//					//nurseSelected=false;
-//					
-//				}
-//				else if(authCheck==false){
-//					JOptionPane.showMessageDialog(frame, "Wrong User Name or Password","Alert", JOptionPane.WARNING_MESSAGE);
-//				}
+
 			}
 		});
 		logInPanelLogInButton.setForeground(Color.WHITE);
@@ -458,7 +465,6 @@ public class LoginSignupUI extends JFrame {
 		JLabel userNameLabel = new JLabel("USERNAME");
 		userNameLabel.setBounds(43, 61, 157, 26);
 		signUpPanel.add(userNameLabel);
-		//bkImageLabel.add(userNameLabel);
 		
 		userNameTextField = new JTextField();
 		userNameTextField.setFont(new Font("Calibri", Font.PLAIN, 13));
@@ -467,19 +473,15 @@ public class LoginSignupUI extends JFrame {
 		userNameTextField.setColumns(10);
 		signUpPanel.add(userNameTextField);
 		
-		//bkImageLabel.add(userNameTextField);
-		
 		JSeparator userNameSeparator = new JSeparator();
 		userNameSeparator.setForeground(Color.BLACK);
 		userNameSeparator.setBackground(Color.BLACK);
 		userNameSeparator.setBounds(43, 120, 283, 1);
 		signUpPanel.add(userNameSeparator);
-		//bkImageLabel.add(separator);
 		
 		JLabel emailLabel = new JLabel("EMAIL");
 		emailLabel.setBounds(43, 140, 157, 26);
 		signUpPanel.add(emailLabel);
-		//bkImageLabel.add(emailLabel);
 		
 		emailTextField = new JTextField();
 		emailTextField.setFont(new Font("Calibri", Font.PLAIN, 13));
@@ -487,69 +489,48 @@ public class LoginSignupUI extends JFrame {
 		emailTextField.setBounds(43, 162, 283, 36);
 		emailTextField.setColumns(10);
 		signUpPanel.add(emailTextField);
-		//bkImageLabel.add(emailTextField);
 		
 		JSeparator emailSeparator = new JSeparator();
 		emailSeparator.setForeground(Color.BLACK);
 		emailSeparator.setBackground(Color.BLACK);
 		emailSeparator.setBounds(43, 198, 283, 1);
 		signUpPanel.add(emailSeparator);
-		//bkImageLabel.add(separator_1);
 		
 		JLabel passwordLabel = new JLabel("PASSWORD");
 		passwordLabel.setBounds(43, 214, 157, 26);
 		signUpPanel.add(passwordLabel);
-		//bkImageLabel.add(passwordLabel);
 		
 		passwordTextField = new JPasswordField();
 		passwordTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		passwordTextField.setBounds(43, 237, 283, 36);
 		signUpPanel.add(passwordTextField);
-		//bkImageLabel.add(passwordTextField);
 		
 		JSeparator passwordSeparator = new JSeparator();
 		passwordSeparator.setBackground(Color.BLACK);
 		passwordSeparator.setForeground(Color.BLACK);
 		passwordSeparator.setBounds(43, 273, 283, 1);
 		signUpPanel.add(passwordSeparator);
-		//bkImageLabel.add(separator_1_1);
 		
 		JLabel conPasswordLabel = new JLabel("CONFIRM PASSWORD");
 		conPasswordLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		conPasswordLabel.setBounds(43, 290, 157, 26);
 		signUpPanel.add(conPasswordLabel);
-		//bkImageLabel.add(conPasswordTextField_1);
 		
 		conPasswordTextField = new JPasswordField();
 		conPasswordTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		conPasswordTextField.setBounds(43, 312, 283, 36);
 		signUpPanel.add(conPasswordTextField);
-		//bkImageLabel.add(conPasswordTextField);
 		
 		JSeparator conPasswordSeparator = new JSeparator();
 		conPasswordSeparator.setBackground(Color.BLACK);
 		conPasswordSeparator.setForeground(Color.BLACK);
 		conPasswordSeparator.setBounds(43, 348, 283, 1);
 		signUpPanel.add(conPasswordSeparator);
-		//bkImageLabel.add(separator_1_1_1);
 		
 		Button signUpButton = new Button("Sign UP");
 		signUpButton.setActionCommand("Sign Up");
 		signUpButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				UserAuthentication userAuth=new UserAuthentication();
-//				String tempUserName= userNameTextField.getText().trim();
-//				String tempEmail= emailTextField.getText().trim();
-//				String tempPassword= String.valueOf(passwordTextField.getPassword()).trim();
-//				String tempConPassWord= String.valueOf(conPasswordTextField.getPassword()).trim();
-//				boolean multiCheck=userAuth.checkMultipleUser(tempUserName);
-//				if(multiCheck==true) {
-//					JOptionPane.showMessageDialog(frame, "This user name Already exist!","Alert",JOptionPane.WARNING_MESSAGE);
-//				}
-//				else {
-//				userAuth.addUser(tempUserName, tempEmail, tempPassword, tempConPassWord);
-//				JOptionPane.showMessageDialog(frame, "Sign Up Successful","Success",JOptionPane.WARNING_MESSAGE);
-//				}
 				
 				String tempUserName=userNameTextField.getText().trim();
 				String tempEmail= emailTextField.getText().trim();
@@ -557,61 +538,68 @@ public class LoginSignupUI extends JFrame {
 				String tempConPassWord= String.valueOf(conPasswordTextField.getPassword()).trim();
 				String tempUserType="";
 				if(patientSignUpSelected==true) {
-					tempUserType="Patient";
-					ArrayList<Patient> tempArrP=new ArrayList<Patient>();
-					Patient tempPatient=new Patient(tempUserName, tempEmail, tempPassword, tempConPassWord, tempUserType);
-					tempPatient.loadPatientData(filePath, tempArrP);
-					tempArrP.add(tempPatient);
-					tempPatient.addUser(filePath, tempArrP);
+					if(multipleUserNameCheck(tempUserName)) {
+						JOptionPane.showMessageDialog(frame, "This username already exist.","Message", JOptionPane.ERROR_MESSAGE);
+					}
+					else {
+						tempUserType="Patient";
+						ArrayList<Patient> tempArrP=new ArrayList<Patient>();
+						Patient tempPatient=new Patient(tempUserName, tempEmail, tempPassword, tempConPassWord, tempUserType);
+						tempPatient.loadPatientData(filePath, tempArrP);
+						tempArrP.add(tempPatient);
+						tempPatient.addUser(filePath, tempArrP);
+						
+						userNameTextField.setText("");
+						emailTextField.setText("");
+						passwordTextField.setText("");
+						conPasswordTextField.setText("");
+					}
 					
-					userNameTextField.setText("");
-					emailTextField.setText("");
-					passwordTextField.setText("");
-					conPasswordTextField.setText("");
 				}
 				else if(doctorSignUpSelected==true) {
-					tempUserType="Doctor";
-					ArrayList<Doctor> tempArrD=new ArrayList<Doctor>();
-					Doctor tempDoctor=new Doctor(tempUserName, tempEmail, tempPassword, tempConPassWord, tempUserType);
-					tempDoctor.loadDoctorData(docFilePath, tempArrD);
-					tempArrD.add(tempDoctor);
-					tempDoctor.addUser(docFilePath, tempArrD);
+					if(multipleUserNameCheck(tempUserName)) {
+						JOptionPane.showMessageDialog(frame, "This username already exist.","Message", JOptionPane.ERROR_MESSAGE);
+					}
+					else {
+						tempUserType="Doctor";
+						ArrayList<Doctor> tempArrD=new ArrayList<Doctor>();
+						Doctor tempDoctor=new Doctor(tempUserName, tempEmail, tempPassword, tempConPassWord, tempUserType);
+						tempDoctor.loadDoctorData(docFilePath, tempArrD);
+						tempArrD.add(tempDoctor);
+						tempDoctor.addUser(docFilePath, tempArrD);
+						
+						userNameTextField.setText("");
+						emailTextField.setText("");
+						passwordTextField.setText("");
+						conPasswordTextField.setText("");
+					}
 					
-					userNameTextField.setText("");
-					emailTextField.setText("");
-					passwordTextField.setText("");
-					conPasswordTextField.setText("");
 				}
 				else if(nurseSignUpSelected==true) {
-					tempUserType="Nurse";
-					ArrayList<Nurse> tempArrN=new ArrayList<Nurse>();
-					Nurse tempNurse=new Nurse(tempUserName, tempEmail, tempPassword, tempConPassWord, tempUserType);
-					tempNurse.loadNurseData(nurseFilePath, tempArrN);
-					tempArrN.add(tempNurse);
-					tempNurse.addUser(nurseFilePath, tempArrN);
+					if(multipleUserNameCheck(tempUserName)) {
+						JOptionPane.showMessageDialog(frame, "This username already exist.","Message", JOptionPane.ERROR_MESSAGE);
+					}
+					else {
+						tempUserType="Nurse";
+						ArrayList<Nurse> tempArrN=new ArrayList<Nurse>();
+						Nurse tempNurse=new Nurse(tempUserName, tempEmail, tempPassword, tempConPassWord, tempUserType);
+						tempNurse.loadNurseData(nurseFilePath, tempArrN);
+						tempArrN.add(tempNurse);
+						tempNurse.addUser(nurseFilePath, tempArrN);
+						
+						userNameTextField.setText("");
+						emailTextField.setText("");
+						passwordTextField.setText("");
+						conPasswordTextField.setText("");
+					}
 					
-					userNameTextField.setText("");
-					emailTextField.setText("");
-					passwordTextField.setText("");
-					conPasswordTextField.setText("");
 				}
-//				Patient tempPatient=new Patient(tempUserName, tempEmail, tempPassword, tempConPassWord, tempUserType);
-//				tempPatient.loadPatientData(filePath, patientArray);
-//				patientArray.add(tempPatient);
-//				tempPatient.addUser(filePath, patientArray);
-//				
-//				userNameTextField.setText("");
-//				emailTextField.setName("");
-//				passwordTextField.setText("");
-//				conPasswordTextField.setText("");
-				
 			}
 		});
 		signUpButton.setBounds(43, 420, 283, 36);
 		signUpButton.setForeground(Color.BLACK);
 		signUpButton.setBackground(new Color(241,57,83));
 		signUpPanel.add(signUpButton);
-		//bkImageLabel.add(signUpButton);
 		
 		JLabel orLabel = new JLabel("OR");
 		orLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -680,7 +668,6 @@ public class LoginSignupUI extends JFrame {
 		
 		JLabel exitLabelLogin = new JLabel("");
 		exitLabelLogin.setIcon(new ImageIcon(crossLogo));
-		//exitLabelLogin.setIcon(new ImageIcon(LoginSignupUI.class.getResource("/images/cross.png")));
 		exitLabelLogin.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -692,7 +679,6 @@ public class LoginSignupUI extends JFrame {
 		exitLabelLogin.setBounds(856, 4, 22, 22);
 		exitLabelLogin.setBackground(Color.WHITE);
 		contentPane.add(exitLabelLogin);
-		//bkImageLabel.add(exitLabelLogin);
 		
 		JLabel minimizeLabel=new JLabel("",JLabel.CENTER);
 		minimizeLabel.addMouseListener(new MouseAdapter() {

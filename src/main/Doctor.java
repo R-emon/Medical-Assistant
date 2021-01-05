@@ -30,11 +30,6 @@ public class Doctor extends User implements Serializable{
 		super(name, emailAddress, password, confirmPassword, userType);
 	}
 
-	@Override
-	public void setAlert() {
-		
-	}
-	
 	public void addUser(String filePath, ArrayList<Doctor> patientsArr) {
 		
 		File file=new File(filePath);
@@ -77,10 +72,8 @@ public class Doctor extends User implements Serializable{
 		try {
 			FileInputStream fis=new FileInputStream(file);
 			ObjectInputStream ois=new ObjectInputStream(fis);
-			//arr.clear();
 			while(fis.available()!=0) {
 				Doctor tempPatient=(Doctor) ois.readObject();
-				//System.out.println(tempPatient.getName());
 				arr.add(tempPatient);
 			}
 			

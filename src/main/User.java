@@ -23,7 +23,6 @@ public abstract class User implements Serializable{
 		this.userType=userType;
 	}
 	
-	public abstract void setAlert();
 	
 	public String getName() {
 		return this.name;

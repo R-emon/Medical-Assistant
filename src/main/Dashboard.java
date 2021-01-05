@@ -25,6 +25,7 @@ import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.JComboBox;
 import java.awt.event.MouseAdapter;
@@ -37,6 +38,7 @@ import java.util.Iterator;
 
 //import com.sun.java.swing.plaf.windows.WindowsBorders.DashedBorder;
 import com.toedter.calendar.JDateChooser;
+
 
 public class Dashboard extends JFrame{
 
@@ -276,7 +278,6 @@ public class Dashboard extends JFrame{
 	public Dashboard(String name, LoginSignupUI frame) {
 		this.userName=name;
 		this.frame=frame;
-		//this.dashboard=dashboard;
 		setIconImage(Toolkit.getDefaultToolkit().getImage(LoginSignupUI.class.getResource("/images/doctor.png")));
 		setTitle("Medical Assistant");
 		getContentPane().setBackground(new Color(229,234,230));
@@ -310,7 +311,6 @@ public class Dashboard extends JFrame{
 		
 		JLabel topBarImageLabel = new JLabel("");
 		topBarImageLabel.setIcon(new ImageIcon(topBar));
-		//topBarImageLabel.setIcon(new ImageIcon(Dashboard.class.getResource("/images/dashboardTopBar.png")));
 		topBarImageLabel.setBackground(new Color(229,234,230));
 		topBarImageLabel.setForeground(new Color(229,234,230));
 		topBarImageLabel.setBounds(0, 0, 1428, 130);
@@ -363,7 +363,6 @@ public class Dashboard extends JFrame{
 		
 		JLabel doctorTopBarImageLabel = new JLabel("");
 		doctorTopBarImageLabel.setIcon(new ImageIcon(topBar));
-		//topBarImageLabel.setIcon(new ImageIcon(Dashboard.class.getResource("/images/dashboardTopBar.png")));
 		doctorTopBarImageLabel.setBackground(new Color(229,234,230));
 		doctorTopBarImageLabel.setForeground(new Color(229,234,230));
 		doctorTopBarImageLabel.setBounds(0, 0, 1428, 130);
@@ -808,7 +807,6 @@ public class Dashboard extends JFrame{
 		
 		JScrollPane medicineScrollPane = new JScrollPane();
 		medicineScrollPane.setBounds(554, 47, 369, 444);
-//		medicineScrollPane.setBackground(new Color(173,255,241));
 		medicineScrollPane.getViewport().setBackground(Color.WHITE);
 		addMedicineContentPanel.add(medicineScrollPane);
 		
@@ -1170,41 +1168,59 @@ public class Dashboard extends JFrame{
 		JButton setAlertButton = new JButton("Set Alert");
 		setAlertButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				int selectedRowIndex=setAlertTable.getSelectedRow();
+				boolean isAnyRowNotSelected=setAlertTable.getSelectionModel().isSelectionEmpty();
 				Date date=dueDateChooser.getDate();
-				String strDate=DateFormat.getInstance().format(date);
-				String[] arrDate=strDate.split(",");
-				
-				String setAlertListMedName=model.getValueAt(selectedRowIndex, 0).toString().trim();
+				String setAlertListMedName="";
 				String setAlertListTime=timeTextField.getText().trim();
-				String splitedDate=arrDate[0];
+				
 				String setAlertListAlertStatus="On";
-				
-				alertRow[0]= setAlertListMedName;
-				alertRow[1]= setAlertListTime;
-				alertRow[2]= splitedDate;
-				alertRow[3]= setAlertListAlertStatus;
-				alertListModel.addRow(alertRow);
-				
-				timeTextField.setText("");
-				dueDateChooser.cleanup();
-				
-				ArrayList<Patient> tempArrP=new ArrayList<Patient>();
-				Patient tempP=new Patient();
-				tempP.loadPatientData(filePath, tempArrP);
-				
-				for(int i=0; i<tempArrP.size(); i++) {
-					Patient temp=tempArrP.get(i);
-					if(temp.getName().equalsIgnoreCase(userName)) {
-						temp.setAlertMedicineName(setAlertListMedName);
-						temp.setAlertTime(setAlertListTime);
-						temp.setAlertDate(splitedDate);
-						temp.setAlertStaus(setAlertListAlertStatus);
-						tempArrP.set(i, temp);
-						break;
-					}
+				if(isAnyRowNotSelected) {
+					JOptionPane.showMessageDialog(setAlertPanel, "Please select a row!", "Message", JOptionPane.WARNING_MESSAGE);
 				}
-				tempP.addUser(filePath, tempArrP);
+				else if(date==null){
+					
+					JOptionPane.showMessageDialog(setAlertPanel, "Please select a date", "Message", JOptionPane.WARNING_MESSAGE);
+				}
+				else if(setAlertListTime.equals("")) {
+					JOptionPane.showMessageDialog(setAlertPanel, "Please Fill up Time Text Field", "Message", JOptionPane.ERROR_MESSAGE);
+				}
+				else if(!wrongTimeFormatCheck(setAlertListTime)) {
+					JOptionPane.showMessageDialog(setAlertPanel, "Please type correct formatted time as shown below!","Wrong input", JOptionPane.ERROR_MESSAGE);
+				}
+				else {
+					setAlertListMedName=model.getValueAt(selectedRowIndex, 0).toString().trim();
+					String strDate=DateFormat.getInstance().format(date);
+					String[] arrDate=strDate.split(",");
+					String splitedDate=arrDate[0];
+					
+					alertRow[0]= setAlertListMedName;
+					alertRow[1]= setAlertListTime;
+					alertRow[2]= splitedDate;
+					alertRow[3]= setAlertListAlertStatus;
+					alertListModel.addRow(alertRow);
+					
+					timeTextField.setText("");
+					dueDateChooser.cleanup();
+					
+					ArrayList<Patient> tempArrP=new ArrayList<Patient>();
+					Patient tempP=new Patient();
+					tempP.loadPatientData(filePath, tempArrP);
+					
+					for(int i=0; i<tempArrP.size(); i++) {
+						Patient temp=tempArrP.get(i);
+						if(temp.getName().equalsIgnoreCase(userName)) {
+							temp.setAlertMedicineName(setAlertListMedName);
+							temp.setAlertTime(setAlertListTime);
+							temp.setAlertDate(splitedDate);
+							temp.setAlertStaus(setAlertListAlertStatus);
+							tempArrP.set(i, temp);
+							break;
+						}
+					}
+					tempP.addUser(filePath, tempArrP);
+				}	
 			}
 		});
 		setAlertButton.setForeground(Color.WHITE);
@@ -2437,6 +2453,24 @@ public class Dashboard extends JFrame{
 				break;
 			}
 		}
+	}
+	
+	public static boolean wrongTimeFormatCheck(String time) {
+		String[] tempArrTime=time.split(" ");
+		String first_part=tempArrTime[0];
+		String second_part=tempArrTime[1];
+		
+		String[] tempArrFirst_part=first_part.split(":");
+		
+		String timePart1=tempArrFirst_part[0];
+		String timePart2=tempArrFirst_part[1];
+		
+		
+		if(timePart1.matches("[0-9]+") && Integer.valueOf(timePart1)<=12 && Integer.valueOf(timePart1)>=0 
+		    && Integer.valueOf(timePart2)<=59 && Integer.valueOf(timePart2)>=0 && timePart2.matches("[0-9]+") && (second_part.equals("AM") || second_part.equals("PM")) ) 
+			return true;
+		else
+			return false;
 	}
 	
 }

@@ -37,11 +37,6 @@ public class Patient extends User implements Serializable{
 	}
 	
 	
-	@Override
-	public void setAlert() {
-		
-	}
-	
 	public void addUser(String filePath, ArrayList<Patient> patientsArr) {
 		
 		File file=new File(filePath);
@@ -84,10 +79,9 @@ public class Patient extends User implements Serializable{
 		try {
 			FileInputStream fis=new FileInputStream(file);
 			ObjectInputStream ois=new ObjectInputStream(fis);
-			//arr.clear();
+			
 			while(fis.available()!=0) {
 				Patient tempPatient=(Patient) ois.readObject();
-				//System.out.println(tempPatient.getName());
 				arr.add(tempPatient);
 			}
 			
@@ -115,11 +109,6 @@ public class Patient extends User implements Serializable{
 			}
 		}
 	}
-	
-//	public void setAddMedicineName(ArrayList<String> addMedicineName) {
-//		this.addMedicineName = addMedicineName;
-//	}
-
 
 
 	public ArrayList<String> getAddMg() {
@@ -140,22 +129,6 @@ public class Patient extends User implements Serializable{
 		}
 	}
 
-//	public void setAddMg(ArrayList<String> addMg) {
-//		this.addMg = addMg;
-//	}
-
-
-
-//	public ArrayList<Boolean> getAddMedDelete() {
-//		return addMedDelete;
-//	}
-
-
-//	public void setAddMedDelete(ArrayList<Boolean> addMedDelete) {
-//		this.addMedDelete = addMedDelete;
-//	}
-
-
 
 	public ArrayList<String> getAddPresMedicineName() {
 		return addPresMedicineName;
@@ -174,11 +147,6 @@ public class Patient extends User implements Serializable{
 				
 		}
 	}
-
-//	public void setAddPresMedicineName(ArrayList<String> addPresMedicineName) {
-//		this.addPresMedicineName = addPresMedicineName;
-//	}
-
 
 
 	public ArrayList<String> getAddPresMg() {
@@ -199,11 +167,6 @@ public class Patient extends User implements Serializable{
 		}
 	}
 
-//	public void setAddPresMg(ArrayList<String> addPresMg) {
-//		this.addPresMg = addPresMg;
-//	}
-
-
 
 	public ArrayList<String> getAddPresMorning() {
 		return addPresMorning;
@@ -222,11 +185,6 @@ public class Patient extends User implements Serializable{
 				
 		}
 	}
-
-//	public void setAddPresMornig(ArrayList<String> addPresMornig) {
-//		this.addPresMornig = addPresMornig;
-//	}
-
 
 
 	public ArrayList<String> getAddPresEvening() {
@@ -247,11 +205,6 @@ public class Patient extends User implements Serializable{
 		}
 	}
 
-//	public void setAddPresEvening(ArrayList<String> addPresEvening) {
-//		this.addPresEvening = addPresEvening;
-//	}
-
-
 
 	public ArrayList<String> getAddPresNight() {
 		return addPresNight;
@@ -270,11 +223,6 @@ public class Patient extends User implements Serializable{
 				
 		}
 	}
-
-//	public void setAddPresNight(ArrayList<String> addPresNight) {
-//		this.addPresNight = addPresNight;
-//	}
-
 
 
 	public ArrayList<String> getTotalCourseDays() {
@@ -295,22 +243,6 @@ public class Patient extends User implements Serializable{
 		}
 	}
 
-//	public void setTotalCourseDays(ArrayList<String> totalCourseDays) {
-//		this.totalCourseDays = totalCourseDays;
-//	}
-
-
-
-//	public ArrayList<Boolean> getAddPresDelete() {
-//		return addPresDelete;
-//	}
-
-
-//	public void setAddPresDelete(ArrayList<Boolean> addPresDelete) {
-//		this.addPresDelete = addPresDelete;
-//	}
-
-
 
 	public ArrayList<String> getAlertMedicineName() {
 		return alertMedicineName;
@@ -330,12 +262,6 @@ public class Patient extends User implements Serializable{
 		}
 	}
 
-//	public void setAlertMedicineName(ArrayList<String> alertMedicineName) {
-//		this.alertMedicineName = alertMedicineName;
-//	}
-
-
-
 	public ArrayList<String> getAlertTime() {
 		return alertTime;
 	}
@@ -353,11 +279,6 @@ public class Patient extends User implements Serializable{
 				
 		}
 	}
-
-//	public void setAlertTime(ArrayList<String> alertTime) {
-//		this.alertTime = alertTime;
-//	}
-
 
 
 	public ArrayList<String> getAlertDate() {
@@ -378,11 +299,6 @@ public class Patient extends User implements Serializable{
 		}
 	}
 
-//	public void setAlertDate(ArrayList<String> alertDate) {
-//		this.alertDate = alertDate;
-//	}
-
-
 
 	public ArrayList<String> getAlertStatus() {
 		return alertStatus;
@@ -401,11 +317,5 @@ public class Patient extends User implements Serializable{
 				
 		}
 	}
-
-//	public void setAlertStatus(ArrayList<String> alertStatus) {
-//		this.alertStatus = alertStatus;
-//	}
 	
-	
-
 }

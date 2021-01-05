@@ -183,12 +183,9 @@ public class LoginSignupUI extends JFrame {
 	}
 	
 	public boolean multipleUserNameCheck(String name) {
-		ArrayList<Patient> tempArrP=new ArrayList<Patient>();
-		Iterator<Patient> iterTempArrP=tempArrP.iterator();
+		ArrayList<Patient> tempArrP=new ArrayList<Patient>();		
 		ArrayList<Nurse> tempArrN=new ArrayList<Nurse>();
-		Iterator<Nurse> iterTempArrN=tempArrN.iterator();
 		ArrayList<Doctor> tempArrD=new ArrayList<Doctor>();
-		Iterator<Doctor> iterTempArrD=tempArrD.iterator();
 		
 		Patient tempP=new Patient();
 		tempP.loadPatientData(filePath, tempArrP);
@@ -196,48 +193,6 @@ public class LoginSignupUI extends JFrame {
 		tempD.loadDoctorData(docFilePath, tempArrD);
 		Nurse tempN=new Nurse();
 		tempN.loadNurseData(nurseFilePath, tempArrN);
-		
-//		while(true) {
-//			if(iterTempArrP.hasNext()) {
-//				Patient temp=(Patient) iterTempArrP.next();
-//				if(temp.getName().equals(name)) {
-//					return true;
-//				}
-//			}
-//			else if(iterTempArrD.hasNext()) {
-//				Doctor temp=(Doctor) iterTempArrD.next();
-//				if(temp.getName().equals(name)) {
-//					return true;
-//				}
-//			}
-//			else if(iterTempArrN.hasNext()) {
-//				Nurse temp=(Nurse) iterTempArrN.next();
-//				if(temp.getName().equals(name)) {
-//					return true;
-//				}
-//			}
-//			else 
-//				return false;
-//		}
-		
-//		while(iterTempArrP.hasNext()) {
-//			Patient temp=(Patient) iterTempArrP.next();
-//			if(temp.getName().equals(name)) {
-//				return true;
-//			}
-//		}
-//		while(iterTempArrD.hasNext()) {
-//			Doctor temp=(Doctor) iterTempArrD.next();
-//			if(temp.getName().equals(name)){
-//				return true;
-//			}
-//		}
-//		while(iterTempArrN.hasNext()) {
-//			Nurse temp=(Nurse) iterTempArrN.next();
-//			if(temp.getName().equals(name)) {
-//				return true;
-//			}
-//		}
 		
 		for(int i=0; i<tempArrP.size(); i++) {
 			Patient temp=(Patient) tempArrP.get(i);
@@ -254,7 +209,6 @@ public class LoginSignupUI extends JFrame {
 			if(temp.getName().equals(name))
 				return true;
 		}
-		
 		
 		return false;
 	}
@@ -318,7 +272,7 @@ public class LoginSignupUI extends JFrame {
 		Button logInPanelLogInButton = new Button("Log In");
 		logInPanelLogInButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				boolean loginCheck=false;
 				String userName=logInUserNameTextField.getText().trim();
 				String password=String.valueOf(loginPasswordField.getPassword()).trim();
 				if(patientLoginSelected==true) {
@@ -336,9 +290,13 @@ public class LoginSignupUI extends JFrame {
 							dashboard.setVisible(true);
 							dashboard.switchPatientPanel();
 							frame.setVisible(false);
+							loginCheck=true;
 							break;
 						}
 					}
+					if(!loginCheck)
+						JOptionPane.showMessageDialog(frame, "Wrong username, passowrd or user selection", "Message", JOptionPane.ERROR_MESSAGE);
+					
 					logInUserNameTextField.setText("");
 					loginPasswordField.setText("");
 				}
@@ -358,9 +316,12 @@ public class LoginSignupUI extends JFrame {
 							dashboard.setVisible(true);
 							dashboard.switchDoctorPanel();
 							frame.setVisible(false);
+							loginCheck=true;
 							break;
 						}
 					}
+					if(!loginCheck)
+						JOptionPane.showMessageDialog(frame, "Wrong username, passowrd or user selection", "Message", JOptionPane.ERROR_MESSAGE);
 					logInUserNameTextField.setText("");
 					loginPasswordField.setText("");
 				}
@@ -379,9 +340,12 @@ public class LoginSignupUI extends JFrame {
 							dashboard.setVisible(true);
 							dashboard.switchNursePanel();
 							frame.setVisible(false);
+							loginCheck=true;
 							break;
 						}
 					}
+					if(!loginCheck)
+						JOptionPane.showMessageDialog(frame, "Wrong username, passowrd or user selection", "Message", JOptionPane.ERROR_MESSAGE);
 					logInUserNameTextField.setText("");
 					loginPasswordField.setText("");
 				}

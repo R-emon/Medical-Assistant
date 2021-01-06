@@ -82,7 +82,7 @@ public class Dashboard extends JFrame{
 	private DefaultTableModel model;
 	private String[] colums= {"Medicine Name", "mg"};
 	private String[] row=new String[2];
-	private String[] items= {"0", "1", "2", "3"};
+	private String[] items= {"1", "2", "3"};
 	private DefaultTableModel prescriptionModel;
 	private String[] pressColums= {"Medicine Name", "mg", "Morning", "Evening", "Night", "Days"};
 	private String[] presRow=new String[6];
@@ -1376,35 +1376,44 @@ public class Dashboard extends JFrame{
 				String appointPatientNum=patientNumTextField.getText().trim();
 				String appointTime=appointmentTimeTextField.getText().trim();
 				Date date=appointmentDateChooser.getDate();
-				String strDate=DateFormat.getInstance().format(date);
-				String[] arrDate=strDate.split(",");
-				String appointDate=arrDate[0].trim();
-				addAppointRow[0]=appointPatientName;
-				addAppointRow[1]=appointPatientNum;
-				addAppointRow[2]=appointTime;
-				addAppointRow[3]=appointDate;
-				addAppointmentModel.addRow(addAppointRow);
 				
-				docPatientNameTextField.setText("");
-				patientNumTextField.setText("");
-				appointmentTimeTextField.setText("");
-				
-				ArrayList<Doctor> tempArrD=new ArrayList<Doctor>();
-				Doctor tempD=new Doctor();
-				tempD.loadDoctorData(docFilePath, tempArrD);
-				
-				for(int i=0; i<tempArrD.size(); i++) {
-					Doctor temp=(Doctor) tempArrD.get(i);
-					if(temp.getName().equalsIgnoreCase(userName)) {
-						temp.setAddAppointPatientName(appointPatientName);
-						temp.setAddAppointPatientNumber(appointPatientNum);
-						temp.setAddAppointTime(appointTime);
-						temp.setAddAppointDate(appointDate);
-						tempArrD.set(i, temp);
-						break;
-					}
+				if(appointPatientName.equals("") || appointPatientNum.equals("") || appointTime.equals("") || date==null) {
+					JOptionPane.showMessageDialog(setAlertPanel, "Please Fill All Text Field", "Message", JOptionPane.ERROR_MESSAGE);
 				}
-				tempD.addUser(docFilePath, tempArrD);
+				else if(!wrongTimeFormatCheck(appointTime)) {
+					JOptionPane.showMessageDialog(setAlertPanel, "Please type correct formatted time as shown below!","Wrong input", JOptionPane.ERROR_MESSAGE);
+				}
+				else {
+					String strDate=DateFormat.getInstance().format(date);
+					String[] arrDate=strDate.split(",");
+					String appointDate=arrDate[0].trim();
+					addAppointRow[0]=appointPatientName;
+					addAppointRow[1]=appointPatientNum;
+					addAppointRow[2]=appointTime;
+					addAppointRow[3]=appointDate;
+					addAppointmentModel.addRow(addAppointRow);
+					
+					docPatientNameTextField.setText("");
+					patientNumTextField.setText("");
+					appointmentTimeTextField.setText("");
+					
+					ArrayList<Doctor> tempArrD=new ArrayList<Doctor>();
+					Doctor tempD=new Doctor();
+					tempD.loadDoctorData(docFilePath, tempArrD);
+					
+					for(int i=0; i<tempArrD.size(); i++) {
+						Doctor temp=(Doctor) tempArrD.get(i);
+						if(temp.getName().equalsIgnoreCase(userName)) {
+							temp.setAddAppointPatientName(appointPatientName);
+							temp.setAddAppointPatientNumber(appointPatientNum);
+							temp.setAddAppointTime(appointTime);
+							temp.setAddAppointDate(appointDate);
+							tempArrD.set(i, temp);
+							break;
+						}
+					}
+					tempD.addUser(docFilePath, tempArrD);
+				}
 			}
 		});
 		
@@ -1773,33 +1782,39 @@ public class Dashboard extends JFrame{
 				String visitBedNumber=bedNumberTextField.getText().trim();
 				String visitMedicineName=nurseMedicineTextField.getText().trim();
 				String visitMedicineQty=nurseMedQuantityComboBox.getSelectedItem().toString().trim();
-				patientVisitRow[0]=visitPatientName;
-				patientVisitRow[1]=visitBedNumber;
-				patientVisitRow[2]=visitMedicineName;
-				patientVisitRow[3]=visitMedicineQty;
-				patientVisitModel.addRow(patientVisitRow);
 				
-				nursePatientNameTextField.setText("");
-				bedNumberTextField.setText("");
-				nurseMedQuantityComboBox.setSelectedIndex(0);
-				nurseMedicineTextField.setText("");
-				
-				ArrayList<Nurse> tempArrN=new ArrayList<Nurse>();
-				Nurse tempN=new Nurse();
-				tempN.loadNurseData(nurseFilePath, tempArrN);
-				
-				for(int i=0; i<tempArrN.size(); i++) {
-					Nurse temp=(Nurse) tempArrN.get(i);
-					if(temp.getName().equalsIgnoreCase(userName)) {
-						temp.setAddVisitPatientName(visitPatientName);
-						temp.setAddVisitBedNumber(visitBedNumber);
-						temp.setAddVisitMedName(visitMedicineName);
-						temp.setAddVisitMedQty(visitMedicineQty);
-						tempArrN.set(i, temp);
-						break;
-					}
+				if(visitPatientName.equals("") || visitBedNumber.equals("") || visitMedicineName.equals("") || visitMedicineQty.equals("")) {
+					JOptionPane.showMessageDialog(setAlertPanel, "Please Fill All Time Text Field", "Message", JOptionPane.ERROR_MESSAGE);
 				}
-				tempN.addUser(nurseFilePath, tempArrN);
+				else {
+					patientVisitRow[0]=visitPatientName;
+					patientVisitRow[1]=visitBedNumber;
+					patientVisitRow[2]=visitMedicineName;
+					patientVisitRow[3]=visitMedicineQty;
+					patientVisitModel.addRow(patientVisitRow);
+					
+					nursePatientNameTextField.setText("");
+					bedNumberTextField.setText("");
+					nurseMedQuantityComboBox.setSelectedIndex(0);
+					nurseMedicineTextField.setText("");
+					
+					ArrayList<Nurse> tempArrN=new ArrayList<Nurse>();
+					Nurse tempN=new Nurse();
+					tempN.loadNurseData(nurseFilePath, tempArrN);
+					
+					for(int i=0; i<tempArrN.size(); i++) {
+						Nurse temp=(Nurse) tempArrN.get(i);
+						if(temp.getName().equalsIgnoreCase(userName)) {
+							temp.setAddVisitPatientName(visitPatientName);
+							temp.setAddVisitBedNumber(visitBedNumber);
+							temp.setAddVisitMedName(visitMedicineName);
+							temp.setAddVisitMedQty(visitMedicineQty);
+							tempArrN.set(i, temp);
+							break;
+						}
+					}
+					tempN.addUser(nurseFilePath, tempArrN);
+				}
 			}
 		});
 		addPatientVisitButton.setForeground(Color.WHITE);

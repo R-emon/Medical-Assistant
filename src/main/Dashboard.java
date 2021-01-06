@@ -746,28 +746,36 @@ public class Dashboard extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String medName=medicineNameTextField.getText().trim();
 				String medMg=medicineMgTextField.getText().trim();
-				row[0]=medName;
-				row[1]=medMg;
-				model.addRow(row);
-				medicineNameTextField.setText("");
-				medicineMgTextField.setText("");
 				
-				ArrayList<Patient> tempArrayP=new ArrayList<Patient>();
-				Patient tempP=new Patient();
-				tempP.loadPatientData(filePath, tempArrayP);
-				
-				for(int i=0;i<tempArrayP.size(); i++) {
-					Patient temp=(Patient) tempArrayP.get(i);
-					if(temp.getName().equalsIgnoreCase(userName)) {
-						temp.setAddMedicineName(medName);
-						temp.setAddMg(medMg);
-						tempArrayP.set(i, temp);
-						break;
-					}
+				if(medName.equals("")) {
+					JOptionPane.showMessageDialog(setAlertPanel, "Please Fill up Medicine Name Text Field", "Message", JOptionPane.ERROR_MESSAGE);
 				}
-				
-				tempP.addUser(filePath, tempArrayP);
-				
+				else if(medMg.equals("")) {
+					JOptionPane.showMessageDialog(setAlertPanel, "Please Fill up Medicine Mg Text Field", "Message", JOptionPane.ERROR_MESSAGE);
+				}
+				else {
+					row[0]=medName;
+					row[1]=medMg;
+					model.addRow(row);
+					medicineNameTextField.setText("");
+					medicineMgTextField.setText("");
+					
+					ArrayList<Patient> tempArrayP=new ArrayList<Patient>();
+					Patient tempP=new Patient();
+					tempP.loadPatientData(filePath, tempArrayP);
+					
+					for(int i=0;i<tempArrayP.size(); i++) {
+						Patient temp=(Patient) tempArrayP.get(i);
+						if(temp.getName().equalsIgnoreCase(userName)) {
+							temp.setAddMedicineName(medName);
+							temp.setAddMg(medMg);
+							tempArrayP.set(i, temp);
+							break;
+						}
+					}
+					
+					tempP.addUser(filePath, tempArrayP);
+				}
 			}
 		});
 		addMedicineButton.setBounds(184, 343, 118, 41);

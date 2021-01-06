@@ -46,34 +46,19 @@ public class LoginSignupUI extends JFrame {
 	
 	public static LoginSignupUI frame; //first login UI frame variable
 	private static JFrame dashboardJFrame;
-	private JPanel contentPane; //JPanel variable
-	private JTextField userNameTextField;
-	private JTextField emailTextField;
-	private JPasswordField passwordTextField;
-	private JPasswordField conPasswordTextField;
+	private JPanel contentPane, logInPanel, signUpPanel; //JPanel variable
+	private JTextField userNameTextField, emailTextField, logInUserNameTextField;
+	private JPasswordField passwordTextField, conPasswordTextField, loginPasswordField;
 	private JLabel bkImageLabel;
 	private	int posX=0,posY=0;
-	private JTextField logInUserNameTextField;
-	private JPasswordField loginPasswordField;
 	private JLayeredPane signUpLogInLayeredPane;
-	private JPanel logInPanel;
-	private JPanel signUpPanel;
 	private Image crossLogo= new ImageIcon(LoginSignupUI.class.getResource("/images/cross.png")).getImage().getScaledInstance(22, 22, Image.SCALE_SMOOTH);
-	private ButtonGroup userLoginCheckBoxGroup;
-	private JCheckBox patientLoginCheckBox;
-	private JCheckBox doctorLoginCheckBox;
-	private JCheckBox nurseLoginCheckBox;
-	private boolean patientLoginSelected=false;
-	private boolean doctorLoginSelected=false;
-	private boolean nurseLoginSelected=false;
-	private boolean patientSignUpSelected=false;
-	private boolean doctorSignUpSelected=false;
-	private boolean nurseSignUpSelected=false;
-	private ButtonGroup userSignUpCheckBoxGroup;
+	private ButtonGroup userLoginCheckBoxGroup, userSignUpCheckBoxGroup;
+	private JCheckBox patientLoginCheckBox, doctorLoginCheckBox, nurseLoginCheckBox;
+	private boolean patientLoginSelected=false, doctorLoginSelected=false, nurseLoginSelected=false, patientSignUpSelected=false, doctorSignUpSelected=false, 
+				nurseSignUpSelected=false;
 	public static Dashboard dashboard;
-	private String filePath="src/data/patientData.txt";
-	private String docFilePath="src/data/doctorData.txt";
-	private String nurseFilePath="src/data/NurseData.txt";
+	private String filePath="src/data/patientData.txt",  docFilePath="src/data/doctorData.txt", nurseFilePath="src/data/NurseData.txt";
 	
 	
 	

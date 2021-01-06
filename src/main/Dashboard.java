@@ -42,13 +42,9 @@ import com.toedter.calendar.JDateChooser;
 
 public class Dashboard extends JFrame{
 
-	private JPanel dashboardContentPane;
-	public JPanel patientTopBarPanel;
-	public JPanel doctorTopBarPanel;
-	private JPanel nurseTopBarPanel;
-	private JPanel patientSideBarPanel;
-	private JPanel doctorSideBarPanel;
-	private JPanel nurseSideBarPanel;
+	private JPanel dashboardContentPane, patientTopBarPanel, doctorTopBarPanel, nurseTopBarPanel, patientSideBarPanel,doctorSideBarPanel,
+					 nurseSideBarPanel, addPresContentPanel, medicineDuePanel, addMedicineContentPanel, setAlertPanel, addAppointPanel,
+					 appointmentDuePanel, docSetAlertPanel, addPatientVisitPanel, nurseDuePanel, nurseSetAlertPanel;
 	private Image topBar= new ImageIcon(Dashboard.class.getResource("/images/dashboardTopBar.png")).getImage().getScaledInstance(1428, 127, Image.SCALE_SMOOTH);
 	private Image topBarPatientLogo= new ImageIcon(Dashboard.class.getResource("/images/hospitalisation1.png")).getImage().getScaledInstance(80, 70, Image.SCALE_SMOOTH);
 	private Image sideBar= new ImageIcon(Dashboard.class.getResource("/images/sideBar.png")).getImage().getScaledInstance(338, 536, Image.SCALE_SMOOTH);
@@ -61,24 +57,17 @@ public class Dashboard extends JFrame{
 	private Image crossDashboardLogo= new ImageIcon(Dashboard.class.getResource("/images/cross.png")).getImage().getScaledInstance(25, 20, Image.SCALE_SMOOTH);
 	private Image addAppointmentLogo= new ImageIcon(Dashboard.class.getResource("/images/report.png")).getImage().getScaledInstance(66, 56, Image.SCALE_SMOOTH);
 	private Image topBarNurseLogo= new ImageIcon(Dashboard.class.getResource("/images/nurse.png")).getImage().getScaledInstance(80, 70, Image.SCALE_SMOOTH);
-	private JLabel topBarPatientLogoLabel;
-	private JLabel patientNameLabel;
-	private JLabel addMedLogoLabel;
-	private JLabel addMedicineLabel;
-	private JLabel addPresLogoLabel;
-	private JLabel addPresLabel;
-	private JLabel dueLogoLabel;
-	private JLabel dueLabel;
-	private JLabel setAlertLogoLabel;
-	private JLabel setAlertLabel;
-	private JLabel logOutLogoLabel;
-	private JLabel logOutLabel;
-	private JPanel addPresContentPanel;
-	private JPanel medicineDuePanel;
-	private JPanel addMedicineContentPanel;
-	private JPanel setAlertPanel;
-	private JTextField medicineNameTextField;
-	private JTable medicineTable;
+	private JLabel topBarPatientLogoLabel, patientNameLabel, addMedLogoLabel, addMedicineLabel, addPresLogoLabel, addPresLabel, dueLogoLabel,
+					dueLabel, setAlertLogoLabel, setAlertLabel, logOutLogoLabel, logOutLabel, topBarDoctorLogoLabel, doctorNameLabel, doctorLogOutLabel,
+					doctorLogOutLogoLabel, crossDashboardLabel, minimizeDashboardLogo_2, addAppointmentLabel, addAppointmentLogoLabel, docDueLogoLabel,
+					docaDueLabel, docSetAlertLogoLabel, docaSetAlertLabel, nurseNameLabel, nurseLogOutLabel, nurseLogOutLogoLabel, nurseSideBarBKLabel,
+					addPatientVisitLogoLabel, addPatientVisitLabel, nurseDueLogoLabel, nurseDueLabel, nurseSetAlertLogoLabel, nurseSetAlertLabel,
+					nurseMdeicineQntyLabel;
+	private JTextField medicineNameTextField, medicineMgTextField, addPressMedNameTxtField, addPressMgTextField, courseForTextField, timeTextField,
+						docPatientNameTextField, patientNumTextField, appointmentTimeTextField, docTimeTextField, nursePatientNameTextField, bedNumberTextField,
+						nurseMedicineTextField, nurseAlertTimeTextField;
+	private JTable medicineTable, prescriptionTable, medicineDueTable, setAlertTable, alertListTable, addAppointmentTable, docDueTable, docSetAlertTable,
+					docAlertListTable, patientVisitTable, nurseDueTable, nurseSetAlertTable, nurseAlertListTable;
 	private DefaultTableModel model;
 	private String[] colums= {"Medicine Name", "mg"};
 	private String[] row=new String[2];
@@ -110,103 +99,19 @@ public class Dashboard extends JFrame{
 	private DefaultTableModel nurseDueModel;
 	private String[] nurseDueColum= {"Patient Name","Bed No.", "Time", "Date","Alert Status"};
 	private String[] nurseDueRow=new String[5];
-	private JTextField medicineMgTextField;
-	private JLabel topBarDoctorLogoLabel;
-	private JLabel doctorNameLabel;
-	private JLabel doctorLogOutLabel;
-	private JLabel doctorLogOutLogoLabel;
-	private JLayeredPane topBarLayeredPane;
-	private JLayeredPane sideBarLayeredPane;
-	private JLayeredPane activityContentlayeredPane;
-	private JTextField addPressMedNameTxtField;
-	private JTextField addPressMgTextField;
-	private JComboBox morningComboBox;
-	private JComboBox eveningComboBox;
-	private JComboBox nightComboBox;
-	private JTextField courseForTextField;
-	private JTable prescriptionTable;
-	private JButton addPrescriptionButton;
-	private JButton deletePrescriptionButton;
-	private JTable medicineDueTable;
-	private JButton dueRefreshButton;
-	private JTable setAlertTable;
-	private JTextField timeTextField;
-	private JTable alertListTable;
-	private JDateChooser dueDateChooser;
-	private static String userName;
+	private JLayeredPane topBarLayeredPane, sideBarLayeredPane, activityContentlayeredPane;
+	private JComboBox morningComboBox, eveningComboBox, nightComboBox;
+	private JButton addPrescriptionButton, deletePrescriptionButton, dueRefreshButton, addAppointmentButton, deleteAppointmentButton,
+					nurseTurnOffAlertButton;
+	private JDateChooser dueDateChooser, appointmentDateChooser, nurseAlertDateChooser;
 	private LoginSignupUI frame;
 	public JFrame dashboardFrame;
-	private JLabel crossDashboardLabel;
-	private JLabel minimizeDashboardLogo_2;
 	private	int posX=0,posY=0;
-	private JLabel addAppointmentLabel;
-	private JLabel addAppointmentLogoLabel;
-	private JPanel addAppointPanel;
-	private JLabel docDueLogoLabel;
-	private JLabel docaDueLabel;
-	private JLabel docSetAlertLogoLabel;
-	private JLabel docaSetAlertLabel;
-	private JTable addAppointmentTable;
-	private JTextField docPatientNameTextField;
-	private JTextField patientNumTextField;
-	private JTextField appointmentTimeTextField;
-	private JDateChooser appointmentDateChooser;
-	private JButton addAppointmentButton;
-	private JButton deleteAppointmentButton;
-	private JPanel appointmentDuePanel;
-	private JTable docDueTable;
-	private JPanel docSetAlertPanel;
-	private JTextField docTimeTextField;
-	private JTable docSetAlertTable;
-	private JScrollPane docSetAlertScrollPane;
-	private JTable docAlertListTable;
-	private JScrollPane docAlertListScrollPane;
-	private JLabel nurseNameLabel;
-	private JLabel nurseLogOutLabel;
-	private JLabel nurseLogOutLogoLabel;
-	private JLabel nurseSideBarBKLabel;
-	private JLabel addPatientVisitLogoLabel;
-	private JLabel addPatientVisitLabel;
-	private JLabel nurseDueLogoLabel;
-	private JLabel nurseDueLabel;
-	private JLabel nurseSetAlertLogoLabel;
-	private JLabel nurseSetAlertLabel;
-	private JPanel addPatientVisitPanel;
-	private JTextField nursePatientNameTextField;
-	private JTextField bedNumberTextField;
-	private JTextField nurseMedicineTextField;
-	private JLabel nurseMdeicineQntyLabel;
-	private JTable patientVisitTable;
-	private JScrollPane patientVisitScrollPane;
-	private JTable nurseDueTable;
-	private JPanel nurseDuePanel;
-	private JPanel nurseSetAlertPanel;
-	private JTextField nurseAlertTimeTextField;
-	private JTable nurseSetAlertTable;
-	private JScrollPane nurseSetAlertScrollPane;
-	private JTable nurseAlertListTable;
-	private JScrollPane nurseAlertListScrollPane;
-	private JDateChooser nurseAlertDateChooser;
-	private JButton nurseTurnOffAlertButton;
-	private String filePath="src/data/patientData.txt";
-	private String docFilePath="src/data/doctorData.txt";
-	private String nurseFilePath="src/data/NurseData.txt";
-	//private Dashboard dashboard;
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					Dashboard window = new Dashboard();
-//					window.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
+	private JScrollPane docSetAlertScrollPane, docAlertListScrollPane, patientVisitScrollPane, nurseSetAlertScrollPane, nurseAlertListScrollPane;
+	private String filePath="src/data/patientData.txt", docFilePath="src/data/doctorData.txt", nurseFilePath="src/data/NurseData.txt";
+	private static String userName;
+
+
 
 	/**
 	 * Create the application.

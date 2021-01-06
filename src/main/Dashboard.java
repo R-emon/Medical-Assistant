@@ -954,40 +954,45 @@ public class Dashboard extends JFrame{
 				String nigntNumber=nightComboBox.getSelectedItem().toString().trim();
 				String courseTotalNumber=courseForTextField.getText().trim();
 				
-				presRow[0]=pressMedName;
-				presRow[1]=pressMg;
-				presRow[2]=morningNumber;
-				presRow[3]=eveningNumber;
-				presRow[4]=nigntNumber;
-				presRow[5]=courseTotalNumber;
-				prescriptionModel.addRow(presRow);
-
-				addPressMedNameTxtField.setText("");
-				addPressMgTextField.setText("");
-				morningComboBox.setSelectedIndex(0);
-				eveningComboBox.setSelectedIndex(0);
-				nightComboBox.setSelectedIndex(0);
-				courseForTextField.setText("");
-				
-				ArrayList<Patient> tempArrayP=new ArrayList<Patient>();
-				Patient tempP=new Patient();
-				tempP.loadPatientData(filePath, tempArrayP);
-				
-				for(int i=0; i<tempArrayP.size(); i++) {
-					Patient temp=(Patient) tempArrayP.get(i);
-					if(temp.getName().equalsIgnoreCase(userName)) {
-						temp.setAddPresMedicineName(pressMedName);
-						temp.setAddPresMg(pressMg);
-						temp.setAddPresMoring(morningNumber);
-						temp.setAddPresEvening(eveningNumber);
-						temp.setAddPresNight(nigntNumber);
-						temp.setTotalCourseDays(courseTotalNumber);
-						tempArrayP.add(i, temp);
-						break;
-					}
+				if(pressMedName.equals("") || pressMg.equals("") && (morningNumber.equals("") || eveningNumber.equals("") 
+						|| nigntNumber.equals("")) || courseTotalNumber.equals("")) {
+					JOptionPane.showMessageDialog(setAlertPanel, "Please Fill up all Text Field", "Message", JOptionPane.ERROR_MESSAGE);
 				}
-				tempP.addUser(filePath, tempArrayP);
-				
+				else {
+					presRow[0]=pressMedName;
+					presRow[1]=pressMg;
+					presRow[2]=morningNumber;
+					presRow[3]=eveningNumber;
+					presRow[4]=nigntNumber;
+					presRow[5]=courseTotalNumber;
+					prescriptionModel.addRow(presRow);
+
+					addPressMedNameTxtField.setText("");
+					addPressMgTextField.setText("");
+					morningComboBox.setSelectedIndex(0);
+					eveningComboBox.setSelectedIndex(0);
+					nightComboBox.setSelectedIndex(0);
+					courseForTextField.setText("");
+					
+					ArrayList<Patient> tempArrayP=new ArrayList<Patient>();
+					Patient tempP=new Patient();
+					tempP.loadPatientData(filePath, tempArrayP);
+					
+					for(int i=0; i<tempArrayP.size(); i++) {
+						Patient temp=(Patient) tempArrayP.get(i);
+						if(temp.getName().equalsIgnoreCase(userName)) {
+							temp.setAddPresMedicineName(pressMedName);
+							temp.setAddPresMg(pressMg);
+							temp.setAddPresMoring(morningNumber);
+							temp.setAddPresEvening(eveningNumber);
+							temp.setAddPresNight(nigntNumber);
+							temp.setTotalCourseDays(courseTotalNumber);
+							tempArrayP.add(i, temp);
+							break;
+						}
+					}
+					tempP.addUser(filePath, tempArrayP);
+				}
 			}
 		});
 		addPrescriptionButton.setForeground(Color.WHITE);

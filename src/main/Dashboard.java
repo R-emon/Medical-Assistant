@@ -1521,37 +1521,56 @@ public class Dashboard extends JFrame{
 		JButton docSetAlertButton = new JButton("Set Alert");
 		docSetAlertButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Date date=docDueDateChooser.getDate();
-				String strDate=DateFormat.getInstance().format(date);
-				String[] arrDate=strDate.split(",");
+				
 				int selectedRowIndex=docSetAlertTable.getSelectedRow();
-				String setAlertPatientName=(String) addAppointmentModel.getValueAt(selectedRowIndex, 0).toString();
-				String setAlertTime=(String) docTimeTextField.getText().trim();
-				String setAlertDate=(String) arrDate[0];
+				boolean isAnyRowNotSelected=docSetAlertTable.getSelectionModel().isSelectionEmpty();
+				Date date=docDueDateChooser.getDate();
+				String setAlertPatientName="";
+				String setAlertTime=docTimeTextField.getText().trim();
 				String setAlertStatus="Alert on";
-				docAlertListRow[0]=setAlertPatientName;
-				docAlertListRow[1]=setAlertTime;
-				docAlertListRow[2]=setAlertDate;
-				docAlertListRow[3]=setAlertStatus;
-				docAlertListModel.addRow(docAlertListRow);
-				docTimeTextField.setText("");
 				
-				ArrayList<Doctor> tempArrD=new ArrayList<Doctor>();
-				Doctor tempD=new Doctor();
-				tempD.loadDoctorData(docFilePath, tempArrD);
-				
-				for(int i=0; i<tempArrD.size(); i++) {
-					Doctor temp=tempArrD.get(i);
-					if(temp.getName().equalsIgnoreCase(userName)) {
-						temp.setDocAlertPatientName(setAlertPatientName);
-						temp.setDocAlertTime(setAlertTime);
-						temp.setDocAlertDate(setAlertDate);
-						temp.setDocAlertStatus(setAlertStatus);
-						tempArrD.set(i, temp);
-						break;
-					}
+				if(isAnyRowNotSelected) {
+					JOptionPane.showMessageDialog(setAlertPanel, "Please select a row!", "Message", JOptionPane.WARNING_MESSAGE);
 				}
-				tempD.addUser(docFilePath, tempArrD);
+				else if(date==null) {
+					JOptionPane.showMessageDialog(setAlertPanel, "Please select a date", "Message", JOptionPane.WARNING_MESSAGE);
+				}
+				else if(setAlertTime.equals("")) {
+					JOptionPane.showMessageDialog(setAlertPanel, "Please Fill up Time Text Field", "Message", JOptionPane.ERROR_MESSAGE);
+				}
+				else if(!wrongTimeFormatCheck(setAlertTime)) {
+					JOptionPane.showMessageDialog(setAlertPanel, "Please type correct formatted time as shown below!","Wrong input", JOptionPane.ERROR_MESSAGE);
+				}
+				else {
+					setAlertPatientName=(String) addAppointmentModel.getValueAt(selectedRowIndex, 0).toString();
+					String strDate=DateFormat.getInstance().format(date);
+					String[] arrDate=strDate.split(",");
+					String setAlertDate=(String) arrDate[0];
+					
+					docAlertListRow[0]=setAlertPatientName;
+					docAlertListRow[1]=setAlertTime;
+					docAlertListRow[2]=setAlertDate;
+					docAlertListRow[3]=setAlertStatus;
+					docAlertListModel.addRow(docAlertListRow);
+					docTimeTextField.setText("");
+					
+					ArrayList<Doctor> tempArrD=new ArrayList<Doctor>();
+					Doctor tempD=new Doctor();
+					tempD.loadDoctorData(docFilePath, tempArrD);
+					
+					for(int i=0; i<tempArrD.size(); i++) {
+						Doctor temp=tempArrD.get(i);
+						if(temp.getName().equalsIgnoreCase(userName)) {
+							temp.setDocAlertPatientName(setAlertPatientName);
+							temp.setDocAlertTime(setAlertTime);
+							temp.setDocAlertDate(setAlertDate);
+							temp.setDocAlertStatus(setAlertStatus);
+							tempArrD.set(i, temp);
+							break;
+						}
+					}
+					tempD.addUser(docFilePath, tempArrD);
+				}
 			}
 		});
 		docSetAlertButton.setForeground(Color.WHITE);

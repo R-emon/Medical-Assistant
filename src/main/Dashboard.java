@@ -1914,40 +1914,60 @@ public class Dashboard extends JFrame{
 		JButton nurseSetAlertButton = new JButton("Set Alert");
 		nurseSetAlertButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Date date=nurseAlertDateChooser.getDate();
-				String strDate=DateFormat.getInstance().format(date);
-				String[] arrDate=strDate.split(",");
 				int selectedRowIndex=nurseSetAlertTable.getSelectedRow();
-				String setNurseAlertPatientName=(String) patientVisitModel.getValueAt(selectedRowIndex, 0).toString();
-				String setNurseAlertBedNumber=(String) patientVisitModel.getValueAt(selectedRowIndex, 1).toString();
+				boolean isAnyRowSelected=nurseSetAlertTable.getSelectionModel().isSelectionEmpty();
+				Date date=nurseAlertDateChooser.getDate();
 				String setNurseAlertTime=(String) nurseAlertTimeTextField.getText().trim();
-				String setNurseAlertDate=(String) arrDate[0];
+				String setNurseAlertPatientName="";
+				String setNurseAlertBedNumber="";
 				String setNurseAlertStatus="On";
-				nurseAlertListRow[0]=setNurseAlertPatientName;
-				nurseAlertListRow[1]=setNurseAlertBedNumber;
-				nurseAlertListRow[2]=setNurseAlertTime;
-				nurseAlertListRow[3]=setNurseAlertDate;
-				nurseAlertListRow[4]=setNurseAlertStatus;
-				nurseAlertListModel.addRow(nurseAlertListRow);
-				nurseAlertTimeTextField.setText("");
 				
-				ArrayList<Nurse> tempArrN=new ArrayList<Nurse>();
-				Nurse tempN=new Nurse();
-				tempN.loadNurseData(nurseFilePath, tempArrN);
-				
-				for(int i=0; i<tempArrN.size(); i++) {
-					Nurse temp=(Nurse) tempArrN.get(i);
-					if(temp.getName().equalsIgnoreCase(userName)) {
-						temp.setNurseAlertPatientName(setNurseAlertPatientName);
-						temp.setAlertPatientBedNumber(setNurseAlertBedNumber);
-						temp.setNurseAlertDate(setNurseAlertDate);
-						temp.setNurseAlertTime(setNurseAlertTime);
-						temp.setNurseAlertStatus(setNurseAlertStatus);
-						tempArrN.set(i, temp);
-						break;
-					}
+				if(isAnyRowSelected) {
+					JOptionPane.showMessageDialog(setAlertPanel, "Please select a row!", "Message", JOptionPane.WARNING_MESSAGE);
 				}
-				tempN.addUser(nurseFilePath, tempArrN);
+				else if(date==null) {
+					JOptionPane.showMessageDialog(setAlertPanel, "Please select a date", "Message", JOptionPane.WARNING_MESSAGE);
+				}
+				else if(setNurseAlertTime.equals("")) {
+					JOptionPane.showMessageDialog(setAlertPanel, "Please Fill up Time Text Field", "Message", JOptionPane.ERROR_MESSAGE);
+				}
+				else if(!wrongTimeFormatCheck(setNurseAlertTime)) {
+					JOptionPane.showMessageDialog(setAlertPanel, "Please type correct formatted time as shown below!","Wrong input", JOptionPane.ERROR_MESSAGE);
+				}
+				else {
+					String strDate=DateFormat.getInstance().format(date);
+					String[] arrDate=strDate.split(",");
+					setNurseAlertPatientName=(String) patientVisitModel.getValueAt(selectedRowIndex, 0).toString();
+					setNurseAlertBedNumber=(String) patientVisitModel.getValueAt(selectedRowIndex, 1).toString();
+					
+					String setNurseAlertDate=(String) arrDate[0];
+					
+					nurseAlertListRow[0]=setNurseAlertPatientName;
+					nurseAlertListRow[1]=setNurseAlertBedNumber;
+					nurseAlertListRow[2]=setNurseAlertTime;
+					nurseAlertListRow[3]=setNurseAlertDate;
+					nurseAlertListRow[4]=setNurseAlertStatus;
+					nurseAlertListModel.addRow(nurseAlertListRow);
+					nurseAlertTimeTextField.setText("");
+					
+					ArrayList<Nurse> tempArrN=new ArrayList<Nurse>();
+					Nurse tempN=new Nurse();
+					tempN.loadNurseData(nurseFilePath, tempArrN);
+					
+					for(int i=0; i<tempArrN.size(); i++) {
+						Nurse temp=(Nurse) tempArrN.get(i);
+						if(temp.getName().equalsIgnoreCase(userName)) {
+							temp.setNurseAlertPatientName(setNurseAlertPatientName);
+							temp.setAlertPatientBedNumber(setNurseAlertBedNumber);
+							temp.setNurseAlertDate(setNurseAlertDate);
+							temp.setNurseAlertTime(setNurseAlertTime);
+							temp.setNurseAlertStatus(setNurseAlertStatus);
+							tempArrN.set(i, temp);
+							break;
+						}
+					}
+					tempN.addUser(nurseFilePath, tempArrN);
+				}
 			}
 		});
 		nurseSetAlertButton.setForeground(Color.WHITE);

@@ -2187,7 +2187,6 @@ public class Dashboard extends JFrame{
 				Date currentSystemDate=new Date();
 				SimpleDateFormat sdf=new SimpleDateFormat("MM/dd/yy");
 				String currentDate=sdf.format(currentSystemDate);
-				System.out.println(currentDate);
 				
 				for(int i=0; i<alertDueMedName.size(); i++) {
 					String[] dateArr=alertDueDateArr.get(i).split("/");
@@ -2197,7 +2196,6 @@ public class Dashboard extends JFrame{
 					String date=second<10 ? "0"+dateArr[1] : dateArr[1];
 					
 					String convertedDate=month+"/"+date+"/"+dateArr[2];
-					System.out.println(convertedDate);
 					if(convertedDate.equalsIgnoreCase(currentDate)) {
 						
 						dueRow[0]=alertDueMedName.get(i).trim();

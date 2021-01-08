@@ -263,14 +263,10 @@ public class LoginSignupUI extends JFrame {
 				if(patientLoginSelected==true) {
 					ArrayList<Patient> tempArray=new ArrayList<Patient>();
 					loadPatientData(filePath, tempArray);
-					System.out.println(tempArray.size());
 					Iterator<Patient> iter=tempArray.iterator();
 					while(iter.hasNext()) {
 						Patient tempPatient=(Patient)iter.next();
-						System.out.println(tempPatient.getName());
-						System.out.println(tempPatient.getPassword());
 						if((tempPatient.getName().equals(userName)) && (tempPatient.getPassword().equals(password))) {
-							System.out.println("true");
 							dashboard=new Dashboard(userName, frame);
 							dashboard.setVisible(true);
 							dashboard.switchPatientPanel();
@@ -289,14 +285,10 @@ public class LoginSignupUI extends JFrame {
 				if(doctorLoginSelected==true) {
 					ArrayList<Doctor> tempArrD=new ArrayList<Doctor>();
 					loadDoctorData(docFilePath, tempArrD);
-					System.out.println(tempArrD.size());
 					Iterator<Doctor> iter=tempArrD.iterator();
 					while(iter.hasNext()) {
 						Doctor tempDoctor=(Doctor) iter.next();
-						System.out.println(tempDoctor.getName());
-						System.out.println(tempDoctor.getPassword());
 						if((tempDoctor.getName().equals(userName)) && (tempDoctor.getPassword().equals(password))) {
-							System.out.println("true");
 							dashboard=new Dashboard(userName, frame);
 							dashboard.setVisible(true);
 							dashboard.switchDoctorPanel();
@@ -317,10 +309,7 @@ public class LoginSignupUI extends JFrame {
 					Iterator<Nurse> iter=tempArrN.iterator();
 					while(iter.hasNext()) {
 						Nurse tempNurse=(Nurse) iter.next();
-						System.out.println(tempNurse.getName());
-						System.out.println(tempNurse.getPassword());
 						if((tempNurse.getName().equals(userName)) && (tempNurse.getPassword().equals(password))){
-							System.out.println("ture");
 							dashboard=new Dashboard(userName, frame);
 							dashboard.setVisible(true);
 							dashboard.switchNursePanel();
@@ -486,6 +475,11 @@ public class LoginSignupUI extends JFrame {
 				String tempPassword= String.valueOf(passwordTextField.getPassword()).trim();
 				String tempConPassWord= String.valueOf(conPasswordTextField.getPassword()).trim();
 				String tempUserType="";
+				
+				if(tempUserName.equals("") || tempEmail.equals("") || tempPassword.equals("") || tempConPassWord.equals("") || tempUserName.equals("")) {
+					JOptionPane.showMessageDialog(frame, "Please Fill Up All The TextFileds!","Message", JOptionPane.WARNING_MESSAGE);
+				}
+				
 				if(patientSignUpSelected==true) {
 					if(multipleUserNameCheck(tempUserName)) {
 						JOptionPane.showMessageDialog(frame, "This username already exist.","Message", JOptionPane.ERROR_MESSAGE);
@@ -541,7 +535,6 @@ public class LoginSignupUI extends JFrame {
 						passwordTextField.setText("");
 						conPasswordTextField.setText("");
 					}
-					
 				}
 			}
 		});

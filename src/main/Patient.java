@@ -61,7 +61,6 @@ public class Patient extends User implements Serializable{
 			
 			oos.close();
 			fos.close();
-			System.out.println("Objects written succesfully");
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

@@ -36,8 +36,8 @@ public abstract class User implements Serializable{
 		return this.emailAddress;
 	}
 
-	public void setEmailAddress(String emailAddress) {
-		this.emailAddress = emailAddress;
+	public void setEmailAddress(String email) {
+		this.emailAddress = email;
 	}
 
 	public String getPassword() {

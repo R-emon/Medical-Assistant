@@ -105,7 +105,7 @@ public class Dashboard extends JFrame{
 					nurseTurnOffAlertButton;
 	private JDateChooser dueDateChooser, appointmentDateChooser, nurseAlertDateChooser;
 	private LoginSignupUI frame;
-	public JFrame dashboardFrame;
+	//public JFrame dashboardFrame;
 	private	int posX=0,posY=0;
 	private JScrollPane docSetAlertScrollPane, docAlertListScrollPane, patientVisitScrollPane, nurseSetAlertScrollPane, nurseAlertListScrollPane;
 	private String filePath="src/data/patientData.txt", docFilePath="src/data/doctorData.txt", nurseFilePath="src/data/NurseData.txt";
@@ -196,9 +196,8 @@ public class Dashboard extends JFrame{
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	public void initialize() {
 		
-		//dashboardFrame=new JFrame();
 		dashboardContentPane = new JPanel();
 		dashboardContentPane.setBorder(new EmptyBorder(5,5,5,5));
 		dashboardContentPane.setLayout(new BorderLayout(0,0));

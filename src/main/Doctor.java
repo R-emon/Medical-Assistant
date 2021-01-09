@@ -30,7 +30,7 @@ public class Doctor extends User implements Serializable{
 		super(name, emailAddress, password, confirmPassword, userType);
 	}
 
-	public void addUser(String filePath, ArrayList<Doctor> patientsArr) {
+	public void addUser(String filePath, ArrayList<Doctor> doctorArr) {
 		
 		File file=new File(filePath);
 		if(!file.exists()) {
@@ -45,7 +45,7 @@ public class Doctor extends User implements Serializable{
 			FileOutputStream fos=new FileOutputStream(file);
 			ObjectOutputStream oos=new ObjectOutputStream(fos);
 			
-			Iterator<Doctor> iter= patientsArr.iterator();
+			Iterator<Doctor> iter= doctorArr.iterator();
 			
 			while(iter.hasNext()) {
 				Doctor tempS=(Doctor) iter.next();

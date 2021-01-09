@@ -33,7 +33,7 @@ public class Nurse extends User implements Serializable{
 	}
 
 	
-	public void addUser(String filePath, ArrayList<Nurse> patientsArr) {
+	public void addUser(String filePath, ArrayList<Nurse> nurseArr) {
 		
 		File file=new File(filePath);
 		if(!file.exists()) {
@@ -48,7 +48,7 @@ public class Nurse extends User implements Serializable{
 			FileOutputStream fos=new FileOutputStream(file);
 			ObjectOutputStream oos=new ObjectOutputStream(fos);
 			
-			Iterator<Nurse> iter= patientsArr.iterator();
+			Iterator<Nurse> iter= nurseArr.iterator();
 			
 			while(iter.hasNext()) {
 				Nurse tempS=(Nurse) iter.next();

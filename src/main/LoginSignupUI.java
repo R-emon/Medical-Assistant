@@ -45,7 +45,6 @@ import javax.swing.JCheckBox;
 public class LoginSignupUI extends JFrame {
 	
 	public static LoginSignupUI frame; //first login UI frame variable
-	private static JFrame dashboardJFrame;
 	private JPanel contentPane, logInPanel, signUpPanel; //JPanel variable
 	private JTextField userNameTextField, emailTextField, logInUserNameTextField;
 	private JPasswordField passwordTextField, conPasswordTextField, loginPasswordField;

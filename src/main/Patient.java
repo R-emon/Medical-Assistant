@@ -15,14 +15,12 @@ public class Patient extends User implements Serializable{
 	private static final long serialVersionUID = 2L;
 	private ArrayList<String> addMedicineName=new ArrayList<String>();
 	private ArrayList<String> addMg=new ArrayList<String>();
-	private ArrayList<Boolean> addMedDelete=new ArrayList<Boolean>();
 	private ArrayList<String> addPresMedicineName=new ArrayList<String>();
 	private ArrayList<String> addPresMg=new ArrayList<String>();
 	private ArrayList<String> addPresMorning=new ArrayList<String>();
 	private ArrayList<String> addPresEvening=new ArrayList<String>();
 	private ArrayList<String> addPresNight=new ArrayList<String>();
 	private ArrayList<String> totalCourseDays=new ArrayList<String>();
-	private ArrayList<Boolean> addPresDelete=new ArrayList<Boolean>();
 	private ArrayList<String> alertMedicineName=new ArrayList<String>();
 	private ArrayList<String> alertTime=new ArrayList<String>();
 	private ArrayList<String> alertDate=new ArrayList<String>();

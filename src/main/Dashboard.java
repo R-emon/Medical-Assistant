@@ -71,7 +71,7 @@ public class Dashboard extends JFrame{
 	private DefaultTableModel model;
 	private String[] colums= {"Medicine Name", "mg"};
 	private String[] row=new String[2];
-	private String[] items= {"1", "2", "3"};
+	private String[] items= {"0","1", "2", "3"};
 	private DefaultTableModel prescriptionModel;
 	private String[] pressColums= {"Medicine Name", "mg", "Morning", "Evening", "Night", "Days"};
 	private String[] presRow=new String[6];

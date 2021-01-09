@@ -653,10 +653,13 @@ public class Dashboard extends JFrame{
 				String medMg=medicineMgTextField.getText().trim();
 				
 				if(medName.equals("")) {
-					JOptionPane.showMessageDialog(setAlertPanel, "Please Fill up Medicine Name Text Field", "Message", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(setAlertPanel, "Please Fill Up Medicine Name Text Field", "Message", JOptionPane.ERROR_MESSAGE);
 				}
 				else if(medMg.equals("")) {
 					JOptionPane.showMessageDialog(setAlertPanel, "Please Fill up Medicine Mg Text Field", "Message", JOptionPane.ERROR_MESSAGE);
+				}
+				else if(!medMg.matches("[0-9]+")) {
+					JOptionPane.showMessageDialog(setAlertPanel, "Please Insert Correct Information", "Message", JOptionPane.ERROR_MESSAGE);
 				}
 				else {
 					row[0]=medName;
@@ -2194,8 +2197,11 @@ public class Dashboard extends JFrame{
 					int second=(int) Integer.valueOf(dateArr[1]);
 					String month=first<10 ? "0"+dateArr[0] : dateArr[0];
 					String date=second<10 ? "0"+dateArr[1] : dateArr[1];
-					
 					String convertedDate=month+"/"+date+"/"+dateArr[2];
+					
+					System.out.println(convertedDate);
+					System.out.println(currentDate);
+					
 					if(convertedDate.equalsIgnoreCase(currentDate)) {
 						
 						dueRow[0]=alertDueMedName.get(i).trim();

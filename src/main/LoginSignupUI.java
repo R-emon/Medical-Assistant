@@ -479,61 +479,65 @@ public class LoginSignupUI extends JFrame {
 				if(tempUserName.equals("") || tempEmail.equals("") || tempPassword.equals("") || tempConPassWord.equals("") || tempUserName.equals("")) {
 					JOptionPane.showMessageDialog(frame, "Please Fill Up All The TextFileds!","Message", JOptionPane.WARNING_MESSAGE);
 				}
-				
-				if(patientSignUpSelected==true) {
-					if(multipleUserNameCheck(tempUserName)) {
-						JOptionPane.showMessageDialog(frame, "This username already exist.","Message", JOptionPane.ERROR_MESSAGE);
-					}
-					else {
-						tempUserType="Patient";
-						ArrayList<Patient> tempArrP=new ArrayList<Patient>();
-						Patient tempPatient=new Patient(tempUserName, tempEmail, tempPassword, tempConPassWord, tempUserType);
-						tempPatient.loadPatientData(filePath, tempArrP);
-						tempArrP.add(tempPatient);
-						tempPatient.addUser(filePath, tempArrP);
+				else {
+					if(patientSignUpSelected==true) {
+						if(multipleUserNameCheck(tempUserName)) {
+							JOptionPane.showMessageDialog(frame, "This username already exist.","Message", JOptionPane.ERROR_MESSAGE);
+						}
+						else {
+							tempUserType="Patient";
+							ArrayList<Patient> tempArrP=new ArrayList<Patient>();
+							Patient tempPatient=new Patient(tempUserName, tempEmail, tempPassword, tempConPassWord, tempUserType);
+							tempPatient.loadPatientData(filePath, tempArrP);
+							tempArrP.add(tempPatient);
+							tempPatient.addUser(filePath, tempArrP);
+							
+							userNameTextField.setText("");
+							emailTextField.setText("");
+							passwordTextField.setText("");
+							conPasswordTextField.setText("");
+							JOptionPane.showMessageDialog(frame, "Sign Up Successfully", "Message", JOptionPane.INFORMATION_MESSAGE);
+						}
 						
-						userNameTextField.setText("");
-						emailTextField.setText("");
-						passwordTextField.setText("");
-						conPasswordTextField.setText("");
 					}
-					
-				}
-				else if(doctorSignUpSelected==true) {
-					if(multipleUserNameCheck(tempUserName)) {
-						JOptionPane.showMessageDialog(frame, "This username already exist.","Message", JOptionPane.ERROR_MESSAGE);
-					}
-					else {
-						tempUserType="Doctor";
-						ArrayList<Doctor> tempArrD=new ArrayList<Doctor>();
-						Doctor tempDoctor=new Doctor(tempUserName, tempEmail, tempPassword, tempConPassWord, tempUserType);
-						tempDoctor.loadDoctorData(docFilePath, tempArrD);
-						tempArrD.add(tempDoctor);
-						tempDoctor.addUser(docFilePath, tempArrD);
+					else if(doctorSignUpSelected==true) {
+						if(multipleUserNameCheck(tempUserName)) {
+							JOptionPane.showMessageDialog(frame, "This username already exist.","Message", JOptionPane.ERROR_MESSAGE);
+						}
+						else {
+							tempUserType="Doctor";
+							ArrayList<Doctor> tempArrD=new ArrayList<Doctor>();
+							Doctor tempDoctor=new Doctor(tempUserName, tempEmail, tempPassword, tempConPassWord, tempUserType);
+							tempDoctor.loadDoctorData(docFilePath, tempArrD);
+							tempArrD.add(tempDoctor);
+							tempDoctor.addUser(docFilePath, tempArrD);
+							
+							userNameTextField.setText("");
+							emailTextField.setText("");
+							passwordTextField.setText("");
+							conPasswordTextField.setText("");
+							JOptionPane.showMessageDialog(frame, "Sign Up Successfully", "Message", JOptionPane.INFORMATION_MESSAGE);
+						}
 						
-						userNameTextField.setText("");
-						emailTextField.setText("");
-						passwordTextField.setText("");
-						conPasswordTextField.setText("");
 					}
-					
-				}
-				else if(nurseSignUpSelected==true) {
-					if(multipleUserNameCheck(tempUserName)) {
-						JOptionPane.showMessageDialog(frame, "This username already exist.","Message", JOptionPane.ERROR_MESSAGE);
-					}
-					else {
-						tempUserType="Nurse";
-						ArrayList<Nurse> tempArrN=new ArrayList<Nurse>();
-						Nurse tempNurse=new Nurse(tempUserName, tempEmail, tempPassword, tempConPassWord, tempUserType);
-						tempNurse.loadNurseData(nurseFilePath, tempArrN);
-						tempArrN.add(tempNurse);
-						tempNurse.addUser(nurseFilePath, tempArrN);
-						
-						userNameTextField.setText("");
-						emailTextField.setText("");
-						passwordTextField.setText("");
-						conPasswordTextField.setText("");
+					else if(nurseSignUpSelected==true) {
+						if(multipleUserNameCheck(tempUserName)) {
+							JOptionPane.showMessageDialog(frame, "This username already exist.","Message", JOptionPane.ERROR_MESSAGE);
+						}
+						else {
+							tempUserType="Nurse";
+							ArrayList<Nurse> tempArrN=new ArrayList<Nurse>();
+							Nurse tempNurse=new Nurse(tempUserName, tempEmail, tempPassword, tempConPassWord, tempUserType);
+							tempNurse.loadNurseData(nurseFilePath, tempArrN);
+							tempArrN.add(tempNurse);
+							tempNurse.addUser(nurseFilePath, tempArrN);
+							
+							userNameTextField.setText("");
+							emailTextField.setText("");
+							passwordTextField.setText("");
+							conPasswordTextField.setText("");
+							JOptionPane.showMessageDialog(frame, "Sign Up Successfully", "Message", JOptionPane.INFORMATION_MESSAGE);
+						}
 					}
 				}
 			}

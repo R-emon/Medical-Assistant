@@ -680,7 +680,6 @@ public class Dashboard extends JFrame{
 							break;
 						}
 					}
-					
 					tempP.addUser(filePath, tempArrayP);
 				}
 			}

@@ -60,7 +60,6 @@ public class LoginSignupUI extends JFrame {
 	private String filePath="src/data/patientData.txt",  docFilePath="src/data/doctorData.txt", nurseFilePath="src/data/NurseData.txt";
 	
 	
-	
 	/**
 	 * Launch the application.
 	 */
@@ -198,6 +197,7 @@ public class LoginSignupUI extends JFrame {
 	}
 	
 	public void loginPageContents() {
+		
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
